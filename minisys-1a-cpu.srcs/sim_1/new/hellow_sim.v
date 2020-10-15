@@ -26,7 +26,7 @@ module hellow_sim( );
     //output
     wire [7:0] led;
     //instantiate the Unit under test
-    Ex_1 uut(
+    hellow uut(
         .sw(sw),
         .led(led)
     );
