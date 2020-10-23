@@ -26,12 +26,3 @@ module hellow(
     );
     assign led = sw;
 endmodule
-
-// watermelon
-module watermelon(
-    out, a, b
-);
-    output out;
-    input a, b;
-    and(out, a, b);
-endmodule
