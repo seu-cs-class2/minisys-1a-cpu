@@ -3,14 +3,14 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date: 2020/11/05 10:35:05
+// Create Date: 2020/11/13 15:47:34
 // Design Name: 
-// Module Name: program_counter
+// Module Name: shift_left_2
 // Project Name: 
 // Target Devices: 
 // Tool Versions: 
-// Description: program counter will store the instruction address
-// @@ sequential  unit
+// Description: 
+// 
 // Dependencies: 
 // 
 // Revision:
@@ -20,14 +20,10 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module program_counter(in, clock, out);
+module shift_left_2(in,out);
     input[31:0] in;
-    input clock;
     output[31:0] out;
     reg[31:0] out;
-    always @(posedge clock)
-    begin
-//        assign out = in; // check OK
-        out <= in;
-    end 
+    always @(in)
+        out = (in << 2);
 endmodule
