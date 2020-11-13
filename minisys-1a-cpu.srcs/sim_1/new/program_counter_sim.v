@@ -3,14 +3,14 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date: 2020/11/05 10:35:05
+// Create Date: 2020/11/13 12:54:59
 // Design Name: 
-// Module Name: program_counter
+// Module Name: program_counter_sim
 // Project Name: 
 // Target Devices: 
 // Tool Versions: 
-// Description: program counter will store the instruction address
-// @@ sequential  unit
+// Description: 
+// 
 // Dependencies: 
 // 
 // Revision:
@@ -20,14 +20,26 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module program_counter(in, clock, out);
-    input[31:0] in;
-    input clock;
-    output[31:0] out;
-    reg[31:0] out;
-    always @(posedge clock)
-    begin
-//        assign out = in; // check OK
-        out <= in;
-    end 
+module program_counter_sim();
+
+reg[31:0] in;
+wire[31:0] out;
+reg clock;
+
+program_counter test(
+    .in(in),
+    .out(out),
+    .clock(clock)
+);
+
+initial begin
+    clock = 0;
+    in = 0;
+    forever begin
+        #5 clock = ~clock;
+        if(clock == 1)
+            in = in + 4;
+    end
+end 
+
 endmodule
