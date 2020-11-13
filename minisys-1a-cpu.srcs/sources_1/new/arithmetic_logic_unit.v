@@ -23,7 +23,7 @@
 module arithmetic_logic_unit(
     input[31:0] dataA,
     input[31:0] dataB,
-    input[5:0] calculate_type,
+    input[4:0] calculate_type,
     output[31:0] result,
     output[31:0] mlu_div_high,
     output[31:0] mlu_div_low,
@@ -32,6 +32,20 @@ module arithmetic_logic_unit(
     output flag_zf,
     output flag_sf   
     );
+    
+    reg adder_carry_N_1;
+    wire adder_carry_N_2;
+    
+    always@(dataA or dataB or calculate_type)
+    begin
+        case(calculate_type)
+            5'b00000: adder_carry_N_1  = 1;       
+        
+        endcase
+    end
+    
+    
+     
     
     
     
