@@ -33,16 +33,18 @@ module arithmetic_logic_unit(
     output flag_sf   
     );
     
-    reg adder_carry_N_1;
+    wire adder_out[31:0];
+    wire suber_out[31:0];
+    wire muler_out[63:0];
+    wire diver_out_divide[31:0];
+    wire diver_out_rest[31:0];
+    
+    wire adder_carry_N_1;
     wire adder_carry_N_2;
     
-    always@(dataA or dataB or calculate_type)
-    begin
-        case(calculate_type)
-            5'b00000: adder_carry_N_1  = 1;       
-        
-        endcase
-    end
+    
+    
+    
     
     
      

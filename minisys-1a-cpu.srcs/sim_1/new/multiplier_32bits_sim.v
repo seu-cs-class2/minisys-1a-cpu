@@ -24,36 +24,21 @@ module multiplier_32bits_sim;
 // Inputs
 reg [31:0] input1;
 reg [31:0] input2;
-reg clock;
  // Outputs
 wire [63:0] result;
-integer i;
 
-multiplier_32bits test(
-.multiplicand(input1),
-.multiplier(input2),
-.clk(clock),
-.product(result)
+mul_32bits_unsigned test(
+.A(input1),
+.B(input2),
+.P(result)
 );
 
 initial begin
   // Initialize Inputs
-  clock = 0;
-  input1 = 32'h7fffffff;
-  input2 = 1;
-  i = 66;
-  forever
-  begin
-    if(i>0)
-    begin
-        #2 clock = ~clock;
-        i = i-1;
-    end
-    else
-        clock = clock;
-  end
+  input1 = 32'hffffffff;
+  input2 = 2;
 
   // Add stimulus here
- end
+end
 
 endmodule

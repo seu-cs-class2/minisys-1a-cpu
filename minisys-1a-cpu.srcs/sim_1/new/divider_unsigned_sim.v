@@ -23,38 +23,25 @@
 module divider_unsigned_sim();
 
 reg[31:0] inputA;
+reg A_valid;
 reg[31:0] inputB;
-reg clock;
-reg reset;
-reg start;
-integer i;
-wire ok;
-wire error;
-wire[31:0] result;
-wire[31:0] rest;
+reg B_valid;
+wire[63:0] result;
+wire valid;
 
-divider_unsigned_32bits test(
-    .clk(clock),
-    .reset(reset),
-    .start(start),
-    .A(inputA),
-    .B(inputB),
-    .D(result),
-    .R(rest),
-    .ok(ok),
-    .err(error)
+div_32bits_signed test(
+   .s_axis_divisor_tdata(inputA),
+   .s_axis_divisor_tvalid(A_valid),
+   .s_axis_dividend_tdata(inputB),
+   .s_axis_dividend_tvalid(B_valid),
+   .m_axis_dout_tdata(result),
+   .m_axis_dout_tvalid(valid)
 );
 
 initial begin
-    reset = 0;
-    i = 0;
-    start = 1;
-    clock = 0;
-    inputA = 626;
-    inputB = 25;
-    forever begin
-        #2 clock = ~clock;
-        i = i + 1;
-    end
+    inputA = 25;
+    inputB = -627;
+    A_valid = 1;
+    B_valid = 1;
 end
 endmodule
