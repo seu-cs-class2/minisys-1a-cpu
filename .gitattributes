@@ -1,0 +1,3 @@
+*.vhd linguist-vendored
+*.vhdl linguist-vendored
+*.xdc linguist-vendored
