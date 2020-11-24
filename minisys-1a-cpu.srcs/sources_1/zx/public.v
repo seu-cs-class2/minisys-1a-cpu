@@ -1,10 +1,39 @@
-`define ZeroWord 32'h00000000
+// public.v
+// 2020-11 @ https://github.com/seu-cs-class2/minisys-1a-cpu
+
+`timescale 1ns / 1ps
 
 `define Enable 1'b1
 `define Disable 1'b0
 
+// Minisys体系结构相关
+`define ZeroWord 32'h00000000 // 0x0字
+`define RegCount 32 // 寄存器数
+`define RegCountLog2 5 // 寄存器数Log2
+`define RegRange 31:0 // 寄存器数范围
+`define RegRangeLog2 4:0 // 寄存器数Log2范围（地址）
+`define WordLength 32 // 字长
+`define WordRange 31:0 // 字长范围
+`define OpRange 31:26 // 指令字中op的范围
+`define RsRange 25:21 // 指令字中rs的范围
+`define RtRange 20:16 // 指令字中rt的范围
+`define RdRange 15:11 // 指令字中rd的范围
+`define ShamtRange 10:6 // 指令字中shamt的范围
+`define FuncRange 5:0 // 指令字中func的范围
+`define ImmedRange 15:0 // 指令字中immediate的范围
+`define OffsetRange 15:0 // 指令字中offset的范围
+`define AddressRange 25:0 // 指令字中address的范围
+
+// 设计相关
+// ALU相关
+`define ALUOpRange 7:0 // ALUOp范围
+`define ALUSelRange 2:0 // ALUSel范围
+// ALUOP定义
+`define ALUOP_OR 8'b00100101
+`define ALUOP_NOP 8'b00000000
 
 // Minisys指令集
+// OP定义
 `define OP_ADD 6'b000000
 `define OP_ADDU 6'b000000
 `define OP_SUB 6'b000000
@@ -63,17 +92,3 @@
 `define OP_J 6'b000010
 `define OP_JAL 6'b000011
 `define OP_NOP 6'b000000
-
-// Minisys体系结构
-`define RegCount 32
-`define RegCountLog2 5
-`define RegRange 31:0
-`define RegRangeLog2 4:0
-`define WordLength 32
-`define WordRange 31:0
-
-`define ALUOpRange 7:0
-`define ALUSelRange 2:0
-
-`define ALUOP_OR 8'b00100101
-`define ALUOP_NOP 8'b00000000

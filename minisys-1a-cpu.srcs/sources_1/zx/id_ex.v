@@ -1,5 +1,10 @@
+// id_ex.v
+// 2020-11 @ https://github.com/seu-cs-class2/minisys-1a-cpu
+
 `include "public.v"
 
+// 流水级ID-EX之间的寄存器
+// TODO: 目前先写成直通的
 module id_ex(
 
   input clk,
@@ -40,4 +45,4 @@ module id_ex(
 
   end
 
-endmodule 
+endmodule

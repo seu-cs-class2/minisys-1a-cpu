@@ -1,3 +1,4 @@
 *.vhd linguist-vendored
 *.vhdl linguist-vendored
+*.vho linguist-vendored
 *.xdc linguist-vendored
