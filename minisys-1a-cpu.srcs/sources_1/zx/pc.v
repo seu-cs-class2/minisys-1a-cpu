@@ -9,16 +9,16 @@ module program_counter (
   input clk, // 时钟
   input rst, // 同步复位信号
   output reg [`WordRange] pc, // 当前PC
-  output reg imemEnable // 指令存储器使能
+  output reg imem_e_out // 指令存储器使能
   
 );
 
   // 如果非rst，则使能IMEM读取
   always @(posedge clk) begin
     if (rst == `Enable) begin
-      imemEnable <= `Disable;
+      imem_e_out <= `Disable;
     end else begin
-      imemEnable <= `Enable;
+      imem_e_out <= `Enable;
     end
   end
 

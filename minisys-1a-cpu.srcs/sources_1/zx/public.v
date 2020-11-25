@@ -6,34 +6,34 @@
 `define Enable 1'b1
 `define Disable 1'b0
 
-// Minisysä½“ç³»ç»“æ„ç›¸å…³
-`define ZeroWord 32'h00000000 // 0x0å­—
-`define RegCount 32 // å¯„å­˜å™¨æ•°
-`define RegCountLog2 5 // å¯„å­˜å™¨æ•°Log2
-`define RegRange 31:0 // å¯„å­˜å™¨æ•°èŒƒå›´
-`define RegRangeLog2 4:0 // å¯„å­˜å™¨æ•°Log2èŒƒå›´ï¼ˆåœ°å€ï¼‰
-`define WordLength 32 // å­—é•¿
-`define WordRange 31:0 // å­—é•¿èŒƒå›´
-`define OpRange 31:26 // æŒ‡ä»¤å­—ä¸­opçš„èŒƒå›´
-`define RsRange 25:21 // æŒ‡ä»¤å­—ä¸­rsçš„èŒƒå›´
-`define RtRange 20:16 // æŒ‡ä»¤å­—ä¸­rtçš„èŒƒå›´
-`define RdRange 15:11 // æŒ‡ä»¤å­—ä¸­rdçš„èŒƒå›´
-`define ShamtRange 10:6 // æŒ‡ä»¤å­—ä¸­shamtçš„èŒƒå›´
-`define FuncRange 5:0 // æŒ‡ä»¤å­—ä¸­funcçš„èŒƒå›´
-`define ImmedRange 15:0 // æŒ‡ä»¤å­—ä¸­immediateçš„èŒƒå›´
-`define OffsetRange 15:0 // æŒ‡ä»¤å­—ä¸­offsetçš„èŒƒå›´
-`define AddressRange 25:0 // æŒ‡ä»¤å­—ä¸­addressçš„èŒƒå›´
+// MinisysÌåÏµ½á¹¹Ïà¹Ø
+`define ZeroWord 32'h00000000 // 0x0×Ö
+`define RegCount 32 // ¼Ä´æÆ÷Êı
+`define RegCountLog2 5 // ¼Ä´æÆ÷ÊıLog2
+`define RegRange 31:0 // ¼Ä´æÆ÷Êı·¶Î§
+`define RegRangeLog2 4:0 // ¼Ä´æÆ÷ÊıLog2·¶Î§£¨µØÖ·£©
+`define WordLength 32 // ×Ö³¤
+`define WordRange 31:0 // ×Ö³¤·¶Î§
+`define OpRange 31:26 // Ö¸Áî×ÖÖĞopµÄ·¶Î§
+`define RsRange 25:21 // Ö¸Áî×ÖÖĞrsµÄ·¶Î§
+`define RtRange 20:16 // Ö¸Áî×ÖÖĞrtµÄ·¶Î§
+`define RdRange 15:11 // Ö¸Áî×ÖÖĞrdµÄ·¶Î§
+`define ShamtRange 10:6 // Ö¸Áî×ÖÖĞshamtµÄ·¶Î§
+`define FuncRange 5:0 // Ö¸Áî×ÖÖĞfuncµÄ·¶Î§
+`define ImmedRange 15:0 // Ö¸Áî×ÖÖĞimmediateµÄ·¶Î§
+`define OffsetRange 15:0 // Ö¸Áî×ÖÖĞoffsetµÄ·¶Î§
+`define AddressRange 25:0 // Ö¸Áî×ÖÖĞaddressµÄ·¶Î§
 
-// è®¾è®¡ç›¸å…³
-// ALUç›¸å…³
-`define ALUOpRange 7:0 // ALUOpèŒƒå›´
-`define ALUSelRange 2:0 // ALUSelèŒƒå›´
-// ALUOPå®šä¹‰
+// Éè¼ÆÏà¹Ø
+// ALUÏà¹Ø
+`define ALUOpRange 7:0 // ALUOp·¶Î§
+`define ALUSelRange 2:0 // ALUSel·¶Î§
+// ALUOP¶¨Òå
 `define ALUOP_OR 8'b00100101
 `define ALUOP_NOP 8'b00000000
 
-// MinisysæŒ‡ä»¤é›†
-// OPå®šä¹‰
+// MinisysÖ¸Áî¼¯
+// OP¶¨Òå
 `define OP_ADD 6'b000000
 `define OP_ADDU 6'b000000
 `define OP_SUB 6'b000000

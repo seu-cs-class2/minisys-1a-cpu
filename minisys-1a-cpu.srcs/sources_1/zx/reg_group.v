@@ -3,59 +3,59 @@
 
 `include "public.v"
 
-// å¯„å­˜å™¨ç»„
-// æ³¨æ„åˆ°MinisysæŒ‡ä»¤é›†Rç±»æŒ‡ä»¤ä¼šè¦æ±‚åŒæ—¶è¯»å–ä¸¤ä¸ªå¯„å­˜å™¨ï¼Œå› æ­¤å°†å¯„å­˜å™¨ç»„
-// è®¾è®¡ä¸ºå•å…¥ã€åŒå‡ºæ¨¡å¼ï¼Œå³å¯ä»¥åŒæ—¶è¯»å‡ºä¸¤ä¸ªå¯„å­˜å™¨ï¼ŒåŒæ—¶å†™å…¥ä¸€ä¸ªå¯„å­˜å™¨
+// ¼Ä´æÆ÷×é
+// ×¢Òâµ½MinisysÖ¸Áî¼¯RÀàÖ¸Áî»áÒªÇóÍ¬Ê±¶ÁÈ¡Á½¸ö¼Ä´æÆ÷£¬Òò´Ë½«¼Ä´æÆ÷×é
+// Éè¼ÆÎªµ¥Èë¡¢Ë«³öÄ£Ê½£¬¼´¿ÉÒÔÍ¬Ê±¶Á³öÁ½¸ö¼Ä´æÆ÷£¬Í¬Ê±Ğ´ÈëÒ»¸ö¼Ä´æÆ÷
 module reg_group(
 
-  input rst, // å¤ä½ä¿¡å·
-  input clk, // æ—¶é’Ÿ
+  input rst, // ¸´Î»ĞÅºÅ
+  input clk, // Ê±ÖÓ
 
-  input we, // å†™ä½¿èƒ½
-  input wire[`RegRangeLog2] waddr, // å†™åœ°å€ï¼ˆå¯„å­˜å™¨å·ï¼‰
-  input wire[`WordRange] wdata, // å†™æ•°æ®
+  input we, // Ğ´Ê¹ÄÜ
+  input wire[`RegRangeLog2] waddr, // Ğ´µØÖ·£¨¼Ä´æÆ÷ºÅ£©
+  input wire[`WordRange] wdata, // Ğ´Êı¾İ
 
-  input re1, // è¯»ä½¿èƒ½1
-  input wire[`RegRangeLog2] raddr1, // è¯»åœ°å€1
-  output reg[`WordRange] rdata1, // è¯»å‡ºæ•°æ®1
+  input re1, // ¶ÁÊ¹ÄÜ1
+  input wire[`RegRangeLog2] raddr1, // ¶ÁµØÖ·1
+  output reg[`WordRange] rdata1, // ¶Á³öÊı¾İ1
 
-  input re2, // è¯»ä½¿èƒ½2
-  input wire[`RegRangeLog2] raddr2, // è¯»åœ°å€2
-  output reg[`WordRange] rdata2 // è¯»å‡ºæ•°æ®2
+  input re2, // ¶ÁÊ¹ÄÜ2
+  input wire[`RegRangeLog2] raddr2, // ¶ÁµØÖ·2
+  output reg[`WordRange] rdata2 // ¶Á³öÊı¾İ2
 
 );
 
-  // å®šä¹‰32ä¸ªå¯„å­˜å™¨ï¼Œå­—é•¿ä¸º32ä½
+  // ¶¨Òå32¸ö¼Ä´æÆ÷£¬×Ö³¤Îª32Î»
   reg[`RegRange] regs[`WordRange];
 
-  // å¤„ç†å†™å…¥é€»è¾‘ï¼ˆä¸Šå‡æ²¿å†™å…¥ï¼‰
+  // ´¦ÀíĞ´ÈëÂß¼­£¨ÉÏÉıÑØĞ´Èë£©
   always @(posedge clk) begin
     if (rst == `Disable) begin
-      // æ³¨æ„ç¦æ­¢å†™å…¥0å·å¯„å­˜å™¨
+      // ×¢Òâ½ûÖ¹Ğ´Èë0ºÅ¼Ä´æÆ÷
       if (we == `Enable && waddr != `RegCountLog2'h0) begin
         regs[waddr] <= wdata;
       end
     end
   end
 
-  // å¤„ç†è¯»å‡ºé€»è¾‘1ï¼ˆéšæ—¶è¯»å‡ºï¼‰
+  // ´¦Àí¶Á³öÂß¼­1£¨ËæÊ±¶Á³ö£©
   always @(*) begin
-    // rstæˆ–è¯»$0æ—¶å›ºå®šå‡º0
+    // rst»ò¶Á$0Ê±¹Ì¶¨³ö0
     if (rst == `Enable || raddr1 == `RegCountLog2'd0) begin
       rdata1 <= `ZeroWord;
-    // è¯»åœ°å€å’Œå†™åœ°å€ä¸€è‡´æ—¶ï¼Œè§„å®šç©¿é€ï¼Œè¿™ä¸ªè§„åˆ™åé¢è§£å†³æµæ°´å†²çªæ—¶è¦ç”¨åˆ°
+    // ¶ÁµØÖ·ºÍĞ´µØÖ·Ò»ÖÂÊ±£¬¹æ¶¨´©Í¸£¬Õâ¸ö¹æÔòºóÃæ½â¾öÁ÷Ë®³åÍ»Ê±ÒªÓÃµ½
     end else if (raddr1 == waddr && we == `Enable && re1 == `Enable) begin
       rdata1 <= wdata;
-    // è¯»ä¸ä½¿èƒ½æ—¶å›ºå®šå‡º0
+    // ¶Á²»Ê¹ÄÜÊ±¹Ì¶¨³ö0
     end else if (re1 == `Disable) begin
       rdata1 <= `ZeroWord;
-    // æ™®é€šæƒ…å†µ
+    // ÆÕÍ¨Çé¿ö
     end else if (re1 == `Enable) begin
       rdata1 <= regs[raddr1];
     end
   end
 
-  // å¤„ç†è¯»å‡ºé€»è¾‘2ï¼Œå’Œä¸Šé¢ç›¸åŒ
+  // ´¦Àí¶Á³öÂß¼­2£¬ºÍÉÏÃæÏàÍ¬
   always @(*) begin
     if (rst == `Enable || raddr2 == `RegCountLog2'd0) begin
       rdata2 <= `ZeroWord;

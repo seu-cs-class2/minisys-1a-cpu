@@ -3,8 +3,8 @@
 
 `include "public.v"
 
-// æŒ‡ä»¤æ‰§è¡Œæ¨¡å—
-// ä¸»è¦æœ‰ALU
+// Ö¸ÁîÖ´ĞĞÄ£¿é
+// Ö÷ÒªÓĞALU
 module ex (
 
   input rst,
@@ -20,10 +20,10 @@ module ex (
 
 );
 
-  // æš‚å­˜å„ç±»è¿ç®—çš„ç»“æœ
+  // Ôİ´æ¸÷ÀàÔËËãµÄ½á¹û
   reg[`WordRange] logic_out;
 
-  // è¿›è¡Œå¹¶å‘è®¡ç®—ï¼Œæ¯ç§è®¡ç®—ç±»å‹éƒ½åš
+  // ½øĞĞ²¢·¢¼ÆËã£¬Ã¿ÖÖ¼ÆËãÀàĞÍ¶¼×ö
   always @(*) begin
     if (rst == `Enable) begin
       logic_out <= `ZeroWord;
@@ -40,9 +40,11 @@ module ex (
     end
   end
 
-  // æœ€åå†æŠŠå„ç§è®¡ç®—ç±»å‹çš„ç»“æœMUXé€‰æ‹©
+  // ×îºóÔÙ°Ñ¸÷ÖÖ¼ÆËãÀàĞÍµÄ½á¹ûMUXÑ¡Ôñ
   always @(*) begin
     // TODO: 
+    wreg_e_out <= wreg_e_in;
+    wreg_addr_out <= wreg_addr_in;
     wreg_data_out <= logic_out;
   end
 

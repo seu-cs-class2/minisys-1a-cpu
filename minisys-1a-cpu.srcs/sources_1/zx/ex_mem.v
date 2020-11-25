@@ -3,20 +3,20 @@
 
 `include "public.v"
 
-// æµæ°´çº§EX-MEMä¹‹é—´çš„å¯„å­˜å™¨
-// å…ˆåšæˆç›´é€šçš„
-// TODO: MEMç”¨IPæ ¸
+// Á÷Ë®¼¶EX-MEMÖ®¼äµÄ¼Ä´æÆ÷
+// ÏÈ×ö³ÉÖ±Í¨µÄ
+// TODO: MEMÓÃIPºË
 module ex_mem (
   
   input rst,
   input clk,
 
   input wire ex_wreg_e,
-  input wire[`RegRange] ex_wreg_addr,
+  input wire[`RegRangeLog2] ex_wreg_addr,
   input wire[`WordRange] ex_wreg_data,
 
   output reg mem_wreg_e,
-  output reg[`RegRange] mem_wreg_addr,
+  output reg[`RegRangeLog2] mem_wreg_addr,
   output reg[`WordRange] mem_wreg_data
 
 );
