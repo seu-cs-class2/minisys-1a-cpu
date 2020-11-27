@@ -28,7 +28,17 @@ module id (
   output reg[`WordRange] data2_out, // 输出的数据2
   
   output reg wreg_e_out, // 写寄存器使能输出
-  output reg[`RegRangeLog2] wreg_addr_out // 写寄存器地址输出
+  output reg[`RegRangeLog2] wreg_addr_out, // 写寄存器地址输出
+
+  // 下面部分用于采用数据前送法解决相隔0条（ID-EX）和相隔1条（ID-MEM）阶段的RAW数据相关
+  // EX阶段运算结果
+  input wire ex_wreg_e_in,
+  input wire[`WordRange] ex_wreg_data_in,
+  input wire[`RegRangeLog2] ex_wreg_addr_in,
+  // MEM阶段运算结果
+  input wire mem_wreg_e_in,
+  input wire[`WordRange] mem_wreg_data_in,
+  input wire[`RegRangeLog2] mem_wreg_addr_in
 
 );
 
@@ -84,6 +94,14 @@ module id (
     // rst时固定出0x0
     if (rst == `Enable) begin
       data1_out <= `ZeroWord;
+    // 解决相隔0条（ID-EX）的流水数据相关
+    // 如果前面的EX要写的就是后面的ID要读的，则穿透
+    end else if (ex_wreg_e_in == `Enable && reg1_re_out == `Enable && reg1_addr_out == ex_wreg_addr_in) begin
+      data1_out <= ex_wreg_data_in;
+    // 解决相隔1条（ID-MEM）的流水数据相关
+    // 如果前面的MEM要写的就是后面的ID要读的，则穿透
+    end else if (mem_wreg_e_in == `Enable && reg1_re_out == `Enable && reg1_addr_out == mem_wreg_addr_in) begin
+      data1_out <= mem_wreg_data_in;  
     // 如果指令译码的结果需要读reg1，就说明操作数1来自寄存器
     end else if (reg1_re_out == `Enable) begin
       data1_out <= reg1_data_in;
@@ -100,8 +118,12 @@ module id (
   always @(*) begin
     if (rst == `Enable) begin
       data2_out <= `ZeroWord;
+    end else if (ex_wreg_e_in == `Enable && reg2_re_out == `Enable && reg2_addr_out == ex_wreg_addr_in) begin
+      data2_out <= ex_wreg_data_in;
+    end else if (mem_wreg_e_in == `Enable && reg2_re_out == `Enable && reg2_addr_out == mem_wreg_addr_in) begin
+      data2_out <= mem_wreg_data_in;  
     end else if (reg2_re_out == `Enable) begin
-      data2_out <= reg1_data_in;
+      data2_out <= reg2_data_in;
     end else if (reg2_re_out == `Disable) begin
       data2_out <= immed;
     end else begin

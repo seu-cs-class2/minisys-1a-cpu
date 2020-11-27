@@ -20,6 +20,7 @@ module cpu (
   assign imem_addr_out = pc;
   wire[`WordRange] id_pc_in;
   wire[`WordRange] id_ins_in;
+  // 省略冲突解决相关
 
   // ID输出
   wire[`ALUOpRange] id_aluop_out;
@@ -114,7 +115,13 @@ module cpu (
   .data1_out            		(id_data1_out),
   .data2_out            		(id_data2_out),
   .wreg_e_out           		(id_wreg_e_out),
-  .wreg_addr_out        		(id_wreg_addr_out)
+  .wreg_addr_out        		(id_wreg_addr_out),
+  .ex_wreg_e_in             (ex_wreg_e_out),
+  .ex_wreg_data_in          (ex_wreg_data_out),
+  .ex_wreg_addr_in          (ex_wreg_addr_out),
+  .mem_wreg_e_in            (mem_wreg_e_out),
+  .mem_wreg_data_in         (mem_wreg_data_out),
+  .mem_wreg_addr_in         (mem_wreg_addr_out)
   );
 
   // ID-EX
@@ -160,15 +167,24 @@ module cpu (
   .mem_wreg_data            (mem_wreg_data_in)
   );
 
-  // MEM还未用到
+  // MEM
+  mem  u_mem (
+  .rst                    (rst),
+  .wreg_e_in              (mem_wreg_e_in),
+  .wreg_data_in           (mem_wreg_data_in),
+  .wreg_addr_in           (mem_wreg_addr_in),
+  .wreg_e_out             (mem_wreg_e_out),
+  .wreg_data_out          (mem_wreg_data_out),
+  .wreg_addr_out          (mem_wreg_addr_out)
+  );
 
   // MEM-WB
   mem_wb  u_mem_wb (
   .rst                      (rst),
   .clk                      (clk),
-  .mem_wreg_e               (mem_wreg_e_in), // mem_wreg_e_out),
-  .mem_wreg_addr            (mem_wreg_addr_in), // mem_wreg_addr_out),
-  .mem_wreg_data            (mem_wreg_data_in), // mem_wreg_data_out),
+  .mem_wreg_e               (mem_wreg_e_out),
+  .mem_wreg_addr            (mem_wreg_addr_out),
+  .mem_wreg_data            (mem_wreg_data_out),
   .wb_wreg_e                (wb_wreg_e_in),
   .wb_wreg_addr             (wb_wreg_addr_in),
   .wb_wreg_data             (wb_wreg_data_in)
