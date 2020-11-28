@@ -46,18 +46,21 @@
 -- 
 -- DO NOT MODIFY THIS FILE.
 
--- IP VLNV: xilinx.com:ip:blk_mem_gen:8.4
--- IP Revision: 2
+-- IP VLNV: xilinx.com:ip:div_gen:5.1
+-- IP Revision: 14
 
 -- The following code must appear in the VHDL architecture header.
 
 ------------- Begin Cut here for COMPONENT Declaration ------ COMP_TAG
-COMPONENT blk_mem_gen_0
+COMPONENT div_gen_0
   PORT (
-    clka : IN STD_LOGIC;
-    ena : IN STD_LOGIC;
-    addra : IN STD_LOGIC_VECTOR(13 DOWNTO 0);
-    douta : OUT STD_LOGIC_VECTOR(31 DOWNTO 0)
+    aclk : IN STD_LOGIC;
+    s_axis_divisor_tvalid : IN STD_LOGIC;
+    s_axis_divisor_tdata : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+    s_axis_dividend_tvalid : IN STD_LOGIC;
+    s_axis_dividend_tdata : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+    m_axis_dout_tvalid : OUT STD_LOGIC;
+    m_axis_dout_tdata : OUT STD_LOGIC_VECTOR(63 DOWNTO 0)
   );
 END COMPONENT;
 -- COMP_TAG_END ------ End COMPONENT Declaration ------------
@@ -66,16 +69,19 @@ END COMPONENT;
 -- body. Substitute your own instance name and net names.
 
 ------------- Begin Cut here for INSTANTIATION Template ----- INST_TAG
-your_instance_name : blk_mem_gen_0
+your_instance_name : div_gen_0
   PORT MAP (
-    clka => clka,
-    ena => ena,
-    addra => addra,
-    douta => douta
+    aclk => aclk,
+    s_axis_divisor_tvalid => s_axis_divisor_tvalid,
+    s_axis_divisor_tdata => s_axis_divisor_tdata,
+    s_axis_dividend_tvalid => s_axis_dividend_tvalid,
+    s_axis_dividend_tdata => s_axis_dividend_tdata,
+    m_axis_dout_tvalid => m_axis_dout_tvalid,
+    m_axis_dout_tdata => m_axis_dout_tdata
   );
 -- INST_TAG_END ------ End INSTANTIATION Template ---------
 
--- You must compile the wrapper file blk_mem_gen_0.vhd when simulating
--- the core, blk_mem_gen_0. When compiling the wrapper file, be sure to
+-- You must compile the wrapper file div_gen_0.vhd when simulating
+-- the core, div_gen_0. When compiling the wrapper file, be sure to
 -- reference the VHDL simulation library.
 

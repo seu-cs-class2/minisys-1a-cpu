@@ -3,8 +3,8 @@
 
 `include "public.v"
 
-// 娴佹按绾D-EX涔嬮棿鐨勫瘎瀛樺櫒
-// TODO: 鐩墠鍏堝啓鎴愮洿閫氱殑
+// 流水级ID-EX之间的寄存器
+// TODO: 目前先写成直通的
 module id_ex(
 
   input clk,

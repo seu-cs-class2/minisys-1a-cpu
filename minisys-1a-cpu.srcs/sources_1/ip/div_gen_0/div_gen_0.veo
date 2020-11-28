@@ -46,23 +46,26 @@
 // 
 // DO NOT MODIFY THIS FILE.
 
-// IP VLNV: xilinx.com:ip:blk_mem_gen:8.4
-// IP Revision: 2
+// IP VLNV: xilinx.com:ip:div_gen:5.1
+// IP Revision: 14
 
 // The following must be inserted into your Verilog file for this
 // core to be instantiated. Change the instance name and port connections
 // (in parentheses) to your own signal names.
 
 //----------- Begin Cut here for INSTANTIATION Template ---// INST_TAG
-blk_mem_gen_0 your_instance_name (
-  .clka(clka),    // input wire clka
-  .ena(ena),      // input wire ena
-  .addra(addra),  // input wire [13 : 0] addra
-  .douta(douta)  // output wire [31 : 0] douta
+div_gen_0 your_instance_name (
+  .aclk(aclk),                                      // input wire aclk
+  .s_axis_divisor_tvalid(s_axis_divisor_tvalid),    // input wire s_axis_divisor_tvalid
+  .s_axis_divisor_tdata(s_axis_divisor_tdata),      // input wire [31 : 0] s_axis_divisor_tdata
+  .s_axis_dividend_tvalid(s_axis_dividend_tvalid),  // input wire s_axis_dividend_tvalid
+  .s_axis_dividend_tdata(s_axis_dividend_tdata),    // input wire [31 : 0] s_axis_dividend_tdata
+  .m_axis_dout_tvalid(m_axis_dout_tvalid),          // output wire m_axis_dout_tvalid
+  .m_axis_dout_tdata(m_axis_dout_tdata)            // output wire [63 : 0] m_axis_dout_tdata
 );
 // INST_TAG_END ------ End INSTANTIATION Template ---------
 
-// You must compile the wrapper file blk_mem_gen_0.v when simulating
-// the core, blk_mem_gen_0. When compiling the wrapper file, be sure to
+// You must compile the wrapper file div_gen_0.v when simulating
+// the core, div_gen_0. When compiling the wrapper file, be sure to
 // reference the Verilog simulation library.
 

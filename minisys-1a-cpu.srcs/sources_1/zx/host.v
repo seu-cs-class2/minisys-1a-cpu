@@ -1,4 +1,4 @@
-// cpu.v
+// host.v
 // 2020-11 @ https://github.com/seu-cs-class2/minisys-1a-cpu
 
 `include "public.v"
@@ -41,7 +41,7 @@ module host (
   blk_mem_gen_0 u_blk_mem_gen_0 (
   .addra                    (imem_imem_addr_in[15:2]), // 16->14£¬65536/4=16384
   .clka                     (clk),
-  // .ena                      (imem_imem_e_in),
+  .ena                      (imem_imem_e_in),
   .douta                    (imem_imem_data_out)
   );
 
