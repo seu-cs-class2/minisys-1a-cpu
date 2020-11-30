@@ -3,17 +3,17 @@
 
 `include "public.v"
 
-// æŒ‡ä»¤è®¡æ•°å™¨
+// Ö¸Áî¼ÆÊıÆ÷
 module program_counter (
 
-  input clk, // æ—¶é’Ÿ
-  input rst, // åŒæ­¥å¤ä½ä¿¡å·
-  output reg [`WordRange] pc, // å½“å‰PC
-  output reg imem_e_out // æŒ‡ä»¤å­˜å‚¨å™¨ä½¿èƒ½
+  input clk, // Ê±ÖÓ
+  input rst, // Í¬²½¸´Î»ĞÅºÅ
+  output reg [`WordRange] pc, // µ±Ç°PC
+  output reg imem_e_out // Ö¸Áî´æ´¢Æ÷Ê¹ÄÜ
   
 );
 
-  // å¦‚æœérstï¼Œåˆ™ä½¿èƒ½IMEMè¯»å–
+  // Èç¹û·Çrst£¬ÔòÊ¹ÄÜIMEM¶ÁÈ¡
   always @(posedge clk) begin
     if (rst == `Enable) begin
       imem_e_out <= `Disable;
@@ -22,7 +22,7 @@ module program_counter (
     end
   end
 
-  // å¦‚æœrstï¼Œåˆ™å¤ä½åˆ°0x0ï¼Œå¦åˆ™+4
+  // Èç¹ûrst£¬Ôò¸´Î»µ½0x0£¬·ñÔò+4
   always @(posedge clk) begin
     if (rst == `Enable) begin
       pc <= `ZeroWord;

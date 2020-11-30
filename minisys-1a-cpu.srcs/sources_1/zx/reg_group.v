@@ -43,7 +43,8 @@ module reg_group(
     // rst或读$0时固定出0
     if (rst == `Enable || raddr1 == `RegCountLog2'd0) begin
       rdata1 <= `ZeroWord;
-    // 读地址和写地址一致时，规定穿透，这个规则后面解决流水冲突时要用到
+    // 考虑相隔两条指令（即ID、WB阶段）存在RAW相关时，ID取得$i的值，同时WB写入$i
+    // 规定WB写的值直接穿透到ID，则解决了流水的数据冲突之一
     end else if (raddr1 == waddr && we == `Enable && re1 == `Enable) begin
       rdata1 <= wdata;
     // 读不使能时固定出0

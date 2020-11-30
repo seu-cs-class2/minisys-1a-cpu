@@ -26,45 +26,65 @@
 
 // 设计相关
 // ALU相关
-`define ALUOpRange 7:0 // ALUOp范围
-`define ALUSelRange 2:0 // ALUSel范围
+`define ALUOpRange 4:0 // ALUOp范围，最高32种操作
 // ALUOP定义
-`define ALUOP_OR 8'b00100101
-`define ALUOP_NOP 8'b00000000
+`define ALUOP_NOP 5'd0
+`define ALUOP_ADDU 5'd1
+`define ALUOP_ADD 5'd2
+`define ALUOP_SUBU 5'd3
+`define ALUOP_SUB 5'd4
+`define ALUOP_MULTU 5'd5
+`define ALUOP_MULT 5'd6
+`define ALUOP_DIVU 5'd7
+`define ALUOP_DIV 5'd8
+`define ALUOP_AND 5'd9
+`define ALUOP_OR 5'd10
+`define ALUOP_XOR 5'd11
+`define ALUOP_NOR 5'd12
+`define ALUOP_SLL 5'd13 // 逻辑左移
+`define ALUOP_SRL 5'd14 // 逻辑右移
+`define ALUOP_SRA 5'd15 // 算术右移
+// EXOP
+`define EXOP_MFHI 5'd16
+`define EXOP_MFLO 5'd17
+`define EXOP_MTHI 5'd18
+`define EXOP_MTLO 5'd19
 
 // Minisys指令集
-// OP定义
-`define OP_ADD 6'b000000
-`define OP_ADDU 6'b000000
-`define OP_SUB 6'b000000
-`define OP_SUBU 6'b000000
-`define OP_AND 6'b000000
-`define OP_MULT 6'b000000
-`define OP_MULTU 6'b000000
-`define OP_DIV 6'b000000
-`define OP_DIVU 6'b000000
-`define OP_MFHI 6'b000000
-`define OP_MFLO 6'b000000
-`define OP_MTHI 6'b000000
-`define OP_MTLO 6'b000000
-`define OP_MFC0 6'b010000
-`define OP_MTC0 6'b010000
-`define OP_OR 6'b000000
-`define OP_XOR 6'b000000
-`define OP_NOR 6'b000000
-`define OP_SLT 6'b000000
-`define OP_SLTU 6'b000000
-`define OP_SLL 6'b000000
-`define OP_SRL 6'b000000
-`define OP_SRA 6'b000000
-`define OP_SLLV 6'b000000
-`define OP_SRLV 6'b000000
-`define OP_SRAV 6'b000000
-`define OP_JR 6'b000000
-`define OP_JALR 6'b000000
-`define OP_BREAK 6'b000000
-`define OP_SYSCALL 6'b000000
-`define OP_ERET 6'b010000
+// R型指令
+`define OP_RTYPE 6'b000000
+`define FUNC_ADD 6'b100000
+`define FUNC_ADDU 6'b100001
+`define FUNC_SUB 6'b100010
+`define FUNC_SUBU 6'b100011
+`define FUNC_AND 6'b100100
+`define FUNC_MULT 6'b011000
+`define FUNC_MULTU 6'b011001
+`define FUNC_DIV 6'b011010
+`define FUNC_DIVU 6'b011011
+`define FUNC_MFHI 6'b010000
+`define FUNC_MFLO 6'b010010
+`define FUNC_MTHI 6'b010001
+`define FUNC_MTLO 6'b010011
+// `define FUNC_MFC0 6'?
+// `define FUNC_MTC0 6'?
+`define FUNC_OR 6'b100101
+`define FUNC_XOR 6'b100110
+`define FUNC_NOR 6'b100111
+`define FUNC_SLT 6'b101010
+`define FUNC_SLTU 6'b101011
+`define FUNC_SLL 6'b000000
+`define FUNC_SRL 6'b000010
+`define FUNC_SRA 6'b000011
+`define FUNC_SLLV 6'b000100
+`define FUNC_SRLV 6'b000110
+`define FUNC_SRAV 6'b000111
+`define FUNC_JR 6'b001000
+`define FUNC_JALR 6'b001001
+`define FUNC_BREAK 6'b001101
+`define FUNC_SYSCALL 6'b001100
+`define FUNC_ERET 6'b011000
+// I型指令
 `define OP_ADDI 6'b001000
 `define OP_ADDIU 6'b001001
 `define OP_ANDI 6'b001100
@@ -89,6 +109,8 @@
 `define OP_BLTZAL 6'b000001
 `define OP_SLTI 6'b001010
 `define OP_SLTIU 6'b001011
+// J型指令
 `define OP_J 6'b000010
 `define OP_JAL 6'b000011
+// FIXME NOP
 `define OP_NOP 6'b000000
