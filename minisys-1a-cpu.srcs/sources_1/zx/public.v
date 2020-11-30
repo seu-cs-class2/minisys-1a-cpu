@@ -6,28 +6,28 @@
 `define Enable 1'b1
 `define Disable 1'b0
 
-// MinisysÌåÏµ½á¹¹Ïà¹Ø
-`define ZeroWord 32'h00000000 // 0x0×Ö
-`define RegCount 32 // ¼Ä´æÆ÷Êı
-`define RegCountLog2 5 // ¼Ä´æÆ÷ÊıLog2
-`define RegRange 31:0 // ¼Ä´æÆ÷Êı·¶Î§
-`define RegRangeLog2 4:0 // ¼Ä´æÆ÷ÊıLog2·¶Î§£¨µØÖ·£©
-`define WordLength 32 // ×Ö³¤
-`define WordRange 31:0 // ×Ö³¤·¶Î§
-`define OpRange 31:26 // Ö¸Áî×ÖÖĞopµÄ·¶Î§
-`define RsRange 25:21 // Ö¸Áî×ÖÖĞrsµÄ·¶Î§
-`define RtRange 20:16 // Ö¸Áî×ÖÖĞrtµÄ·¶Î§
-`define RdRange 15:11 // Ö¸Áî×ÖÖĞrdµÄ·¶Î§
-`define ShamtRange 10:6 // Ö¸Áî×ÖÖĞshamtµÄ·¶Î§
-`define FuncRange 5:0 // Ö¸Áî×ÖÖĞfuncµÄ·¶Î§
-`define ImmedRange 15:0 // Ö¸Áî×ÖÖĞimmediateµÄ·¶Î§
-`define OffsetRange 15:0 // Ö¸Áî×ÖÖĞoffsetµÄ·¶Î§
-`define AddressRange 25:0 // Ö¸Áî×ÖÖĞaddressµÄ·¶Î§
+// Minisysä½“ç³»ç»“æ„ç›¸å…³
+`define ZeroWord 32'h00000000 // 0x0å­—
+`define RegCount 32 // å¯„å­˜å™¨æ•°
+`define RegCountLog2 5 // å¯„å­˜å™¨æ•°Log2
+`define RegRange 31:0 // å¯„å­˜å™¨æ•°èŒƒå›´
+`define RegRangeLog2 4:0 // å¯„å­˜å™¨æ•°Log2èŒƒå›´ï¼ˆåœ°å€ï¼‰
+`define WordLength 32 // å­—é•¿
+`define WordRange 31:0 // å­—é•¿èŒƒå›´
+`define OpRange 31:26 // æŒ‡ä»¤å­—ä¸­opçš„èŒƒå›´
+`define RsRange 25:21 // æŒ‡ä»¤å­—ä¸­rsçš„èŒƒå›´
+`define RtRange 20:16 // æŒ‡ä»¤å­—ä¸­rtçš„èŒƒå›´
+`define RdRange 15:11 // æŒ‡ä»¤å­—ä¸­rdçš„èŒƒå›´
+`define ShamtRange 10:6 // æŒ‡ä»¤å­—ä¸­shamtçš„èŒƒå›´
+`define FuncRange 5:0 // æŒ‡ä»¤å­—ä¸­funcçš„èŒƒå›´
+`define ImmedRange 15:0 // æŒ‡ä»¤å­—ä¸­immediateçš„èŒƒå›´
+`define OffsetRange 15:0 // æŒ‡ä»¤å­—ä¸­offsetçš„èŒƒå›´
+`define AddressRange 25:0 // æŒ‡ä»¤å­—ä¸­addressçš„èŒƒå›´
 
-// Éè¼ÆÏà¹Ø
-// ALUÏà¹Ø
-`define ALUOpRange 4:0 // ALUOp·¶Î§£¬×î¸ß32ÖÖ²Ù×÷
-// ALUOP¶¨Òå
+// è®¾è®¡ç›¸å…³
+// ALUç›¸å…³
+`define ALUOpRange 4:0 // ALUOpèŒƒå›´ï¼Œæœ€é«˜32ç§æ“ä½œ
+// ALUOPå®šä¹‰
 `define ALUOP_NOP 5'd0
 `define ALUOP_ADDU 5'd1
 `define ALUOP_ADD 5'd2
@@ -41,17 +41,17 @@
 `define ALUOP_OR 5'd10
 `define ALUOP_XOR 5'd11
 `define ALUOP_NOR 5'd12
-`define ALUOP_SLL 5'd13 // Âß¼­×óÒÆ
-`define ALUOP_SRL 5'd14 // Âß¼­ÓÒÒÆ
-`define ALUOP_SRA 5'd15 // ËãÊõÓÒÒÆ
+`define ALUOP_SLL 5'd13 // é€»è¾‘å·¦ç§»
+`define ALUOP_SRL 5'd14 // é€»è¾‘å³ç§»
+`define ALUOP_SRA 5'd15 // ç®—æœ¯å³ç§»
 // EXOP
 `define EXOP_MFHI 5'd16
 `define EXOP_MFLO 5'd17
 `define EXOP_MTHI 5'd18
 `define EXOP_MTLO 5'd19
 
-// MinisysÖ¸Áî¼¯
-// RĞÍÖ¸Áî
+// MinisysæŒ‡ä»¤é›†
+// Rå‹æŒ‡ä»¤
 `define OP_RTYPE 6'b000000
 `define FUNC_ADD 6'b100000
 `define FUNC_ADDU 6'b100001
@@ -84,7 +84,7 @@
 `define FUNC_BREAK 6'b001101
 `define FUNC_SYSCALL 6'b001100
 `define FUNC_ERET 6'b011000
-// IĞÍÖ¸Áî
+// Iå‹æŒ‡ä»¤
 `define OP_ADDI 6'b001000
 `define OP_ADDIU 6'b001001
 `define OP_ANDI 6'b001100
@@ -109,7 +109,7 @@
 `define OP_BLTZAL 6'b000001
 `define OP_SLTI 6'b001010
 `define OP_SLTIU 6'b001011
-// JĞÍÖ¸Áî
+// Jå‹æŒ‡ä»¤
 `define OP_J 6'b000010
 `define OP_JAL 6'b000011
 // FIXME NOP

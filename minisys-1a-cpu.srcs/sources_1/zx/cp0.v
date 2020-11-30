@@ -3,7 +3,7 @@
 
 `include "public.v"
 
-// Ğ­´¦ÀíÆ÷CP0
+// åå¤„ç†å™¨CP0
 module cp0 (
 
   input clk,
@@ -14,15 +14,15 @@ module cp0 (
   input wire[`WordRange] wdata_in,
   input wire[2:0] raddr_in,
 
-  // Count¼Ä´æÆ÷£¬ÓÃÓÚ¶¨Ê±ÖĞ¶ÏµÄ²úÉú
+  // Countå¯„å­˜å™¨ï¼Œç”¨äºå®šæ—¶ä¸­æ–­çš„äº§ç”Ÿ
   output reg[`WordRange] count_out,
-  // Compare¼Ä´æÆ÷£¬ÅäºÏcountÊµÏÖ¶¨Ê±ÖĞ¶Ï
+  // Compareå¯„å­˜å™¨ï¼Œé…åˆcountå®ç°å®šæ—¶ä¸­æ–­
   output reg[`WordRange] compare_out,
-  // Cause¼Ä´æÆ÷£¬´æ´¢Òì³£»òÖĞ¶ÏÔ´µÄĞÅÏ¢
+  // Causeå¯„å­˜å™¨ï¼Œå­˜å‚¨å¼‚å¸¸æˆ–ä¸­æ–­æºçš„ä¿¡æ¯
   output reg[`WordRange] cause_out,
-  // EPC¼Ä´æÆ÷£¬Òì³£»òÖĞ¶ÏµÄ·µ»ØµØÖ·¼Ä´æÆ÷
+  // EPCå¯„å­˜å™¨ï¼Œå¼‚å¸¸æˆ–ä¸­æ–­çš„è¿”å›åœ°å€å¯„å­˜å™¨
   output reg[`WordRange] epc_out,
-  // Status¼Ä´æÆ÷£¬´æ·ÅÖĞ¶ÏÆÁ±ÎĞÅÏ¢µÈ
+  // Statuså¯„å­˜å™¨ï¼Œå­˜æ”¾ä¸­æ–­å±è”½ä¿¡æ¯ç­‰
   output reg[`WordRange] status_out
 
 );

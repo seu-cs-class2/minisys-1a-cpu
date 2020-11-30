@@ -2,7 +2,7 @@
 
 `include "../../../sources_1/zx/public.v"
 
-// TestBench - oriÖ¸Áî
+// TestBench - oriæŒ‡ä»¤
 module ori_tb();
 
   reg rst;

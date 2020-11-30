@@ -41,7 +41,7 @@ module alu (
       `ALUOP_SUB: begin
         result <= s_data1 - s_data2;
       end
-      // TODO: ÏÂÃæËÄÌõÔËËãÒª¶àÖÜÆÚÖ´ÐÐ£¬ÐèÒª×èÈûÁ÷Ë®
+      // TODO: ä¸‹é¢å››æ¡è¿ç®—è¦å¤šå‘¨æœŸæ‰§è¡Œï¼Œéœ€è¦é˜»å¡žæµæ°´
       `ALUOP_MULTU: begin
         
       end
@@ -67,7 +67,7 @@ module alu (
         result = ~(data1 | data2);
       end
       `ALUOP_SLL: begin
-        result = data2 << data1[4:0]; // ×¢Òâdata1²ÅÊÇÒÆ¶¯µÄÎ»Êý
+        result = data2 << data1[4:0]; // æ³¨æ„data1æ‰æ˜¯ç§»åŠ¨çš„ä½æ•°
       end
       `ALUOP_SRL: begin
         result = data2 >> data1[4:0];

@@ -3,11 +3,11 @@
 
 `include "public.v"
  
-// Ö÷»ú
+// ä¸»æœº
 module host (
 
-  input rst, // ÖØÖÃ
-  input clk // Ê±ÖÓ
+  input rst, // é‡ç½®
+  input clk // æ—¶é’Ÿ
 
 );
   (* mark_debug="true" *)
@@ -39,7 +39,7 @@ module host (
 
   // IMEM
   blk_mem_gen_0 u_blk_mem_gen_0 (
-  .addra                    (imem_imem_addr_in[15:2]), // 16->14£¬65536/4=16384
+  .addra                    (imem_imem_addr_in[15:2]), // 16->14ï¼Œ65536/4=16384
   .clka                     (clk),
   .ena                      (imem_imem_e_in),
   .douta                    (imem_imem_data_out)

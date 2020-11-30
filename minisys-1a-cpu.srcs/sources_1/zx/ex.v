@@ -3,7 +3,7 @@
 
 `include "public.v"
 
-// 指令执行模块
+// 鎸囦护鎵ц妯″潡
 module ex (
 
   input rst,
@@ -61,11 +61,11 @@ module ex (
     if (rst == `Enable) begin
       hi_temp <= `ZeroWord;
       lo_temp <= `ZeroWord;
-    // 解决MEM-EX流水冲突
+    // 瑙ｅ喅MEM-EX娴佹按鍐茬獊
     end else if (mem_hilo_we_in == `Enable) begin
       hi_temp <= mem_hi_data_in;
       lo_temp <= mem_lo_data_in;
-    // 解决WB-EX流水冲突
+    // 瑙ｅ喅WB-EX娴佹按鍐茬獊
     end else if (wb_hilo_we_in == `Enable) begin
       hi_temp <= wb_hi_data_in;
       lo_temp <= wb_lo_data_in;  
