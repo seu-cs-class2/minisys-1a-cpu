@@ -21,7 +21,8 @@ module alu (
   reg [32:0] result;
   wire signed [31:0] s_data1;
   wire signed [31:0] s_data2;
-  reg carry;
+
+  assign res = result[`WordRange];
 
   always @(*) begin
     case (op)
@@ -66,13 +67,13 @@ module alu (
         result = ~(data1 | data2);
       end
       `ALUOP_SLL: begin
-        result = data2 << data1; // 注意data1才是移动的位数
+        result = data2 << data1[4:0]; // 注意data1才是移动的位数
       end
       `ALUOP_SRL: begin
-        result = data2 >> data1;
+        result = data2 >> data1[4:0];
       end
       `ALUOP_SRA: begin
-        result = data2 >>> data1;
+        result = data2 >>> data1[4:0];
       end
     endcase
   end

@@ -1,4 +1,4 @@
-// if_id.v
+// id.v
 // 2020-11 @ https://github.com/seu-cs-class2/minisys-1a-cpu
 
 `include "public.v"
@@ -43,10 +43,10 @@ module id (
 
   // 指令的各个可能组分
   wire[5:0] op = ins_in[`OpRange];
-  wire[4:0] rs = ins_in[`RsRange];
-  wire[4:0] rt = ins_in[`RtRange];
-  wire[4:0] rd = ins_in[`RdRange];
-  wire[4:0] shamt = ins_in[`ShamtRange];
+  wire[4:0] rs = rs;
+  wire[4:0] rt = rt;
+  wire[4:0] rd = rd;
+  wire[4:0] shamt = shamt;
   wire[5:0] func = ins_in[`FuncRange];
   wire[15:0] immediate = ins_in[`ImmedRange];
   wire[15:0] offset = ins_in[`OffsetRange];
@@ -77,93 +77,122 @@ module id (
         case (func)
           `FUNC_OR: begin
             wreg_e_out <= `Enable;
-            wreg_addr_out <= ins_in[`RdRange];
+            wreg_addr_out <= rd;
             aluop_out <= `ALUOP_OR;
             reg1_re_out <= `Enable;
-            reg1_addr_out <= ins_in[`RsRange];
+            reg1_addr_out <= rs;
             reg2_re_out <= `Enable;
-            reg2_addr_out <= ins_in[`RtRange];
+            reg2_addr_out <= rt;
           end
           `FUNC_AND: begin
             wreg_e_out <= `Enable;
-            wreg_addr_out <= ins_in[`RdRange];
+            wreg_addr_out <= rd;
             aluop_out <= `ALUOP_AND;
             reg1_re_out <= `Enable;
-            reg1_addr_out <= ins_in[`RsRange];
+            reg1_addr_out <= rs;
             reg2_re_out <= `Enable;
-            reg2_addr_out <= ins_in[`RtRange];  
+            reg2_addr_out <= rt;  
           end
           `FUNC_XOR: begin
             wreg_e_out <= `Enable;
-            wreg_addr_out <= ins_in[`RdRange];
+            wreg_addr_out <= rd;
             aluop_out <= `ALUOP_XOR;
             reg1_re_out <= `Enable;
-            reg1_addr_out <= ins_in[`RsRange];
+            reg1_addr_out <= rs;
             reg2_re_out <= `Enable;
-            reg2_addr_out <= ins_in[`RtRange];
+            reg2_addr_out <= rt;
           end
           `FUNC_NOR: begin
             wreg_e_out <= `Enable;
-            wreg_addr_out <= ins_in[`RdRange];
+            wreg_addr_out <= rd;
             aluop_out <= `ALUOP_NOR;
             reg1_re_out <= `Enable;
-            reg1_addr_out <= ins_in[`RsRange];
+            reg1_addr_out <= rs;
             reg2_re_out <= `Enable;
-            reg2_addr_out <= ins_in[`RtRange];
+            reg2_addr_out <= rt;
           end
           `FUNC_SLLV: begin
             wreg_e_out <= `Enable;
-            wreg_addr_out <= ins_in[`RdRange];
+            wreg_addr_out <= rd;
             aluop_out <= `ALUOP_SLL;
             reg1_re_out <= `Enable;
-            reg1_addr_out <= ins_in[`RsRange];
+            reg1_addr_out <= rs;
             reg2_re_out <= `Enable;
-            reg2_addr_out <= ins_in[`RtRange];
+            reg2_addr_out <= rt;
           end
           `FUNC_SRLV: begin
             wreg_e_out <= `Enable;
-            wreg_addr_out <= ins_in[`RdRange];
+            wreg_addr_out <= rd;
             aluop_out <= `ALUOP_SRL;
             reg1_re_out <= `Enable;
-            reg1_addr_out <= ins_in[`RsRange];
+            reg1_addr_out <= rs;
             reg2_re_out <= `Enable;
-            reg2_addr_out <= ins_in[`RtRange];
+            reg2_addr_out <= rt;
           end
           `FUNC_SRAV: begin
             wreg_e_out <= `Enable;
-            wreg_addr_out <= ins_in[`RdRange];
+            wreg_addr_out <= rd;
             aluop_out <= `ALUOP_SRA;
             reg1_re_out <= `Enable;
-            reg1_addr_out <= ins_in[`RsRange];
+            reg1_addr_out <= rs;
             reg2_re_out <= `Enable;
-            reg2_addr_out <= ins_in[`RtRange];
+            reg2_addr_out <= rt;
           end
           `FUNC_SLL: begin
             wreg_e_out <= `Enable;
-            wreg_addr_out <= ins_in[`RdRange];
+            wreg_addr_out <= rd;
             aluop_out <= `ALUOP_SLL;
             reg1_re_out <= `Disable;
             reg2_re_out <= `Enable;
-            reg2_addr_out <= ins_in[`RtRange];
-            immed <= {27'h0, ins_in[`ShamtRange]};
+            reg2_addr_out <= rt;
+            immed <= {27'h0, shamt};
           end
           `FUNC_SRL: begin
             wreg_e_out <= `Enable;
-            wreg_addr_out <= ins_in[`RdRange];
+            wreg_addr_out <= rd;
             aluop_out <= `ALUOP_SRL;
             reg1_re_out <= `Disable;
             reg2_re_out <= `Enable;
-            reg2_addr_out <= ins_in[`RtRange];
-            immed <= {27'h0, ins_in[`ShamtRange]};
+            reg2_addr_out <= rt;
+            immed <= {27'h0, shamt};
           end
           `FUNC_SRA: begin
             wreg_e_out <= `Enable;
-            wreg_addr_out <= ins_in[`RdRange];
+            wreg_addr_out <= rd;
             aluop_out <= `ALUOP_SLL;
             reg1_re_out <= `Disable;
             reg2_re_out <= `Enable;
-            reg2_addr_out <= ins_in[`RtRange];
-            immed <= {27'h0, ins_in[`ShamtRange]};
+            reg2_addr_out <= rt;
+            immed <= {27'h0, shamt};
+          end
+          // 注意HI/LO不在32个寄存器组中，使能不要给错
+          `FUNC_MFHI: begin
+            wreg_e_out <= `Enable;
+            wreg_addr_out <= rd;
+            aluop_out <= `EXOP_MFHI;
+            reg1_re_out <= `Disable;
+            reg2_re_out <= `Disable;
+          end
+          `FUNC_MFLO: begin
+            wreg_e_out <= `Enable;
+            wreg_addr_out <= rd;
+            aluop_out <= `EXOP_MFLO;
+            reg1_re_out <= `Disable;
+            reg2_re_out <= `Disable;
+          end
+          `FUNC_MTHI: begin
+            wreg_e_out <= `Disable;
+            aluop_out <= `EXOP_MTHI;
+            reg1_re_out <= `Enable;
+            reg1_addr_out <= rs;
+            reg2_re_out <= `Disable;
+          end
+          `FUNC_MTLO: begin
+            wreg_e_out <= `Disable;
+            aluop_out <= `EXOP_MTLO;
+            reg1_re_out <= `Enable;
+            reg1_addr_out <= rs;
+            reg2_re_out <= `Disable;
           end
         endcase
       end else begin
@@ -171,38 +200,38 @@ module id (
         case (op)
           `OP_ORI: begin
             wreg_e_out <= `Enable;
-            wreg_addr_out <= ins_in[`RtRange];
+            wreg_addr_out <= rt;
             aluop_out <= `ALUOP_OR;
             reg1_re_out <= `Enable;
-            reg1_addr_out <= ins_in[`RsRange];
+            reg1_addr_out <= rs;
             reg2_re_out <= `Disable;
             immed <= {16'h0, ins_in[`ImmedRange]};
           end
           `OP_ANDI: begin
             wreg_e_out <= `Enable;
-            wreg_addr_out <= ins_in[`RtRange];
+            wreg_addr_out <= rt;
             aluop_out <= `ALUOP_AND;
             reg1_re_out <= `Enable;
-            reg1_addr_out <= ins_in[`RsRange];
+            reg1_addr_out <= rs;
             reg2_re_out <= `Disable;
             immed <= {16'h0, ins_in[`ImmedRange]};
           end
           `OP_XORI: begin
             wreg_e_out <= `Enable;
-            wreg_addr_out <= ins_in[`RtRange];
+            wreg_addr_out <= rt;
             aluop_out <= `ALUOP_XOR;
             reg1_re_out <= `Enable;
-            reg1_addr_out <= ins_in[`RsRange];
+            reg1_addr_out <= rs;
             reg2_re_out <= `Disable;
             immed <= {16'h0, ins_in[`ImmedRange]};
           end
           `OP_LUI: begin
             // 借助rs为$0的特性，可等价如下实现
             wreg_e_out <= `Enable;
-            wreg_addr_out <= ins_in[`RtRange];
+            wreg_addr_out <= rt;
             aluop_out <= `ALUOP_OR;
             reg1_re_out <= `Enable;
-            reg1_addr_out <= ins_in[`RsRange];
+            reg1_addr_out <= rs;
             reg2_re_out <= `Disable;
             immed <= {ins_in[`ImmedRange], 16'h0};
           end

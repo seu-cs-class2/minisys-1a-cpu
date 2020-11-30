@@ -24,7 +24,7 @@ module hilo (
       lo_out <= `ZeroWord;
     end else if (we_in == `Enable) begin
       hi_out <= hi_in;
-      lo_out <= lo_in;  
+      lo_out <= lo_in;
     end
   end
 

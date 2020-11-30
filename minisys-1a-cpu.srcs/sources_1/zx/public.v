@@ -44,7 +44,11 @@
 `define ALUOP_SLL 5'd13 // 逻辑左移
 `define ALUOP_SRL 5'd14 // 逻辑右移
 `define ALUOP_SRA 5'd15 // 算术右移
-// TODO
+// EXOP
+`define EXOP_MFHI 5'd16
+`define EXOP_MFLO 5'd17
+`define EXOP_MTHI 5'd18
+`define EXOP_MTLO 5'd19
 
 // Minisys指令集
 // R型指令

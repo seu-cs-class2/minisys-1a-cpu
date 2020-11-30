@@ -4,7 +4,6 @@
 `include "public.v"
 
 // 指令执行模块
-// 主要有ALU
 module ex (
 
   input rst,
@@ -16,36 +15,100 @@ module ex (
 
   output reg[`RegRangeLog2] wreg_addr_out,
   output reg wreg_e_out,
-  output reg[`WordRange] wreg_data_out
+  output reg[`WordRange] wreg_data_out,
+
+  input wire[`WordRange] hi_data_in,
+  input wire[`WordRange] lo_data_in,
+  input wire mem_hilo_we_in,
+  input wire[`WordRange] mem_hi_data_in,
+  input wire[`WordRange] mem_lo_data_in,
+  input wire wb_hilo_we_in,
+  input wire[`WordRange] wb_hi_data_in,
+  input wire[`WordRange] wb_lo_data_in,
+  
+  output reg hilo_we_out,
+  output reg[`WordRange] hi_data_out,
+  output reg[`WordRange] lo_data_out
 
 );
 
-  // 暂存各类运算的结果
-  reg[`WordRange] logic_out;
+  reg[`WordRange] alu_res;
+  reg[`WordRange] mov_res;
+  
+  reg[`WordRange] hi_temp;
+  reg[`WordRange] lo_temp;
 
-  // 进行并发计算，每种计算类型都做
+  alu u_alu (
+  .data1      (data1_in),
+  .data2      (data2_in),
+  .op         (aluop_in),
+  .res        (alu_res)
+  );
+
   always @(*) begin
     if (rst == `Enable) begin
-      logic_out <= `ZeroWord;
+      alu_res <= `ZeroWord;
+      wreg_e_out <= `Disable;
+    end else begin
+      wreg_e_out <= wreg_e_in;
+      wreg_addr_out <= wreg_addr_in;
+      // TODO: is it right?
+      wreg_data_out <= alu_res;
+    end
+  end
+
+  always @(*) begin
+    if (rst == `Enable) begin
+      hi_temp <= `ZeroWord;
+      lo_temp <= `ZeroWord;
+    // 解决MEM-EX流水冲突
+    end else if (mem_hilo_we_in == `Enable) begin
+      hi_temp <= mem_hi_data_in;
+      lo_temp <= mem_lo_data_in;
+    // 解决WB-EX流水冲突
+    end else if (wb_hilo_we_in == `Enable) begin
+      hi_temp <= wb_hi_data_in;
+      lo_temp <= wb_lo_data_in;  
+    end else begin
+      hi_temp <= hi_data_in;
+      lo_temp <= lo_data_in;
+    end
+  end
+
+  always @(*) begin
+    if (rst == `Enable) begin
+      mov_res <= `ZeroWord;
     end else begin
       case (aluop_in)
-        // TODO: 
-        `ALUOP_OR: begin
-          logic_out <= data1_in | data2_in;
+        `EXOP_MFHI: begin
+          mov_res <= hi_temp;
         end
-        default: begin
-          logic_out <= `ZeroWord;
+        `EXOP_MFLO: begin
+          mov_res <= lo_temp;
         end
       endcase
     end
   end
 
-  // 最后再把各种计算类型的结果MUX选择
   always @(*) begin
-    // TODO: 
-    wreg_e_out <= wreg_e_in;
-    wreg_addr_out <= wreg_addr_in;
-    wreg_data_out <= logic_out;
+    if (rst == `Enable) begin
+      hilo_we_out <= `Disable;
+      hi_data_out <= `ZeroWord;
+      lo_data_out <= `ZeroWord;
+    end else begin
+      case (aluop_in)
+       `EXOP_MTHI: begin
+          hilo_we_out <= `Enable;
+          hi_data_out <= data1_in;
+          lo_data_out <= lo_data_in;
+       end
+       `EXOP_MTLO: begin
+          hilo_we_out <= `Enable;
+          hi_data_out <= hi_data_in;
+          lo_data_out <= data1_in;
+       end
+      endcase
+    end
   end
 
 endmodule
