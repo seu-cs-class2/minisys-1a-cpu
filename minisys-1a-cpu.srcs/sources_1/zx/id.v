@@ -43,9 +43,9 @@ module id (
 
   // 指令的各个可能组分
   wire[5:0] op = ins_in[`OpRange];
-  wire[4:0] rs = rs;
-  wire[4:0] rt = rt;
-  wire[4:0] rd = rd;
+  wire[4:0] rs = ins_in[`RsRange];
+  wire[4:0] rt = ins_in[`RtRange];
+  wire[4:0] rd = ins_in[`RdRange];
   wire[4:0] shamt = shamt;
   wire[5:0] func = ins_in[`FuncRange];
   wire[15:0] immediate = ins_in[`ImmedRange];
