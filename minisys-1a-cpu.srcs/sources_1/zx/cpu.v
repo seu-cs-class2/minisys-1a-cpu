@@ -106,7 +106,7 @@ module cpu (
   );
 
   // IF
-  program_counter  u_program_counter (
+  pc  u_pc (
   .clk                      (clk),
   .rst                      (rst),
   .pc                       (pc),

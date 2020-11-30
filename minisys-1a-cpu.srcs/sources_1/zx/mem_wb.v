@@ -24,7 +24,9 @@ module mem_wb (
 
   output reg wb_hilo_we,
   output reg[`WordRange] wb_hi_data,
-  output reg[`WordRange] wb_lo_data
+  output reg[`WordRange] wb_lo_data,
+
+  input wire pause
 
 );
 

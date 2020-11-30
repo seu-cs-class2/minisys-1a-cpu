@@ -19,7 +19,9 @@ module id_ex(
   output reg[`WordRange] ex_data1,
   output reg[`WordRange] ex_data2,
   output reg[`RegRangeLog2] ex_wreg_addr,
-  output reg ex_wreg_e
+  output reg ex_wreg_e,
+
+  input wire pause
   
 );
 

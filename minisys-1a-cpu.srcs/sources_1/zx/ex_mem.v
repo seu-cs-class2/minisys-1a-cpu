@@ -23,7 +23,9 @@ module ex_mem (
   
   output reg mem_hilo_we,
   output reg[`WordRange] mem_hi_data,
-  output reg[`WordRange] mem_lo_data
+  output reg[`WordRange] mem_lo_data,
+
+  input wire pause
 
 );
 

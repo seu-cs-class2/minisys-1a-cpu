@@ -4,13 +4,15 @@
 `include "public.v"
 
 // 指令计数器
-module program_counter (
+module pc (
 
   input clk, // 时钟
   input rst, // 同步复位信号
   output reg [`WordRange] pc, // 当前PC
-  output reg imem_e_out // 指令存储器使能
+  output reg imem_e_out, // 指令存储器使能
   
+  input wire pause
+
 );
 
   // 如果非rst，则使能IMEM读取
@@ -26,8 +28,10 @@ module program_counter (
   always @(posedge clk) begin
     if (rst == `Enable) begin
       pc <= `ZeroWord;
+    end else if (pause == `Enable) begin
+      pc <= pc;
     end else begin
-      pc <= pc + 4'd4;
+      pc <= pc + 32'd4;
     end
   end
 

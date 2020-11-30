@@ -13,8 +13,10 @@ module if_id (
   input wire[`WordRange] if_ins, // IF级指令
 
   output reg[`WordRange] id_pc, // ID级PC
-  output reg[`WordRange] id_ins // ID级指令
+  output reg[`WordRange] id_ins, // ID级指令
 
+  input wire pause
+  
 );
 
   always @(posedge clk) begin
