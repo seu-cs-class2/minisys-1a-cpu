@@ -3,45 +3,45 @@
 
 `include "public.v"
 
-// Ö¸ÁîÒëÂëÄ£¿é
-// ¶ÔÖ¸Áî½øĞĞÒëÂë£¬Êä³ö°üÀ¨£º
-// Ô´²Ù×÷Êı1¡¢Ô´²Ù×÷Êı2¡¢Ğ´ÈëµÄÄ¿µÄ¼Ä´æÆ÷¡¢ÔËËãÀàĞÍ£¨Âß¼­¡¢ÒÆÎ»¡¢ËãÊõ£©
+// æŒ‡ä»¤è¯‘ç æ¨¡å—
+// å¯¹æŒ‡ä»¤è¿›è¡Œè¯‘ç ï¼Œè¾“å‡ºåŒ…æ‹¬ï¼š
+// æºæ“ä½œæ•°1ã€æºæ“ä½œæ•°2ã€å†™å…¥çš„ç›®çš„å¯„å­˜å™¨ã€è¿ç®—ç±»å‹ï¼ˆé€»è¾‘ã€ç§»ä½ã€ç®—æœ¯ï¼‰
 module id (
 
-  input rst, // ¸´Î»
-  input wire[`WordRange] pc_in, // ÊäÈëµÄPCÖµ
-  input wire[`WordRange] ins_in, // ÊäÈëµÄÖ¸Áî
+  input rst, // å¤ä½
+  input wire[`WordRange] pc_in, // è¾“å…¥çš„PCå€¼
+  input wire[`WordRange] ins_in, // è¾“å…¥çš„æŒ‡ä»¤
 
-  // ÏÈÕâÑùĞ´£¬²»Ö±Í¨£¬ÕâÎªºóÃæÁ÷Ë®Ôİ´æÌá¹©Ìõ¼ş
-  input wire[`WordRange] reg1_data_in, // ÊäÈëµÄ¼Ä´æÆ÷Êı¾İ1
-  input wire[`WordRange] reg2_data_in, // ÊäÈëµÄ¼Ä´æÆ÷Êı¾İ2
+  // å…ˆè¿™æ ·å†™ï¼Œä¸ç›´é€šï¼Œè¿™ä¸ºåé¢æµæ°´æš‚å­˜æä¾›æ¡ä»¶
+  input wire[`WordRange] reg1_data_in, // è¾“å…¥çš„å¯„å­˜å™¨æ•°æ®1
+  input wire[`WordRange] reg2_data_in, // è¾“å…¥çš„å¯„å­˜å™¨æ•°æ®2
 
-  output reg reg1_re_out, // ¼Ä´æÆ÷¶ÁÊ¹ÄÜ1
-  output reg reg2_re_out, // ¼Ä´æÆ÷¶ÁÊ¹ÄÜ2
-  output reg[`RegRangeLog2] reg1_addr_out, // ¼Ä´æÆ÷¶ÁµØÖ·1
-  output reg[`RegRangeLog2] reg2_addr_out, // ¼Ä´æÆ÷¶ÁµØÖ·2
+  output reg reg1_re_out, // å¯„å­˜å™¨è¯»ä½¿èƒ½1
+  output reg reg2_re_out, // å¯„å­˜å™¨è¯»ä½¿èƒ½2
+  output reg[`RegRangeLog2] reg1_addr_out, // å¯„å­˜å™¨è¯»åœ°å€1
+  output reg[`RegRangeLog2] reg2_addr_out, // å¯„å­˜å™¨è¯»åœ°å€2
 
-  output reg[`ALUOpRange] aluop_out, // Êä³öµÄALUOp
+  output reg[`ALUOpRange] aluop_out, // è¾“å‡ºçš„ALUOp
 
-  output reg[`WordRange] data1_out, // Êä³öµÄÊı¾İ1
-  output reg[`WordRange] data2_out, // Êä³öµÄÊı¾İ2
+  output reg[`WordRange] data1_out, // è¾“å‡ºçš„æ•°æ®1
+  output reg[`WordRange] data2_out, // è¾“å‡ºçš„æ•°æ®2
   
-  output reg wreg_e_out, // Ğ´¼Ä´æÆ÷Ê¹ÄÜÊä³ö
-  output reg[`RegRangeLog2] wreg_addr_out, // Ğ´¼Ä´æÆ÷µØÖ·Êä³ö
+  output reg wreg_e_out, // å†™å¯„å­˜å™¨ä½¿èƒ½è¾“å‡º
+  output reg[`RegRangeLog2] wreg_addr_out, // å†™å¯„å­˜å™¨åœ°å€è¾“å‡º
 
-  // ÏÂÃæ²¿·ÖÓÃÓÚ²ÉÓÃÊı¾İÇ°ËÍ·¨½â¾öÏà¸ô0Ìõ£¨ID-EX£©ºÍÏà¸ô1Ìõ£¨ID-MEM£©½×¶ÎµÄRAWÊı¾İÏà¹Ø
-  // EX½×¶ÎÔËËã½á¹û
+  // ä¸‹é¢éƒ¨åˆ†ç”¨äºé‡‡ç”¨æ•°æ®å‰é€æ³•è§£å†³ç›¸éš”0æ¡ï¼ˆID-EXï¼‰å’Œç›¸éš”1æ¡ï¼ˆID-MEMï¼‰é˜¶æ®µçš„RAWæ•°æ®ç›¸å…³
+  // EXé˜¶æ®µè¿ç®—ç»“æœ
   input wire ex_wreg_e_in,
   input wire[`WordRange] ex_wreg_data_in,
   input wire[`RegRangeLog2] ex_wreg_addr_in,
-  // MEM½×¶ÎÔËËã½á¹û
+  // MEMé˜¶æ®µè¿ç®—ç»“æœ
   input wire mem_wreg_e_in,
   input wire[`WordRange] mem_wreg_data_in,
   input wire[`RegRangeLog2] mem_wreg_addr_in
 
 );
 
-  // Ö¸ÁîµÄ¸÷¸ö¿ÉÄÜ×é·Ö
+  // æŒ‡ä»¤çš„å„ä¸ªå¯èƒ½ç»„åˆ†
   wire[5:0] op = ins_in[`OpRange];
   wire[4:0] rs = ins_in[`RsRange];
   wire[4:0] rt = ins_in[`RtRange];
@@ -52,27 +52,27 @@ module id (
   wire[15:0] offset = ins_in[`OffsetRange];
   wire[25:0] address = ins_in[`AddressRange];
 
-  reg[`WordRange] immed; // Ö¸ÁîÖĞµÄÁ¢¼´ÊıµÄÀ©Õ¹½á¹û
+  reg[`WordRange] immed; // æŒ‡ä»¤ä¸­çš„ç«‹å³æ•°çš„æ‰©å±•ç»“æœ
 
-  // Ö¸ÁîÒëÂë
+  // æŒ‡ä»¤è¯‘ç 
   always @(*) begin
-    // rstÊ±¹ØµôËùÓĞÊ¹ÄÜ£¬Çå¿ÕÁ¢¼´ÊıÔİ´æ
+    // rstæ—¶å…³æ‰æ‰€æœ‰ä½¿èƒ½ï¼Œæ¸…ç©ºç«‹å³æ•°æš‚å­˜
     if (rst == `Enable) begin
       aluop_out <= `ALUOP_NOP;
       wreg_e_out <= `Disable;
       reg1_re_out <= `Disable;
       reg2_re_out <= `Disable;
       immed <= `ZeroWord;
-    // ¾ßÌåÒëÂëÂß¼­
+    // å…·ä½“è¯‘ç é€»è¾‘
     end else begin
-      // ÏÈ¸³Ä¬ÈÏÖµ£¬ÒÔÃâÓĞĞ©Ö¸Áî²»ĞèÒªĞŞ¸ÄÆäÖĞÒ»Ğ©ÖµÊ±³öÏÖ´íÎó
+      // å…ˆèµ‹é»˜è®¤å€¼ï¼Œä»¥å…æœ‰äº›æŒ‡ä»¤ä¸éœ€è¦ä¿®æ”¹å…¶ä¸­ä¸€äº›å€¼æ—¶å‡ºç°é”™è¯¯
       aluop_out <= `ALUOP_NOP;
       wreg_e_out <= `Disable;
       reg1_re_out <= `Disable;
       reg2_re_out <= `Disable;
       immed <= `ZeroWord;
-      // ¸ù¾İop·­Òë
-      // RÀàÖ¸Áî
+      // æ ¹æ®opç¿»è¯‘
+      // Rç±»æŒ‡ä»¤
       if (op == `OP_RTYPE) begin
         case (func)
           `FUNC_OR: begin
@@ -165,7 +165,7 @@ module id (
             reg2_addr_out <= rt;
             immed <= {27'h0, shamt};
           end
-          // ×¢ÒâHI/LO²»ÔÚ32¸ö¼Ä´æÆ÷×éÖĞ£¬Ê¹ÄÜ²»Òª¸ø´í
+          // æ³¨æ„HI/LOä¸åœ¨32ä¸ªå¯„å­˜å™¨ç»„ä¸­ï¼Œä½¿èƒ½ä¸è¦ç»™é”™
           `FUNC_MFHI: begin
             wreg_e_out <= `Enable;
             wreg_addr_out <= rd;
@@ -196,7 +196,7 @@ module id (
           end
         endcase
       end else begin
-        // IÀà»òJÀà
+        // Iç±»æˆ–Jç±»
         case (op)
           `OP_ORI: begin
             wreg_e_out <= `Enable;
@@ -226,7 +226,7 @@ module id (
             immed <= {16'h0, ins_in[`ImmedRange]};
           end
           `OP_LUI: begin
-            // ½èÖúrsÎª$0µÄÌØĞÔ£¬¿ÉµÈ¼ÛÈçÏÂÊµÏÖ
+            // å€ŸåŠ©rsä¸º$0çš„ç‰¹æ€§ï¼Œå¯ç­‰ä»·å¦‚ä¸‹å®ç°
             wreg_e_out <= `Enable;
             wreg_addr_out <= rt;
             aluop_out <= `ALUOP_OR;
@@ -242,33 +242,33 @@ module id (
     end
   end
 
-  // ÏÂÃæ¿ªÊ¼È·¶¨ËÍµ½ALUµÄÊı¾İ¾ßÌåÊÇÊ²Ã´
-  // ÕâÈ¡¾öÓÚÀ´Ô´£ºÊÇ¼Ä´æÆ÷£¬»¹ÊÇÁ¢¼´Êı
+  // ä¸‹é¢å¼€å§‹ç¡®å®šé€åˆ°ALUçš„æ•°æ®å…·ä½“æ˜¯ä»€ä¹ˆ
+  // è¿™å–å†³äºæ¥æºï¼šæ˜¯å¯„å­˜å™¨ï¼Œè¿˜æ˜¯ç«‹å³æ•°
   always @(*) begin
-    // rstÊ±¹Ì¶¨³ö0x0
+    // rstæ—¶å›ºå®šå‡º0x0
     if (rst == `Enable) begin
       data1_out <= `ZeroWord;
-    // ½â¾öÏà¸ô0Ìõ£¨ID-EX£©µÄÁ÷Ë®Êı¾İÏà¹Ø
-    // Èç¹ûÇ°ÃæµÄEXÒªĞ´µÄ¾ÍÊÇºóÃæµÄIDÒª¶ÁµÄ£¬Ôò´©Í¸
+    // è§£å†³ç›¸éš”0æ¡ï¼ˆID-EXï¼‰çš„æµæ°´æ•°æ®ç›¸å…³
+    // å¦‚æœå‰é¢çš„EXè¦å†™çš„å°±æ˜¯åé¢çš„IDè¦è¯»çš„ï¼Œåˆ™ç©¿é€
     end else if (ex_wreg_e_in == `Enable && reg1_re_out == `Enable && reg1_addr_out == ex_wreg_addr_in) begin
       data1_out <= ex_wreg_data_in;
-    // ½â¾öÏà¸ô1Ìõ£¨ID-MEM£©µÄÁ÷Ë®Êı¾İÏà¹Ø
-    // Èç¹ûÇ°ÃæµÄMEMÒªĞ´µÄ¾ÍÊÇºóÃæµÄIDÒª¶ÁµÄ£¬Ôò´©Í¸
+    // è§£å†³ç›¸éš”1æ¡ï¼ˆID-MEMï¼‰çš„æµæ°´æ•°æ®ç›¸å…³
+    // å¦‚æœå‰é¢çš„MEMè¦å†™çš„å°±æ˜¯åé¢çš„IDè¦è¯»çš„ï¼Œåˆ™ç©¿é€
     end else if (mem_wreg_e_in == `Enable && reg1_re_out == `Enable && reg1_addr_out == mem_wreg_addr_in) begin
       data1_out <= mem_wreg_data_in;  
-    // Èç¹ûÖ¸ÁîÒëÂëµÄ½á¹ûĞèÒª¶Áreg1£¬¾ÍËµÃ÷²Ù×÷Êı1À´×Ô¼Ä´æÆ÷
+    // å¦‚æœæŒ‡ä»¤è¯‘ç çš„ç»“æœéœ€è¦è¯»reg1ï¼Œå°±è¯´æ˜æ“ä½œæ•°1æ¥è‡ªå¯„å­˜å™¨
     end else if (reg1_re_out == `Enable) begin
       data1_out <= reg1_data_in;
-    // Èç¹ûÖ¸ÁîÒëÂëµÄ½á¹û²»ĞèÒª¶Áreg1£¬¾ÍËµÃ÷²Ù×÷Êı1À´×ÔÁ¢¼´Êı
+    // å¦‚æœæŒ‡ä»¤è¯‘ç çš„ç»“æœä¸éœ€è¦è¯»reg1ï¼Œå°±è¯´æ˜æ“ä½œæ•°1æ¥è‡ªç«‹å³æ•°
     end else if (reg1_re_out == `Disable) begin
       data1_out <= immed;
-    // ¶µµ×
+    // å…œåº•
     end else begin
       data1_out <= `ZeroWord;
     end
   end
 
-  // Âß¼­Í¬ÉÏ
+  // é€»è¾‘åŒä¸Š
   always @(*) begin
     if (rst == `Enable) begin
       data2_out <= `ZeroWord;

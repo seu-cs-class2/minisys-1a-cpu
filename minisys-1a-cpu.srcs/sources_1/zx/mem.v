@@ -3,7 +3,7 @@
 
 `include "public.v"
 
-// ·Ã´æ¿ØÖÆÄ£¿é
+// è®¿å­˜æ§åˆ¶æ¨¡å—
 module mem (
 
   input rst,

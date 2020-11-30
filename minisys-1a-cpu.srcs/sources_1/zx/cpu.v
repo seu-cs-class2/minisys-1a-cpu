@@ -6,8 +6,8 @@
 // CPU
 module cpu (
 
-  input rst, // 重置
-  input clk, // 时钟
+  input rst, // 閲嶇疆
+  input clk, // 鏃堕挓
 
   input [`WordRange] imem_data_in,
   output wire[`WordRange] imem_addr_out,
@@ -15,20 +15,20 @@ module cpu (
 
 );
 
-  // ID输入
+  // ID杈撳叆
   wire[`WordRange] pc;
   assign imem_addr_out = pc;
   wire[`WordRange] id_pc_in;
   wire[`WordRange] id_ins_in;
 
-  // ID输出
+  // ID杈撳嚭
   wire[`ALUOpRange] id_aluop_out;
   wire[`WordRange] id_data1_out;
   wire[`WordRange] id_data2_out;
   wire id_wreg_e_out;
   wire[`RegRangeLog2] id_wreg_addr_out;
 
-  // EX输入
+  // EX杈撳叆
   wire[`ALUOpRange] ex_aluop_in;
   wire[`WordRange] ex_data1_in;
   wire[`WordRange] ex_data2_in;
@@ -38,7 +38,7 @@ module cpu (
   wire[`WordRange] ex_hi_data_in;
   wire[`WordRange] ex_lo_data_in;
 
-  // EX输出
+  // EX杈撳嚭
   wire ex_wreg_e_out;
   wire[`RegRangeLog2] ex_wreg_addr_out;
   wire[`WordRange] ex_wreg_data_out;
@@ -46,7 +46,7 @@ module cpu (
   wire[`WordRange] ex_hi_data_out;
   wire[`WordRange] ex_lo_data_out;
 
-  // MEM输入
+  // MEM杈撳叆
   wire mem_wreg_e_in;
   wire[`RegRangeLog2] mem_wreg_addr_in;
   wire[`WordRange] mem_wreg_data_in;
@@ -54,7 +54,7 @@ module cpu (
   wire[`WordRange] mem_hi_data_in;
   wire[`WordRange] mem_lo_data_in;
 
-  // MEM输出
+  // MEM杈撳嚭
   wire mem_wreg_e_out;
   wire[`RegRangeLog2] mem_wreg_addr_out;
   wire[`WordRange] mem_wreg_data_out;
@@ -62,16 +62,16 @@ module cpu (
   wire[`WordRange] mem_hi_data_out;
   wire[`WordRange] mem_lo_data_out;
 
-  // WB输入
+  // WB杈撳叆
   wire wb_wreg_e_in;
   wire[`RegRangeLog2] wb_wreg_addr_in;
   wire[`WordRange] wb_wreg_data_in;
-  // 下面三根线直接送到HILO
+  // 涓嬮潰涓夋牴绾跨洿鎺ラ�佸埌HILO
   wire wb_hilo_we_in;
   wire[`WordRange] wb_hi_data_in;
   wire[`WordRange] wb_lo_data_in;
 
-  // 寄存器组相关
+  // 瀵勫瓨鍣ㄧ粍鐩稿叧
   wire reg1_re;
   wire reg2_re;
   wire[`WordRange] reg1_data;

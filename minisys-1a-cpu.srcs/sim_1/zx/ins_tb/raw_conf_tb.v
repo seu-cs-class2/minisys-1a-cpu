@@ -2,7 +2,7 @@
 
 `include "../../../sources_1/zx/public.v"
 
-// TestBench - 流水RAW冲突解决
+// TestBench - 娴佹按RAW鍐茬獊瑙ｅ喅
 module raw_conf_tb();
 
   reg rst;

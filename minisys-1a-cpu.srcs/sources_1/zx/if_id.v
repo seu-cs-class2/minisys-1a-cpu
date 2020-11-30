@@ -3,26 +3,26 @@
 
 `include "public.v"
 
-// Á÷Ë®¼¶IF-IDÖ®¼äµÄ¼Ä´æÆ÷
+// æµæ°´çº§IF-IDä¹‹é—´çš„å¯„å­˜å™¨
 module if_id (
   
-  input clk, // Ê±ÖÓ
-  input rst, // ¸´Î»
+  input clk, // æ—¶é’Ÿ
+  input rst, // å¤ä½
 
-  input wire[`WordRange] if_pc, // IF¼¶PC
-  input wire[`WordRange] if_ins, // IF¼¶Ö¸Áî
+  input wire[`WordRange] if_pc, // IFçº§PC
+  input wire[`WordRange] if_ins, // IFçº§æŒ‡ä»¤
 
-  output reg[`WordRange] id_pc, // ID¼¶PC
-  output reg[`WordRange] id_ins // ID¼¶Ö¸Áî
+  output reg[`WordRange] id_pc, // IDçº§PC
+  output reg[`WordRange] id_ins // IDçº§æŒ‡ä»¤
 
 );
 
   always @(posedge clk) begin
-    // ÖØÖÃÊ±ÏòÏÂ¼¶ËÍ0x0
+    // é‡ç½®æ—¶å‘ä¸‹çº§é€0x0
     if (rst == `Enable) begin
       id_pc <= `ZeroWord;
       id_ins <= `ZeroWord;
-    // ·ñÔòÏòÏÂ¼¶Ö±Í¨´«µİ
+    // å¦åˆ™å‘ä¸‹çº§ç›´é€šä¼ é€’
     end else begin
       id_pc <= if_pc;
       id_ins <= if_ins;

@@ -3,7 +3,7 @@
 
 `include "public.v"
 
-// 流水级EX-MEM之间的寄存器
+// 娴佹按绾X-MEM涔嬮棿鐨勫瘎瀛樺櫒
 module ex_mem (
   
   input rst,
