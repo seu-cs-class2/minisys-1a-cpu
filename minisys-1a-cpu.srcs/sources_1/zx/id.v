@@ -52,7 +52,7 @@ module id (
   wire[4:0] rs = ins_in[`RsRange];
   wire[4:0] rt = ins_in[`RtRange];
   wire[4:0] rd = ins_in[`RdRange];
-  wire[4:0] shamt = shamt;
+  wire[4:0] shamt = ins_in[`ShamtRange];
   wire[5:0] func = ins_in[`FuncRange];
   wire[15:0] immediate = ins_in[`ImmedRange];
   wire[15:0] offset = ins_in[`OffsetRange];
