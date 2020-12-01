@@ -194,6 +194,78 @@ module id (
             reg1_addr_out <= rs;
             reg2_re_out <= `Disable;
           end
+          `FUNC_SLT: begin
+            wreg_e_out <= `Enable;
+            wreg_addr_out <= rd;
+            aluop_out <= `ALUOP_SLT;
+            reg1_re_out <= `Enable;
+            reg1_addr_out <= rs;
+            reg1_re_out <= `Enable;
+            reg1_addr_out <= rt;
+          end
+          `FUNC_SLTU: begin
+            wreg_e_out <= `Enable;
+            wreg_addr_out <= rd;
+            aluop_out <= `ALUOP_SLTU;
+            reg1_re_out <= `Enable;
+            reg1_addr_out <= rs;
+            reg1_re_out <= `Enable;
+            reg1_addr_out <= rt;
+          end
+          `FUNC_ADD: begin
+            wreg_e_out <= `Enable;
+            wreg_addr_out <= rd;
+            aluop_out <= `ALUOP_ADD;
+            reg1_re_out <= `Enable;
+            reg1_addr_out <= rs;
+            reg1_re_out <= `Enable;
+            reg1_addr_out <= rt;
+          end
+          `FUNC_ADDU: begin
+            wreg_e_out <= `Enable;
+            wreg_addr_out <= rd;
+            aluop_out <= `ALUOP_ADDU;
+            reg1_re_out <= `Enable;
+            reg1_addr_out <= rs;
+            reg1_re_out <= `Enable;
+            reg1_addr_out <= rt;
+          end
+          `FUNC_SUB: begin
+            wreg_e_out <= `Enable;
+            wreg_addr_out <= rd;
+            aluop_out <= `ALUOP_SUB;
+            reg1_re_out <= `Enable;
+            reg1_addr_out <= rs;
+            reg1_re_out <= `Enable;
+            reg1_addr_out <= rt;
+          end
+          `FUNC_SUBU: begin
+            wreg_e_out <= `Enable;
+            wreg_addr_out <= rd;
+            aluop_out <= `ALUOP_SUBU;
+            reg1_re_out <= `Enable;
+            reg1_addr_out <= rs;
+            reg1_re_out <= `Enable;
+            reg1_addr_out <= rt;
+          end
+          `FUNC_MULT: begin
+            wreg_e_out <= `Enable;
+            wreg_addr_out <= rd;
+            aluop_out <= `ALUOP_MULT;
+            reg1_re_out <= `Enable;
+            reg1_addr_out <= rs;
+            reg1_re_out <= `Enable;
+            reg1_addr_out <= rt;
+          end
+          `FUNC_MULTU: begin
+            wreg_e_out <= `Enable;
+            wreg_addr_out <= rd;
+            aluop_out <= `ALUOP_MULTU;
+            reg1_re_out <= `Enable;
+            reg1_addr_out <= rs;
+            reg1_re_out <= `Enable;
+            reg1_addr_out <= rt;
+          end
         endcase
       end else begin
         // I类或J类
@@ -234,6 +306,42 @@ module id (
             reg1_addr_out <= rs;
             reg2_re_out <= `Disable;
             immed <= {ins_in[`ImmedRange], 16'h0};
+          end
+          `OP_SLTI: begin
+            wreg_e_out <= `Enable;
+            wreg_addr_out <= rt;
+            aluop_out <= `ALUOP_SLT;
+            reg1_re_out <= `Enable;
+            reg1_addr_out <= rs;
+            reg1_re_out <= `Disable;
+            immed <= {{16{ins_in[15]}}, ins_in[15:0]}; // sign-ext
+          end
+          `OP_SLTIU: begin
+            wreg_e_out <= `Enable;
+            wreg_addr_out <= rt;
+            aluop_out <= `ALUOP_SLTU;
+            reg1_re_out <= `Enable;
+            reg1_addr_out <= rs;
+            reg1_re_out <= `Disable;
+            immed <= {{16{ins_in[15]}}, ins_in[15:0]}; // sign-ext
+          end
+          `OP_ADDI: begin
+            wreg_e_out <= `Enable;
+            wreg_addr_out <= rt;
+            aluop_out <= `ALUOP_ADD;
+            reg1_re_out <= `Enable;
+            reg1_addr_out <= rs;
+            reg1_re_out <= `Disable;
+            immed <= {{16{ins_in[15]}}, ins_in[15:0]}; // sign-ext
+          end
+          `OP_ADDIU: begin
+            wreg_e_out <= `Enable;
+            wreg_addr_out <= rt;
+            aluop_out <= `ALUOP_ADDU;
+            reg1_re_out <= `Enable;
+            reg1_addr_out <= rs;
+            reg1_re_out <= `Disable;
+            immed <= {{16{ins_in[15]}}, ins_in[15:0]}; // sign-ext
           end
           default: begin 
           end

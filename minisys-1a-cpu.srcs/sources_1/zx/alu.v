@@ -11,10 +11,10 @@ module alu (
   input [`ALUOpRange] op,
   
   output [`WordRange] res,
-  output wire zf,
-  output wire cf,
-  output wire nf,
-  output wire of
+  output wire zf, // zero-flag
+  output wire cf, // carry-flag
+  output wire sf, // sign-flag
+  output wire of // overflow-flag
 
 );
 
@@ -41,7 +41,7 @@ module alu (
       `ALUOP_SUB: begin
         result <= s_data1 - s_data2;
       end
-      // TODO: 下面四条运算要多周期执行，需要阻塞流水
+      // TODO: 下面四条运算要多周期执行，需要阻塞流水、访问HILO
       `ALUOP_MULTU: begin
         
       end
@@ -75,7 +75,18 @@ module alu (
       `ALUOP_SRA: begin
         result = data2 >>> data1[4:0];
       end
+      `ALUOP_SLT: begin
+        result = s_data1 < s_data2 ? 33'd1 : 33'd0;
+      end
+      `ALUOP_SLTU: begin
+        result = data1 < data2 ? 33'd1 : 33'd0;  
+      end
     endcase
   end
+
+  assign cf = result[32];
+  assign zf = result[31:0] == 32'd0 ? 1'b1 : 1'b0;
+  assign sf = result[31];
+  assign of = result[32];
 
 endmodule
