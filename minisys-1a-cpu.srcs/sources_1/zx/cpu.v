@@ -90,8 +90,8 @@ module cpu (
   .lo_out                   (ex_lo_data_in)
   );
 
-  // reg_group
-  reg_group  u_reg_group (
+  // gpr
+  gpr  u_gpr (
   .rst                      (rst),
   .clk                      (clk),
   .we                       (wb_wreg_e_in),

@@ -1,12 +1,12 @@
-// reg_group.v
+// gpr.v
 // 2020-11 @ https://github.com/seu-cs-class2/minisys-1a-cpu
 
 `include "public.v"
 
-// 寄存器组
+// 通用寄存器组
 // 注意到Minisys指令集R类指令会要求同时读取两个寄存器，因此将寄存器组
 // 设计为单入、双出模式，即可以同时读出两个寄存器，同时写入一个寄存器
-module reg_group(
+module gpr(
 
   input rst, // 复位信号
   input clk, // 时钟
