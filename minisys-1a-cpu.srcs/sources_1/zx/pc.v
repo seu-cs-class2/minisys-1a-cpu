@@ -8,10 +8,13 @@ module pc (
 
   input clk, // 时钟
   input rst, // 同步复位信号
-  output reg [`WordRange] pc, // 当前PC
+  output reg[`WordRange] pc, // 当前PC
   output reg imem_e_out, // 指令存储器使能
   
-  input wire pause
+  input wire pause,
+
+  input wire branch_e_in,
+  input wire[`WordRange] branch_addr_in
 
 );
 
@@ -30,6 +33,8 @@ module pc (
       pc <= `ZeroWord;
     end else if (pause == `Enable) begin
       pc <= pc;
+    end else if (branch_e_in == `Enable) begin
+      pc <= branch_addr_in;
     end else begin
       pc <= pc + 32'd4;
     end

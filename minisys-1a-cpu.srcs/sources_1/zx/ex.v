@@ -30,7 +30,9 @@ module ex (
   output reg[`WordRange] hi_data_out,
   output reg[`WordRange] lo_data_out,
 
-  output wire pause_req
+  output wire pause_req,
+
+  input wire[`WordRange] link_addr_in
 
 );
 
@@ -54,8 +56,26 @@ module ex (
     end else begin
       wreg_e_out <= wreg_e_in;
       wreg_addr_out <= wreg_addr_in;
-      // TODO: is it right?
-      wreg_data_out <= alu_res;
+      // FIXME
+      case (aluop_in)
+        `EXOP_JR,
+        `EXOP_JALR,
+        `EXOP_J,
+        `EXOP_JAL,
+        `EXOP_BEQ,
+        `EXOP_BGTZ,
+        `EXOP_BLEZ,
+        `EXOP_BNE,
+        `EXOP_BGEZ,
+        `EXOP_BGEZAL,
+        `EXOP_BLTZ,
+        `EXOP_BLTZAL: begin
+          wreg_data_out <= link_addr_in;
+        end
+        default: begin
+          wreg_data_out <= alu_res;
+        end
+      endcase
     end
   end
 
