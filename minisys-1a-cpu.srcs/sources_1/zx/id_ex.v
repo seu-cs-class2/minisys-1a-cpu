@@ -27,11 +27,16 @@ module id_ex(
 
 
   always @(posedge clk) begin
-    
     if (rst == `Enable) begin
       ex_aluop <= `ALUOP_NOP;
       ex_data1 <= `ZeroWord;
       ex_data2 <= `ZeroWord;
+      ex_wreg_e <= `Disable;
+    end else if (pause == `Enable) begin
+      ex_aluop <= `ALUOP_NOP;
+      ex_data1 <= `ZeroWord;
+      ex_data2 <= `ZeroWord;
+      ex_wreg_e <= `Disable;  
     end else begin
       ex_aluop <= id_aluop;
       ex_data1 <= id_data1;
@@ -39,7 +44,6 @@ module id_ex(
       ex_wreg_e <= id_wreg_e;
       ex_wreg_addr <= id_wreg_addr;
     end
-
   end
 
 endmodule

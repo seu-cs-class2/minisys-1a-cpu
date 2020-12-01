@@ -28,7 +28,9 @@ module ex (
   
   output reg hilo_we_out,
   output reg[`WordRange] hi_data_out,
-  output reg[`WordRange] lo_data_out
+  output reg[`WordRange] lo_data_out,
+
+  output wire pause_req
 
 );
 

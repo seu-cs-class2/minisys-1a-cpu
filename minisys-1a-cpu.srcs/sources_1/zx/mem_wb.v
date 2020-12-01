@@ -38,8 +38,14 @@ module mem_wb (
       wb_hilo_we <= `Disable;
       wb_hi_data <= `ZeroWord;
       wb_lo_data <= `ZeroWord;
-    // 否则穿透
+    end else if (pause == `Enable) begin
+      wb_wreg_e <= `Disable;
+      wb_wreg_data <= `ZeroWord;
+      wb_hilo_we <= `Disable;
+      wb_hi_data <= `ZeroWord;
+      wb_lo_data <= `ZeroWord;
     end else begin
+    // 否则穿透
       wb_wreg_e <= `Enable;
       wb_wreg_addr <= mem_wreg_addr;
       wb_wreg_data <= mem_wreg_data;

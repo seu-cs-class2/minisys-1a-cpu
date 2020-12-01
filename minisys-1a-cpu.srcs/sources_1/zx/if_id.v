@@ -24,6 +24,10 @@ module if_id (
     if (rst == `Enable) begin
       id_pc <= `ZeroWord;
       id_ins <= `ZeroWord;
+    if (pause == `Enable) begin
+      id_pc <= `ZeroWord;
+      id_ins <= `ZeroWord; // nop
+    end
     // 否则向下级直通传递
     end else begin
       id_pc <= if_pc;

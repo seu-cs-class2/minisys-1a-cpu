@@ -37,7 +37,9 @@ module id (
   // MEM阶段运算结果
   input wire mem_wreg_e_in,
   input wire[`WordRange] mem_wreg_data_in,
-  input wire[`RegRangeLog2] mem_wreg_addr_in
+  input wire[`RegRangeLog2] mem_wreg_addr_in,
+
+  output wire pause_req
 
 );
 

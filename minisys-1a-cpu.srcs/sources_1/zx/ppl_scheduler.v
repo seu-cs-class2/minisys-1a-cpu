@@ -7,9 +7,12 @@
 module ppl_scheduler (
 
   input rst,
+
+  // 阻塞请求
   input pause_req_id,
   input pause_req_ex,
 
+  // 阻塞响应
   output reg pause_res_pc,
   output reg pause_res_if,
   output reg pause_res_id,
