@@ -26,29 +26,44 @@
 
 // 设计相关
 // ALU相关
-`define ALUOpRange 4:0 // ALUOp范围，最高32种操作
+`define ALUOpRange 5:0 // ALUOp范围
 // ALUOP定义
-`define ALUOP_NOP 5'd0
-`define ALUOP_ADDU 5'd1
-`define ALUOP_ADD 5'd2
-`define ALUOP_SUBU 5'd3
-`define ALUOP_SUB 5'd4
-`define ALUOP_MULTU 5'd5
-`define ALUOP_MULT 5'd6
-`define ALUOP_DIVU 5'd7
-`define ALUOP_DIV 5'd8
-`define ALUOP_AND 5'd9
-`define ALUOP_OR 5'd10
-`define ALUOP_XOR 5'd11
-`define ALUOP_NOR 5'd12
-`define ALUOP_SLL 5'd13 // 逻辑左移
-`define ALUOP_SRL 5'd14 // 逻辑右移
-`define ALUOP_SRA 5'd15 // 算术右移
+`define ALUOP_NOP 6'd0
+`define ALUOP_ADDU 6'd1
+`define ALUOP_ADD 6'd2
+`define ALUOP_SUBU 6'd3
+`define ALUOP_SUB 6'd4
+`define ALUOP_MULTU 6'd5
+`define ALUOP_MULT 6'd6
+`define ALUOP_DIVU 6'd7
+`define ALUOP_DIV 6'd8
+`define ALUOP_AND 6'd9
+`define ALUOP_OR 6'd10
+`define ALUOP_XOR 6'd11
+`define ALUOP_NOR 6'd12
+`define ALUOP_SLL 6'd13 // 逻辑左移
+`define ALUOP_SRL 6'd14 // 逻辑右移
+`define ALUOP_SRA 6'd15 // 算术右移
+`define ALUOP_SLT 6'd16
+`define ALUOP_SLTU 6'd17
 // EXOP
-`define EXOP_MFHI 5'd16
-`define EXOP_MFLO 5'd17
-`define EXOP_MTHI 5'd18
-`define EXOP_MTLO 5'd19
+// FIXME: 简化
+`define EXOP_MFHI 6'd18
+`define EXOP_MFLO 6'd19
+`define EXOP_MTHI 6'd20
+`define EXOP_MTLO 6'd21
+`define EXOP_JR 6'd22
+`define EXOP_JALR 6'd23
+`define EXOP_J 6'd24
+`define EXOP_JAL 6'd25
+`define EXOP_BEQ 6'd26
+`define EXOP_BGTZ 6'd27
+`define EXOP_BLEZ 6'd28
+`define EXOP_BNE 6'd29
+`define EXOP_BGEZ 6'd30
+`define EXOP_BGEZAL 6'd31
+`define EXOP_BLTZ 6'd32
+`define EXOP_BLTZAL 6'd33
 
 // Minisys指令集
 // R型指令

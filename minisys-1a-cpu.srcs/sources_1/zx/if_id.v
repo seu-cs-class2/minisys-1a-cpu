@@ -13,8 +13,10 @@ module if_id (
   input wire[`WordRange] if_ins, // IF级指令
 
   output reg[`WordRange] id_pc, // ID级PC
-  output reg[`WordRange] id_ins // ID级指令
+  output reg[`WordRange] id_ins, // ID级指令
 
+  input wire pause
+  
 );
 
   always @(posedge clk) begin
@@ -22,6 +24,10 @@ module if_id (
     if (rst == `Enable) begin
       id_pc <= `ZeroWord;
       id_ins <= `ZeroWord;
+    if (pause == `Enable) begin
+      id_pc <= `ZeroWord;
+      id_ins <= `ZeroWord; // nop
+    end
     // 否则向下级直通传递
     end else begin
       id_pc <= if_pc;

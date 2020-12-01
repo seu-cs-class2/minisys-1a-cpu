@@ -37,7 +37,13 @@ module id (
   // MEM阶段运算结果
   input wire mem_wreg_e_in,
   input wire[`WordRange] mem_wreg_data_in,
-  input wire[`RegRangeLog2] mem_wreg_addr_in
+  input wire[`RegRangeLog2] mem_wreg_addr_in,
+
+  output reg pause_req,
+
+  output reg branch_e_out,
+  output reg[`WordRange] branch_addr_out,
+  output reg[`WordRange] link_addr_out
 
 );
 
@@ -53,6 +59,14 @@ module id (
   wire[25:0] address = ins_in[`AddressRange];
 
   reg[`WordRange] immed; // 指令中的立即数的扩展结果
+
+  // j some_where   <- PC
+  // nop            <- PC+4, delay-slot
+  // real_ret_loc   <- PC+8
+  wire[`WordRange] pc_plus_4;
+  assign pc_plus_4 = pc_in + 32'd4;
+  wire[`WordRange] pc_plus_8;
+  assign pc_plus_8 = pc_in + 32'd8;
 
   // 指令译码
   always @(*) begin
@@ -71,6 +85,7 @@ module id (
       reg1_re_out <= `Disable;
       reg2_re_out <= `Disable;
       immed <= `ZeroWord;
+      link_addr_out <= `ZeroWord;
       // 根据op翻译
       // R类指令
       if (op == `OP_RTYPE) begin
@@ -194,6 +209,97 @@ module id (
             reg1_addr_out <= rs;
             reg2_re_out <= `Disable;
           end
+          `FUNC_SLT: begin
+            wreg_e_out <= `Enable;
+            wreg_addr_out <= rd;
+            aluop_out <= `ALUOP_SLT;
+            reg1_re_out <= `Enable;
+            reg1_addr_out <= rs;
+            reg1_re_out <= `Enable;
+            reg1_addr_out <= rt;
+          end
+          `FUNC_SLTU: begin
+            wreg_e_out <= `Enable;
+            wreg_addr_out <= rd;
+            aluop_out <= `ALUOP_SLTU;
+            reg1_re_out <= `Enable;
+            reg1_addr_out <= rs;
+            reg1_re_out <= `Enable;
+            reg1_addr_out <= rt;
+          end
+          `FUNC_ADD: begin
+            wreg_e_out <= `Enable;
+            wreg_addr_out <= rd;
+            aluop_out <= `ALUOP_ADD;
+            reg1_re_out <= `Enable;
+            reg1_addr_out <= rs;
+            reg1_re_out <= `Enable;
+            reg1_addr_out <= rt;
+          end
+          `FUNC_ADDU: begin
+            wreg_e_out <= `Enable;
+            wreg_addr_out <= rd;
+            aluop_out <= `ALUOP_ADDU;
+            reg1_re_out <= `Enable;
+            reg1_addr_out <= rs;
+            reg1_re_out <= `Enable;
+            reg1_addr_out <= rt;
+          end
+          `FUNC_SUB: begin
+            wreg_e_out <= `Enable;
+            wreg_addr_out <= rd;
+            aluop_out <= `ALUOP_SUB;
+            reg1_re_out <= `Enable;
+            reg1_addr_out <= rs;
+            reg1_re_out <= `Enable;
+            reg1_addr_out <= rt;
+          end
+          `FUNC_SUBU: begin
+            wreg_e_out <= `Enable;
+            wreg_addr_out <= rd;
+            aluop_out <= `ALUOP_SUBU;
+            reg1_re_out <= `Enable;
+            reg1_addr_out <= rs;
+            reg1_re_out <= `Enable;
+            reg1_addr_out <= rt;
+          end
+          `FUNC_MULT: begin
+            wreg_e_out <= `Enable;
+            wreg_addr_out <= rd;
+            aluop_out <= `ALUOP_MULT;
+            reg1_re_out <= `Enable;
+            reg1_addr_out <= rs;
+            reg1_re_out <= `Enable;
+            reg1_addr_out <= rt;
+          end
+          `FUNC_MULTU: begin
+            wreg_e_out <= `Enable;
+            wreg_addr_out <= rd;
+            aluop_out <= `ALUOP_MULTU;
+            reg1_re_out <= `Enable;
+            reg1_addr_out <= rs;
+            reg1_re_out <= `Enable;
+            reg1_addr_out <= rt;
+          end
+          `FUNC_JR: begin
+            wreg_e_out <= `Disable;
+            aluop_out <= `EXOP_JR;
+            reg1_re_out <= `Enable;
+            reg1_addr_out <= rs;
+            branch_e_out <= `Enable;
+            branch_addr_out <= data1_out;
+          end
+          `FUNC_JALR: begin
+            wreg_e_out <= `Enable;
+            wreg_addr_out <= rd;
+            aluop_out <= `EXOP_JALR;
+            reg1_re_out <= `Enable;
+            reg1_addr_out <= rs;
+            branch_e_out <= `Enable;
+            branch_addr_out <= data1_out;
+            // TODO
+            link_addr_out <= pc_plus_8;
+          end
         endcase
       end else begin
         // I类或J类
@@ -234,6 +340,154 @@ module id (
             reg1_addr_out <= rs;
             reg2_re_out <= `Disable;
             immed <= {ins_in[`ImmedRange], 16'h0};
+          end
+          `OP_SLTI: begin
+            wreg_e_out <= `Enable;
+            wreg_addr_out <= rt;
+            aluop_out <= `ALUOP_SLT;
+            reg1_re_out <= `Enable;
+            reg1_addr_out <= rs;
+            reg1_re_out <= `Disable;
+            immed <= {{16{ins_in[15]}}, ins_in[15:0]}; // sign-ext
+          end
+          `OP_SLTIU: begin
+            wreg_e_out <= `Enable;
+            wreg_addr_out <= rt;
+            aluop_out <= `ALUOP_SLTU;
+            reg1_re_out <= `Enable;
+            reg1_addr_out <= rs;
+            reg1_re_out <= `Disable;
+            immed <= {{16{ins_in[15]}}, ins_in[15:0]}; // sign-ext
+          end
+          `OP_ADDI: begin
+            wreg_e_out <= `Enable;
+            wreg_addr_out <= rt;
+            aluop_out <= `ALUOP_ADD;
+            reg1_re_out <= `Enable;
+            reg1_addr_out <= rs;
+            reg1_re_out <= `Disable;
+            immed <= {{16{ins_in[15]}}, ins_in[15:0]}; // sign-ext
+          end
+          `OP_ADDIU: begin
+            wreg_e_out <= `Enable;
+            wreg_addr_out <= rt;
+            aluop_out <= `ALUOP_ADDU;
+            reg1_re_out <= `Enable;
+            reg1_addr_out <= rs;
+            reg1_re_out <= `Disable;
+            immed <= {{16{ins_in[15]}}, ins_in[15:0]}; // sign-ext
+          end
+          `OP_J: begin
+            wreg_e_out <= `Disable;
+            aluop_out <= `EXOP_J;
+            reg1_re_out <= `Disable;
+            reg2_re_out <= `Disable;
+            branch_e_out <= `Enable;
+            branch_addr_out <= {4'b0000, address[25:0], 2'b00};
+          end
+          `OP_JAL: begin
+            wreg_e_out <= `Enable;
+            wreg_addr_out <= 5'd31; // $ra
+            aluop_out <= `EXOP_JAL;
+            reg1_re_out <= `Disable;
+            reg2_re_out <= `Disable;
+            branch_e_out <= `Enable;
+            branch_addr_out <= {4'b0000, address[25:0], 2'b00};
+          end
+          `OP_BEQ: begin
+            wreg_e_out <= `Disable;
+            aluop_out <= `EXOP_BEQ;
+            reg1_re_out <= `Enable;
+            reg1_addr_out <= rs;
+            reg2_re_out <= `Enable;
+            reg2_addr_out <= rt;
+            // FIXME: 在这里做合适吗？
+            if (reg1_data_in == reg2_data_in) begin
+              branch_e_out <= `Enable;
+              branch_addr_out <= pc_plus_4 + {{14{offset[15]}}, offset[15:0], 2'b00};
+            end
+          end
+          `OP_BGTZ: begin
+            wreg_e_out <= `Disable;
+            aluop_out <= `EXOP_BGTZ;
+            reg1_re_out <= `Enable;
+            reg1_addr_out <= rs;
+            reg2_re_out <= `Disable;
+            if (reg1_data_in[31] == 1'b0 && reg1_data_in != `ZeroWord) begin
+              branch_e_out <= `Enable;
+              branch_addr_out <= pc_plus_4 + {{14{offset[15]}}, offset[15:0], 2'b00};
+            end
+          end
+          `OP_BLEZ: begin
+            wreg_e_out <= `Disable;
+            aluop_out <= `EXOP_BLEZ;
+            reg1_re_out <= `Enable;
+            reg1_addr_out <= rs;
+            reg2_re_out <= `Disable;
+            if (reg1_data_in[31] == 1'b1 || reg1_data_in == `ZeroWord) begin
+              branch_e_out <= `Enable;
+              branch_addr_out <= pc_plus_4 + {{14{offset[15]}}, offset[15:0], 2'b00};
+            end
+          end
+          `OP_BNE: begin
+            wreg_e_out <= `Disable;
+            aluop_out <= `EXOP_BNE;
+            reg1_re_out <= `Enable;
+            reg1_addr_out <= rs;
+            reg2_re_out <= `Enable;
+            reg2_addr_out <= rt;
+            if (reg1_data_in != reg2_data_in) begin
+              branch_e_out <= `Enable;
+              branch_addr_out <= pc_plus_4 + {{14{offset[15]}}, offset[15:0], 2'b00};
+            end
+          end
+          `OP_BGEZ: begin
+            wreg_e_out <= `Disable;
+            aluop_out <= `EXOP_BGEZ;
+            reg1_re_out <= `Enable;
+            reg1_addr_out <= rs;
+            reg2_re_out <= `Disable;
+            if (reg1_data_in[31] == 1'b0) begin
+              branch_e_out <= `Enable;
+              branch_addr_out <= pc_plus_4 + {{14{offset[15]}}, offset[15:0], 2'b00};
+            end
+          end
+          `OP_BGEZAL: begin
+            wreg_e_out <= `Enable;
+            wreg_addr_out <= `RegCountLog2'd31;
+            aluop_out <= `EXOP_BGEZAL;
+            reg1_re_out <= `Enable;
+            reg1_addr_out <= rs;
+            reg2_re_out <= `Disable;
+            link_addr_out <= pc_plus_8;
+            if (reg1_data_in[31] == 1'b0) begin
+              branch_e_out <= `Enable;
+              branch_addr_out <= pc_plus_4 + {{14{offset[15]}}, offset[15:0], 2'b00};
+            end
+          end
+          `OP_BLTZ: begin
+            wreg_e_out <= `Disable;
+            aluop_out <= `EXOP_BLTZ;
+            reg1_re_out <= `Enable;
+            reg1_addr_out <= rs;
+            reg2_re_out <= `Disable;
+            if (reg1_data_in[31] == 1'b1) begin
+              branch_e_out <= `Enable;
+              branch_addr_out <= pc_plus_4 + {{14{offset[15]}}, offset[15:0], 2'b00};
+            end
+          end
+          `OP_BLTZAL: begin
+            wreg_e_out <= `Enable;
+            wreg_addr_out <= `RegCountLog2'd31;
+            aluop_out <= `EXOP_BLTZAL;
+            reg1_re_out <= `Enable;
+            reg1_addr_out <= rs;
+            reg2_re_out <= `Disable;
+            link_addr_out <= pc_plus_8;
+            if (reg1_data_in[31] == 1'b1) begin
+              branch_e_out <= `Enable;
+              branch_addr_out <= pc_plus_4 + {{14{offset[15]}}, offset[15:0], 2'b00};
+            end
           end
           default: begin 
           end
