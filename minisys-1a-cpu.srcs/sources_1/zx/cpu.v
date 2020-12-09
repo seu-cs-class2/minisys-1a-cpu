@@ -37,6 +37,10 @@ module cpu (
   wire ex_hilo_we_in;
   wire[`WordRange] ex_hi_data_in;
   wire[`WordRange] ex_lo_data_in;
+  wire[`DivMulResultRange] div_result_signed;
+  wire[`DivMulResultRange] div_result_unsigned;
+  wire div_result_valid_signed;
+  wire div_result_valid_unsigned;
 
   // EX输出
   wire ex_wreg_e_out;
@@ -45,6 +49,12 @@ module cpu (
   wire ex_hilo_we_out;
   wire[`WordRange] ex_hi_data_out;
   wire[`WordRange] ex_lo_data_out;
+  wire[`WordRange] div_data1_signed;
+  wire[`WordRange] div_data2_signed;
+  wire[`WordRange] div_data1_unsigned;
+  wire[`WordRange] div_data2_unsigned;
+  wire div_data_valid_signed;
+  wire div_data_valid_unsigned;
 
   // MEM输入
   wire mem_wreg_e_in;
@@ -79,6 +89,17 @@ module cpu (
   wire[`RegRangeLog2] reg1_addr;
   wire[`RegRangeLog2] reg2_addr;
 
+  //流水线暂停相关
+  wire pause_req_id;
+  wire pause_req_ex;
+  wire pause_res_pc;
+  wire pause_res_if;
+  wire pause_res_id;
+  wire pause_res_ex;
+  wire pause_res_mem;
+  wire pause_res_wb;
+
+
   // HILO
   hilo  u_hilo (  
   .rst                      (rst),
@@ -110,7 +131,10 @@ module cpu (
   .clk                      (clk),
   .rst                      (rst),
   .pc                       (pc),
-  .imem_e_out               (imem_e_out)
+  .imem_e_out               (imem_e_out),
+  .pause                    (pause_res_pc),
+  .branch_e_in              (),
+  .branch_addr_in           ()
   );
 
   // IF-ID
@@ -120,7 +144,8 @@ module cpu (
   .if_pc                    (pc),
   .if_ins                   (imem_data_in),
   .id_pc                    (id_pc_in),
-  .id_ins                   (id_ins_in)
+  .id_ins                   (id_ins_in),
+  .pause                    (pause_res_if)
   );
 
   // ID
@@ -144,7 +169,11 @@ module cpu (
   .ex_wreg_addr_in          (ex_wreg_addr_out),
   .mem_wreg_e_in            (mem_wreg_e_out),
   .mem_wreg_data_in         (mem_wreg_data_out),
-  .mem_wreg_addr_in         (mem_wreg_addr_out)
+  .mem_wreg_addr_in         (mem_wreg_addr_out),
+  .pause_req                (pause_req_id),
+  .branch_e_out             (),
+  .branch_addr_out          (),
+  .link_addr_out            ()
   );
 
   // ID-EX
@@ -156,11 +185,18 @@ module cpu (
   .id_data2                 (id_data2_out),
   .id_wreg_addr             (id_wreg_addr_out),
   .id_wreg_e                (id_wreg_e_out),
+  .id_branch_e              (),
+  .id_link_addr             (),
+  .id_branch_addr           (),
   .ex_aluop                 (ex_aluop_in),
   .ex_data1                 (ex_data1_in),
   .ex_data2                 (ex_data2_in),
   .ex_wreg_addr             (ex_wreg_addr_in),
-  .ex_wreg_e                (ex_wreg_e_in)
+  .ex_wreg_e                (ex_wreg_e_in),
+  .ex_branch_e              (),
+  .ex_branch_addr           (),
+  .ex_link_addr             (),
+  .pause                    (pause_res_ex)
   );
 
   // EX
@@ -184,8 +220,45 @@ module cpu (
   .wb_lo_data_in            (wb_lo_data_in),
   .hilo_we_out              (ex_hilo_we_out),
   .hi_data_out              (ex_hi_data_out),
-  .lo_data_out              (ex_lo_data_out)
+  .lo_data_out              (ex_lo_data_out),
+  .pause_req                (pause_req_ex),
+  .link_addr_in             (),
+  .div_data1_signed         (div_data1_signed),
+  .div_data2_signed         (div_data2_signed),
+  .div_data1_unsigned       (div_data1_unsigned),
+  .div_data2_unsigned       (div_data2_unsigned),
+  .div_data_valid_signed    (div_data_valid_signed),
+  .div_data_valid_unsigned  (div_data_valid_unsigned),
+  .div_result_signed        (div_result_signed),
+  .div_result_unsigned      (div_result_unsigned),
+  .div_result_valid_signed  (div_result_valid_signed),
+  .div_result_valid_unsigned(div_result_valid_unsigned)
   );
+
+  div_signed u_div_signed(
+    .aclk                   (clk),
+    .s_axis_divisor_tdata   (div_data2_signed),
+    .s_axis_divisor_tvalid  (div_data_valid_signed),
+    .s_axis_dividend_tdata  (div_data1_signed),
+    .s_axis_dividend_tvalid (1'b1),
+    .m_axis_dout_tdata      (div_result_signed),
+    .m_axis_dout_tvalid     (div_result_valid_signed)
+  );
+
+  div_unsigned u_div_unsigned(
+    .aclk                   (clk),
+    .s_axis_divisor_tdata   (div_data2_unsigned),
+    .s_axis_divisor_tvalid  (div_data_valid_unsigned),
+    .s_axis_dividend_tdata  (div_data1_unsigned),
+    .s_axis_dividend_tvalid (1'b1),
+    .m_axis_dout_tdata      (div_result_unsigned),
+    .m_axis_dout_tvalid     (div_result_valid_unsigned)
+  );
+
+
+
+
+
 
   // EX-MEM
   ex_mem  u_ex_mem (
@@ -202,7 +275,8 @@ module cpu (
   .ex_lo_data               (ex_lo_data_out),
   .mem_hilo_we              (mem_hilo_we_in),
   .mem_hi_data              (mem_hi_data_in),
-  .mem_lo_data              (mem_lo_data_in)
+  .mem_lo_data              (mem_lo_data_in),
+  .pause                    (pause_res_mem)
   );
 
   // MEM
@@ -237,7 +311,20 @@ module cpu (
   .mem_lo_data              (mem_lo_data_out),
   .wb_hilo_we               (wb_hilo_we_in),
   .wb_hi_data               (wb_hi_data_in),
-  .wb_lo_data               (wb_lo_data_in)
+  .wb_lo_data               (wb_lo_data_in),
+  .pause                    (pause_res_wb)
+  );
+
+  ppl_scheduler u_ppl_sch(
+  .rst                      (rst),
+  .pause_req_id             (pause_req_id),
+  .pause_req_ex             (pause_req_ex),
+  .pause_res_pc             (pause_res_pc),
+  .pause_res_if             (pause_res_if),
+  .pause_res_id             (pause_res_id),
+  .pause_res_ex             (pause_res_ex),
+  .pause_res_mem            (pause_res_mem),
+  .pause_res_wb             (pause_res_wb)
   );
 
 endmodule

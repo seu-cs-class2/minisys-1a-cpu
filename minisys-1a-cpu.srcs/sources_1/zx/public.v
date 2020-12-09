@@ -23,6 +23,7 @@
 `define ImmedRange 15:0 // 指令字中immediate的范围
 `define OffsetRange 15:0 // 指令字中offset的范围
 `define AddressRange 25:0 // 指令字中address的范围
+`define DivMulResultRange 63:0 // 乘除法结果范围 高低32位需分开
 
 // 设计相关
 // ALU相关

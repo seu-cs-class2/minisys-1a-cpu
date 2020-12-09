@@ -3,14 +3,14 @@
 
 `include "public.v"
 
-// 指令译码模块
+// 指令译码模块，译码的结果要保存在
 // 对指令进行译码，输出包括：
 // 源操作数1、源操作数2、写入的目的寄存器、运算类型（逻辑、移位、算术）
 module id (
 
   input rst, // 复位
-  input wire[`WordRange] pc_in, // 输入的PC值
-  input wire[`WordRange] ins_in, // 输入的指令
+  input wire[`WordRange] pc_in, // 输入的PC值，译码阶段指令地址
+  input wire[`WordRange] ins_in, // 输入的指令，即取出的指令
 
   // 先这样写，不直通，这为后面流水暂存提供条件
   input wire[`WordRange] reg1_data_in, // 输入的寄存器数据1
@@ -30,11 +30,11 @@ module id (
   output reg[`RegRangeLog2] wreg_addr_out, // 写寄存器地址输出
 
   // 下面部分用于采用数据前送法解决相隔0条（ID-EX）和相隔1条（ID-MEM）阶段的RAW数据相关
-  // EX阶段运算结果
+  // EX阶段运算结果(即上一条指令)
   input wire ex_wreg_e_in,
   input wire[`WordRange] ex_wreg_data_in,
   input wire[`RegRangeLog2] ex_wreg_addr_in,
-  // MEM阶段运算结果
+  // MEM阶段运算结果(上两条指令)
   input wire mem_wreg_e_in,
   input wire[`WordRange] mem_wreg_data_in,
   input wire[`RegRangeLog2] mem_wreg_addr_in,
@@ -87,7 +87,7 @@ module id (
       immed <= `ZeroWord;
       link_addr_out <= `ZeroWord;
       // 根据op翻译
-      // R类指令
+      // R类指令（寄存器操作类型，除了eret指令之外，op全为000000）
       if (op == `OP_RTYPE) begin
         case (func)
           `FUNC_OR: begin
@@ -181,21 +181,21 @@ module id (
             immed <= {27'h0, shamt};
           end
           // 注意HI/LO不在32个寄存器组中，使能不要给错
-          `FUNC_MFHI: begin
+          `FUNC_MFHI: begin   //MFHI 读HI至rd
             wreg_e_out <= `Enable;
             wreg_addr_out <= rd;
             aluop_out <= `EXOP_MFHI;
             reg1_re_out <= `Disable;
             reg2_re_out <= `Disable;
           end
-          `FUNC_MFLO: begin
+          `FUNC_MFLO: begin   //MFLO 读LO至rd
             wreg_e_out <= `Enable;
             wreg_addr_out <= rd;
             aluop_out <= `EXOP_MFLO;
             reg1_re_out <= `Disable;
             reg2_re_out <= `Disable;
           end
-          `FUNC_MTHI: begin
+          `FUNC_MTHI: begin   //MTHI 写rs至HI
             wreg_e_out <= `Disable;
             aluop_out <= `EXOP_MTHI;
             reg1_re_out <= `Enable;
@@ -209,7 +209,7 @@ module id (
             reg1_addr_out <= rs;
             reg2_re_out <= `Disable;
           end
-          `FUNC_SLT: begin
+          `FUNC_SLT: begin   //比大小 置1
             wreg_e_out <= `Enable;
             wreg_addr_out <= rd;
             aluop_out <= `ALUOP_SLT;
@@ -281,7 +281,7 @@ module id (
             reg1_re_out <= `Enable;
             reg1_addr_out <= rt;
           end
-          `FUNC_JR: begin
+          `FUNC_JR: begin   //rs->pc
             wreg_e_out <= `Disable;
             aluop_out <= `EXOP_JR;
             reg1_re_out <= `Enable;
@@ -289,7 +289,7 @@ module id (
             branch_e_out <= `Enable;
             branch_addr_out <= data1_out;
           end
-          `FUNC_JALR: begin
+          `FUNC_JALR: begin   //rd->PC+4; PC->rs(rd=$31,rs=$1)
             wreg_e_out <= `Enable;
             wreg_addr_out <= rd;
             aluop_out <= `EXOP_JALR;
