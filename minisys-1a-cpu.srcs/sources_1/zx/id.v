@@ -41,9 +41,12 @@ module id (
 
   output reg pause_req,
 
-  output reg branch_e_out,
-  output reg[`WordRange] branch_addr_out,
-  output reg[`WordRange] link_addr_out
+  input wire is_in_delayslot_in, //当前（位于译码阶段）指令是否是延迟槽内指令（必须执行）
+  output reg is_in_delayslot_out,  //当前（位于译码阶段）指令是否是延迟槽内指令（必须执行）
+  output reg next_is_in_delayslot, //下条指令是否处是延迟槽内指令（即当前指令是否要跳转）
+  output reg branch_e_out,  //分支生效信号
+  output reg[`WordRange] branch_addr_out,   //分支跳转地址
+  output reg[`WordRange] link_addr_out  //转移指令需要保存的地址
 
 );
 
@@ -402,6 +405,7 @@ module id (
             reg2_re_out <= `Enable;
             reg2_addr_out <= rt;
             // FIXME: 在这里做合适吗？
+            // 原理上是可以的，因为gpr不是在上升沿触发，完全可以在pc+4之前得到寄存器数据
             if (reg1_data_in == reg2_data_in) begin
               branch_e_out <= `Enable;
               branch_addr_out <= pc_plus_4 + {{14{offset[15]}}, offset[15:0], 2'b00};

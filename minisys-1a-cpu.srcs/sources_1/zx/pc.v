@@ -13,8 +13,8 @@ module pc (
   
   input wire pause,
 
-  input wire branch_e_in,
-  input wire[`WordRange] branch_addr_in
+  input wire branch_e_in, //是否转移
+  input wire[`WordRange] branch_addr_in  //转移的地址
 
 );
 
@@ -33,7 +33,7 @@ module pc (
       pc <= `ZeroWord;
     end else if (pause == `Enable) begin
       pc <= pc;
-    end else if (branch_e_in == `Enable) begin
+    end else if (branch_e_in == `Enable) begin  //如果要转移，则pc直接赋值为转移地址
       pc <= branch_addr_in;
     end else begin
       pc <= pc + 32'd4;

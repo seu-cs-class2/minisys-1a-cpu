@@ -48,12 +48,6 @@ module alu (
       `ALUOP_MULT: begin
         
       end
-      `ALUOP_DIVU: begin
-        
-      end
-      `ALUOP_DIV: begin
-        
-      end
       `ALUOP_AND: begin
         result = data1 & data2;
       end

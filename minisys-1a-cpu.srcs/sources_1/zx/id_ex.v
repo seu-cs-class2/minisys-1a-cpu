@@ -27,6 +27,11 @@ module id_ex(
   output reg[`WordRange] ex_branch_addr,
   output reg[`WordRange] ex_link_addr,
 
+  input wire id_is_in_delayslot,  //当前处在译码阶段的指令是否是延迟槽内指令
+  input wire next_is_in_delayslot,    //新增加的与延迟槽相关，下一条进入译码阶段的指令是否是延迟槽内指令
+  output reg ex_is_in_delayslot,    //当前处在执行阶段的指令是否是延迟槽内指令
+  output reg is_in_delayslot,   //当前在译码阶段的指令是否是延迟槽内指令
+
   input wire pause
   
 );
@@ -41,6 +46,8 @@ module id_ex(
       ex_branch_e <= `Disable;
       ex_branch_addr <= `ZeroWord;
       ex_link_addr <= `ZeroWord;
+      ex_is_in_delayslot <= `Disable;
+      is_in_delayslot <= `Disable;
     end else if (pause == `Enable) begin
       ex_aluop <= `ALUOP_NOP;
       ex_data1 <= `ZeroWord;
@@ -49,6 +56,8 @@ module id_ex(
       ex_branch_e <= `Disable;
       ex_branch_addr <= `ZeroWord;
       ex_link_addr <= `ZeroWord;
+      ex_is_in_delayslot <= `Disable;
+      is_in_delayslot <= `Disable;
     end else begin
       ex_aluop <= id_aluop;
       ex_data1 <= id_data1;
@@ -58,6 +67,8 @@ module id_ex(
       ex_branch_e <= id_branch_e;
       ex_branch_addr <= id_branch_addr;
       ex_link_addr <= id_link_addr;
+      ex_is_in_delayslot <= id_is_in_delayslot;
+      is_in_delayslot <= next_is_in_delayslot;
     end
   end
 

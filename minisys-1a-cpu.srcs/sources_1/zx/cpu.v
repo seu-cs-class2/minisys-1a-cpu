@@ -20,6 +20,7 @@ module cpu (
   assign imem_addr_out = pc;
   wire[`WordRange] id_pc_in;
   wire[`WordRange] id_ins_in;
+  wire is_in_delayslot_in;
 
   // ID输出
   wire[`ALUOpRange] id_aluop_out;
@@ -27,6 +28,11 @@ module cpu (
   wire[`WordRange] id_data2_out;
   wire id_wreg_e_out;
   wire[`RegRangeLog2] id_wreg_addr_out;
+  wire branch_e_out;
+  wire[`WordRange] branch_addr_out;
+  wire[`WordRange] link_addr_out;
+  wire next_is_in_delayslot;
+  wire is_in_delayslot_out;
 
   // EX输入
   wire[`ALUOpRange] ex_aluop_in;
@@ -41,6 +47,8 @@ module cpu (
   wire[`DivMulResultRange] div_result_unsigned;
   wire div_result_valid_signed;
   wire div_result_valid_unsigned;
+  wire[`WordRange] ex_link_addr_in;
+  wire ex_is_in_delayslot;
 
   // EX输出
   wire ex_wreg_e_out;
@@ -76,7 +84,7 @@ module cpu (
   wire wb_wreg_e_in;
   wire[`RegRangeLog2] wb_wreg_addr_in;
   wire[`WordRange] wb_wreg_data_in;
-  // 下面三根线直接送到HILO
+  // 下面三根线直接�?�到HILO
   wire wb_hilo_we_in;
   wire[`WordRange] wb_hi_data_in;
   wire[`WordRange] wb_lo_data_in;
@@ -89,7 +97,7 @@ module cpu (
   wire[`RegRangeLog2] reg1_addr;
   wire[`RegRangeLog2] reg2_addr;
 
-  //流水线暂停相关
+  //流水线暂停相�??
   wire pause_req_id;
   wire pause_req_ex;
   wire pause_res_pc;
@@ -133,8 +141,8 @@ module cpu (
   .pc                       (pc),
   .imem_e_out               (imem_e_out),
   .pause                    (pause_res_pc),
-  .branch_e_in              (),
-  .branch_addr_in           ()
+  .branch_e_in              (branch_e_out),
+  .branch_addr_in           (branch_addr_out)
   );
 
   // IF-ID
@@ -171,9 +179,12 @@ module cpu (
   .mem_wreg_data_in         (mem_wreg_data_out),
   .mem_wreg_addr_in         (mem_wreg_addr_out),
   .pause_req                (pause_req_id),
-  .branch_e_out             (),
-  .branch_addr_out          (),
-  .link_addr_out            ()
+  .branch_e_out             (branch_e_out),
+  .branch_addr_out          (branch_addr_out),
+  .link_addr_out            (link_addr_out),
+  .is_in_delayslot_in       (is_in_delayslot_in),
+  .is_in_delayslot_out      (is_in_delayslot_out),
+  .next_is_in_delayslot     (next_is_in_delayslot)
   );
 
   // ID-EX
@@ -185,18 +196,18 @@ module cpu (
   .id_data2                 (id_data2_out),
   .id_wreg_addr             (id_wreg_addr_out),
   .id_wreg_e                (id_wreg_e_out),
-  .id_branch_e              (),
-  .id_link_addr             (),
-  .id_branch_addr           (),
+  .id_link_addr             (link_addr_out),
   .ex_aluop                 (ex_aluop_in),
   .ex_data1                 (ex_data1_in),
   .ex_data2                 (ex_data2_in),
   .ex_wreg_addr             (ex_wreg_addr_in),
   .ex_wreg_e                (ex_wreg_e_in),
-  .ex_branch_e              (),
-  .ex_branch_addr           (),
-  .ex_link_addr             (),
-  .pause                    (pause_res_ex)
+  .ex_link_addr             (ex_link_addr_in),
+  .pause                    (pause_res_ex),
+  .id_is_in_delayslot       (is_in_delayslot_out),
+  .next_is_in_delayslot     (next_is_in_delayslot),
+  .ex_is_in_delayslot       (ex_is_in_delayslot),
+  .is_in_delayslot          (is_in_delayslot_in)
   );
 
   // EX
@@ -222,7 +233,7 @@ module cpu (
   .hi_data_out              (ex_hi_data_out),
   .lo_data_out              (ex_lo_data_out),
   .pause_req                (pause_req_ex),
-  .link_addr_in             (),
+  .link_addr_in             (ex_link_addr_in), //******
   .div_data1_signed         (div_data1_signed),
   .div_data2_signed         (div_data2_signed),
   .div_data1_unsigned       (div_data1_unsigned),
@@ -232,7 +243,8 @@ module cpu (
   .div_result_signed        (div_result_signed),
   .div_result_unsigned      (div_result_unsigned),
   .div_result_valid_signed  (div_result_valid_signed),
-  .div_result_valid_unsigned(div_result_valid_unsigned)
+  .div_result_valid_unsigned(div_result_valid_unsigned),
+  .is_in_delayslot          (ex_is_in_delayslot)  //******
   );
 
   div_signed u_div_signed(

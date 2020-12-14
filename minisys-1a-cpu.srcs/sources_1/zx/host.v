@@ -40,7 +40,7 @@ module host (
   // IMEM
   blk_mem_gen_0 u_blk_mem_gen_0 (
   .addra                    (imem_imem_addr_in[15:2]), // 16->14，65536/4=16384
-  .clka                     (clk),
+  .clka                     (~clk), //为什么这里不是相反的时钟，这样在pc上升沿变化的时候mem会取的是当前pc的值还是下一个pc的值？
   .ena                      (imem_imem_e_in),
   .douta                    (imem_imem_data_out)
   );
