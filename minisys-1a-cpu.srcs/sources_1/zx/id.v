@@ -4,15 +4,15 @@
 `include "public.v"
 
 // 指令译码模块，译码的结果要保存在
-// 对指令进行译码，输出包括：
-// 源操作数1、源操作数2、写入的目的寄存器、运算类型（逻辑、移位、算术）
+// 对指令进行译码，输出包括�???
+// 源操作数1、源操作�???2、写入的目的寄存器�?�运算类型（逻辑、移位�?�算术）
 module id (
 
   input rst, // 复位
   input wire[`WordRange] pc_in, // 输入的PC值，译码阶段指令地址
   input wire[`WordRange] ins_in, // 输入的指令，即取出的指令
 
-  // 先这样写，不直通，这为后面流水暂存提供条件
+  // 先这样写，不直�?�，这为后面流水暂存提供条件
   input wire[`WordRange] reg1_data_in, // 输入的寄存器数据1
   input wire[`WordRange] reg2_data_in, // 输入的寄存器数据2
 
@@ -23,39 +23,39 @@ module id (
 
   output reg[`ALUOpRange] aluop_out, // 输出的ALUOp
 
-  output reg[`WordRange] data1_out, // 输出的数据1
-  output reg[`WordRange] data2_out, // 输出的数据2
+  output reg[`WordRange] data1_out, // 输出的数�???1
+  output reg[`WordRange] data2_out, // 输出的数�???2
   
   output reg wreg_e_out, // 写寄存器使能输出
   output reg[`RegRangeLog2] wreg_addr_out, // 写寄存器地址输出
 
-  // 下面部分用于采用数据前送法解决相隔0条（ID-EX）和相隔1条（ID-MEM）阶段的RAW数据相关
-  // EX阶段运算结果(即上一条指令)
+  // 下面部分用于采用数据前�?�法解决相隔0条（ID-EX）和相隔1条（ID-MEM）阶段的RAW数据相关
+  // EX阶段运算结果(即上�???条指�???)
   input wire ex_wreg_e_in,
   input wire[`WordRange] ex_wreg_data_in,
   input wire[`RegRangeLog2] ex_wreg_addr_in,
-  // MEM阶段运算结果(上两条指令)
+  // MEM阶段运算结果(上两条指�???)
   input wire mem_wreg_e_in,
   input wire[`WordRange] mem_wreg_data_in,
   input wire[`RegRangeLog2] mem_wreg_addr_in,
 
   output reg pause_req,
 
-  input wire is_in_delayslot_in, //当前（位于译码阶段）指令是否是延迟槽内指令（必须执行）
-  output reg is_in_delayslot_out,  //当前（位于译码阶段）指令是否是延迟槽内指令（必须执行）
+  input wire is_in_delayslot_in, //当前（位于译码阶段）指令是否是延迟槽内指令（必须执行�???
+  output reg is_in_delayslot_out,  //当前（位于译码阶段）指令是否是延迟槽内指令（必须执行�???
   output reg next_is_in_delayslot, //下条指令是否处是延迟槽内指令（即当前指令是否要跳转）
   output reg branch_e_out,  //分支生效信号
   output reg[`WordRange] branch_addr_out,   //分支跳转地址
-  output reg[`WordRange] link_addr_out  //转移指令需要保存的地址
+  output reg[`WordRange] link_addr_out  //转移指令�???要保存的地址
 
 );
 
-  // 指令的各个可能组分
+  // 指令的各个可能组�???
   wire[5:0] op = ins_in[`OpRange];
   wire[4:0] rs = ins_in[`RsRange];
   wire[4:0] rt = ins_in[`RtRange];
   wire[4:0] rd = ins_in[`RdRange];
-  wire[4:0] shamt = shamt;
+  wire[4:0] shamt = ins_in[`ShamtRange];
   wire[5:0] func = ins_in[`FuncRange];
   wire[15:0] immediate = ins_in[`ImmedRange];
   wire[15:0] offset = ins_in[`OffsetRange];
@@ -73,7 +73,7 @@ module id (
 
   // 指令译码
   always @(*) begin
-    // rst时关掉所有使能，清空立即数暂存
+    // rst时关掉所有使能，清空立即数暂�???
     if (rst == `Enable) begin
       aluop_out <= `ALUOP_NOP;
       wreg_e_out <= `Disable;
@@ -82,7 +82,7 @@ module id (
       immed <= `ZeroWord;
     // 具体译码逻辑
     end else begin
-      // 先赋默认值，以免有些指令不需要修改其中一些值时出现错误
+      // 先赋默认值，以免有些指令不需要修改其中一些�?�时出现错误
       aluop_out <= `ALUOP_NOP;
       wreg_e_out <= `Disable;
       reg1_re_out <= `Disable;
@@ -90,7 +90,7 @@ module id (
       immed <= `ZeroWord;
       link_addr_out <= `ZeroWord;
       // 根据op翻译
-      // R类指令（寄存器操作类型，除了eret指令之外，op全为000000）
+      // R类指令（寄存器操作类型，除了eret指令之外，op全为000000�???
       if (op == `OP_RTYPE) begin
         case (func)
           `FUNC_OR: begin
@@ -157,13 +157,22 @@ module id (
             reg2_addr_out <= rt;
           end
           `FUNC_SLL: begin
-            wreg_e_out <= `Enable;
-            wreg_addr_out <= rd;
-            aluop_out <= `ALUOP_SLL;
-            reg1_re_out <= `Disable;
-            reg2_re_out <= `Enable;
-            reg2_addr_out <= rt;
-            immed <= {27'h0, shamt};
+            if(rt == 0 && rd == 0 && shamt == 0)  begin //说明是空指令
+              aluop_out <= `ALUOP_NOP;
+              wreg_e_out <= `Disable;
+              reg1_re_out <= `Disable;
+              reg2_re_out <= `Disable;
+              immed <= `ZeroWord;
+              link_addr_out <= `ZeroWord;
+            end else begin
+              wreg_e_out <= `Enable;
+              wreg_addr_out <= rd;
+              aluop_out <= `ALUOP_SLL;
+              reg1_re_out <= `Disable;
+              reg2_re_out <= `Enable;
+              reg2_addr_out <= rt;
+              immed <= {27'h0, shamt};
+            end             
           end
           `FUNC_SRL: begin
             wreg_e_out <= `Enable;
@@ -183,7 +192,7 @@ module id (
             reg2_addr_out <= rt;
             immed <= {27'h0, shamt};
           end
-          // 注意HI/LO不在32个寄存器组中，使能不要给错
+          // 注意HI/LO不在32个寄存器组中，使能不要给�???
           `FUNC_MFHI: begin   //MFHI 读HI至rd
             wreg_e_out <= `Enable;
             wreg_addr_out <= rd;
@@ -212,14 +221,14 @@ module id (
             reg1_addr_out <= rs;
             reg2_re_out <= `Disable;
           end
-          `FUNC_SLT: begin   //比大小 置1
+          `FUNC_SLT: begin   //比大�??? �???1
             wreg_e_out <= `Enable;
             wreg_addr_out <= rd;
             aluop_out <= `ALUOP_SLT;
             reg1_re_out <= `Enable;
             reg1_addr_out <= rs;
-            reg1_re_out <= `Enable;
-            reg1_addr_out <= rt;
+            reg2_re_out <= `Enable;
+            reg2_addr_out <= rt;
           end
           `FUNC_SLTU: begin
             wreg_e_out <= `Enable;
@@ -227,8 +236,8 @@ module id (
             aluop_out <= `ALUOP_SLTU;
             reg1_re_out <= `Enable;
             reg1_addr_out <= rs;
-            reg1_re_out <= `Enable;
-            reg1_addr_out <= rt;
+            reg2_re_out <= `Enable;
+            reg2_addr_out <= rt;
           end
           `FUNC_ADD: begin
             wreg_e_out <= `Enable;
@@ -236,8 +245,8 @@ module id (
             aluop_out <= `ALUOP_ADD;
             reg1_re_out <= `Enable;
             reg1_addr_out <= rs;
-            reg1_re_out <= `Enable;
-            reg1_addr_out <= rt;
+            reg2_re_out <= `Enable;
+            reg2_addr_out <= rt;
           end
           `FUNC_ADDU: begin
             wreg_e_out <= `Enable;
@@ -245,8 +254,8 @@ module id (
             aluop_out <= `ALUOP_ADDU;
             reg1_re_out <= `Enable;
             reg1_addr_out <= rs;
-            reg1_re_out <= `Enable;
-            reg1_addr_out <= rt;
+            reg2_re_out <= `Enable;
+            reg2_addr_out <= rt;
           end
           `FUNC_SUB: begin
             wreg_e_out <= `Enable;
@@ -254,8 +263,8 @@ module id (
             aluop_out <= `ALUOP_SUB;
             reg1_re_out <= `Enable;
             reg1_addr_out <= rs;
-            reg1_re_out <= `Enable;
-            reg1_addr_out <= rt;
+            reg2_re_out <= `Enable;
+            reg2_addr_out <= rt;
           end
           `FUNC_SUBU: begin
             wreg_e_out <= `Enable;
@@ -263,8 +272,24 @@ module id (
             aluop_out <= `ALUOP_SUBU;
             reg1_re_out <= `Enable;
             reg1_addr_out <= rs;
+            reg2_re_out <= `Enable;
+            reg2_addr_out <= rt;
+          end
+          `FUNC_DIV: begin
+            wreg_e_out <= `Disable;
+            aluop_out <= `ALUOP_DIV;
             reg1_re_out <= `Enable;
-            reg1_addr_out <= rt;
+            reg1_addr_out <= rs;
+            reg2_re_out <= `Enable;
+            reg2_addr_out <= rt;
+          end
+          `FUNC_DIVU: begin
+            wreg_e_out <= `Disable;
+            aluop_out <= `ALUOP_DIVU;
+            reg1_re_out <= `Enable;
+            reg1_addr_out <= rs;
+            reg2_re_out <= `Enable;
+            reg2_addr_out <= rt;
           end
           `FUNC_MULT: begin
             wreg_e_out <= `Enable;
@@ -272,8 +297,8 @@ module id (
             aluop_out <= `ALUOP_MULT;
             reg1_re_out <= `Enable;
             reg1_addr_out <= rs;
-            reg1_re_out <= `Enable;
-            reg1_addr_out <= rt;
+            reg2_re_out <= `Enable;
+            reg2_addr_out <= rt;
           end
           `FUNC_MULTU: begin
             wreg_e_out <= `Enable;
@@ -281,8 +306,8 @@ module id (
             aluop_out <= `ALUOP_MULTU;
             reg1_re_out <= `Enable;
             reg1_addr_out <= rs;
-            reg1_re_out <= `Enable;
-            reg1_addr_out <= rt;
+            reg2_re_out <= `Enable;
+            reg2_addr_out <= rt;
           end
           `FUNC_JR: begin   //rs->pc
             wreg_e_out <= `Disable;
@@ -291,6 +316,7 @@ module id (
             reg1_addr_out <= rs;
             branch_e_out <= `Enable;
             branch_addr_out <= data1_out;
+            next_is_in_delayslot <= `Enable;
           end
           `FUNC_JALR: begin   //rd->PC+4; PC->rs(rd=$31,rs=$1)
             wreg_e_out <= `Enable;
@@ -302,10 +328,11 @@ module id (
             branch_addr_out <= data1_out;
             // TODO
             link_addr_out <= pc_plus_8;
+            next_is_in_delayslot <= `Enable;
           end
         endcase
       end else begin
-        // I类或J类
+        // I类或J�???
         case (op)
           `OP_ORI: begin
             wreg_e_out <= `Enable;
@@ -335,7 +362,7 @@ module id (
             immed <= {16'h0, ins_in[`ImmedRange]};
           end
           `OP_LUI: begin
-            // 借助rs为$0的特性，可等价如下实现
+            // 借助rs�???$0的特性，可等价如下实�???
             wreg_e_out <= `Enable;
             wreg_addr_out <= rt;
             aluop_out <= `ALUOP_OR;
@@ -350,7 +377,7 @@ module id (
             aluop_out <= `ALUOP_SLT;
             reg1_re_out <= `Enable;
             reg1_addr_out <= rs;
-            reg1_re_out <= `Disable;
+            reg2_re_out <= `Disable;
             immed <= {{16{ins_in[15]}}, ins_in[15:0]}; // sign-ext
           end
           `OP_SLTIU: begin
@@ -359,7 +386,7 @@ module id (
             aluop_out <= `ALUOP_SLTU;
             reg1_re_out <= `Enable;
             reg1_addr_out <= rs;
-            reg1_re_out <= `Disable;
+            reg2_re_out <= `Disable;
             immed <= {{16{ins_in[15]}}, ins_in[15:0]}; // sign-ext
           end
           `OP_ADDI: begin
@@ -368,7 +395,7 @@ module id (
             aluop_out <= `ALUOP_ADD;
             reg1_re_out <= `Enable;
             reg1_addr_out <= rs;
-            reg1_re_out <= `Disable;
+            reg2_re_out <= `Disable;
             immed <= {{16{ins_in[15]}}, ins_in[15:0]}; // sign-ext
           end
           `OP_ADDIU: begin
@@ -377,7 +404,7 @@ module id (
             aluop_out <= `ALUOP_ADDU;
             reg1_re_out <= `Enable;
             reg1_addr_out <= rs;
-            reg1_re_out <= `Disable;
+            reg2_re_out <= `Disable;
             immed <= {{16{ins_in[15]}}, ins_in[15:0]}; // sign-ext
           end
           `OP_J: begin
@@ -387,6 +414,7 @@ module id (
             reg2_re_out <= `Disable;
             branch_e_out <= `Enable;
             branch_addr_out <= {4'b0000, address[25:0], 2'b00};
+            next_is_in_delayslot <= `Enable;
           end
           `OP_JAL: begin
             wreg_e_out <= `Enable;
@@ -396,6 +424,7 @@ module id (
             reg2_re_out <= `Disable;
             branch_e_out <= `Enable;
             branch_addr_out <= {4'b0000, address[25:0], 2'b00};
+            next_is_in_delayslot <= `Enable;
           end
           `OP_BEQ: begin
             wreg_e_out <= `Disable;
@@ -404,11 +433,12 @@ module id (
             reg1_addr_out <= rs;
             reg2_re_out <= `Enable;
             reg2_addr_out <= rt;
-            // FIXME: 在这里做合适吗？
-            // 原理上是可以的，因为gpr不是在上升沿触发，完全可以在pc+4之前得到寄存器数据
+            // FIXME: 在这里做合�?�吗�???
+            // 原理上是可以的，因为gpr不是在上升沿触发，完全可以在pc+4之前得到寄存器数�???
             if (reg1_data_in == reg2_data_in) begin
               branch_e_out <= `Enable;
               branch_addr_out <= pc_plus_4 + {{14{offset[15]}}, offset[15:0], 2'b00};
+              next_is_in_delayslot <= `Enable;
             end
           end
           `OP_BGTZ: begin
@@ -420,6 +450,7 @@ module id (
             if (reg1_data_in[31] == 1'b0 && reg1_data_in != `ZeroWord) begin
               branch_e_out <= `Enable;
               branch_addr_out <= pc_plus_4 + {{14{offset[15]}}, offset[15:0], 2'b00};
+              next_is_in_delayslot <= `Enable;
             end
           end
           `OP_BLEZ: begin
@@ -431,6 +462,7 @@ module id (
             if (reg1_data_in[31] == 1'b1 || reg1_data_in == `ZeroWord) begin
               branch_e_out <= `Enable;
               branch_addr_out <= pc_plus_4 + {{14{offset[15]}}, offset[15:0], 2'b00};
+              next_is_in_delayslot <= `Enable;
             end
           end
           `OP_BNE: begin
@@ -443,6 +475,7 @@ module id (
             if (reg1_data_in != reg2_data_in) begin
               branch_e_out <= `Enable;
               branch_addr_out <= pc_plus_4 + {{14{offset[15]}}, offset[15:0], 2'b00};
+              next_is_in_delayslot <= `Enable;
             end
           end
           `OP_BGEZ: begin
@@ -454,6 +487,7 @@ module id (
             if (reg1_data_in[31] == 1'b0) begin
               branch_e_out <= `Enable;
               branch_addr_out <= pc_plus_4 + {{14{offset[15]}}, offset[15:0], 2'b00};
+              next_is_in_delayslot <= `Enable;
             end
           end
           `OP_BGEZAL: begin
@@ -467,6 +501,7 @@ module id (
             if (reg1_data_in[31] == 1'b0) begin
               branch_e_out <= `Enable;
               branch_addr_out <= pc_plus_4 + {{14{offset[15]}}, offset[15:0], 2'b00};
+              next_is_in_delayslot <= `Enable;
             end
           end
           `OP_BLTZ: begin
@@ -478,6 +513,7 @@ module id (
             if (reg1_data_in[31] == 1'b1) begin
               branch_e_out <= `Enable;
               branch_addr_out <= pc_plus_4 + {{14{offset[15]}}, offset[15:0], 2'b00};
+              next_is_in_delayslot <= `Enable;
             end
           end
           `OP_BLTZAL: begin
@@ -491,6 +527,7 @@ module id (
             if (reg1_data_in[31] == 1'b1) begin
               branch_e_out <= `Enable;
               branch_addr_out <= pc_plus_4 + {{14{offset[15]}}, offset[15:0], 2'b00};
+              next_is_in_delayslot <= `Enable;
             end
           end
           default: begin 
@@ -500,24 +537,33 @@ module id (
     end
   end
 
-  // 下面开始确定送到ALU的数据具体是什么
-  // 这取决于来源：是寄存器，还是立即数
+
+  always @(*) begin
+    if(rst == `Enable) begin
+      is_in_delayslot_out <= `Disable;     
+    end else begin
+      is_in_delayslot_out <= is_in_delayslot_in;
+    end
+  end
+
+  // 下面�???始确定�?�到ALU的数据具体是�???�???
+  // 这取决于来源：是寄存器，还是立即�???
   always @(*) begin
     // rst时固定出0x0
     if (rst == `Enable) begin
       data1_out <= `ZeroWord;
     // 解决相隔0条（ID-EX）的流水数据相关
-    // 如果前面的EX要写的就是后面的ID要读的，则穿透
+    // 如果前面的EX要写的就是后面的ID要读的，则穿�???
     end else if (ex_wreg_e_in == `Enable && reg1_re_out == `Enable && reg1_addr_out == ex_wreg_addr_in) begin
       data1_out <= ex_wreg_data_in;
     // 解决相隔1条（ID-MEM）的流水数据相关
-    // 如果前面的MEM要写的就是后面的ID要读的，则穿透
+    // 如果前面的MEM要写的就是后面的ID要读的，则穿�???
     end else if (mem_wreg_e_in == `Enable && reg1_re_out == `Enable && reg1_addr_out == mem_wreg_addr_in) begin
       data1_out <= mem_wreg_data_in;  
-    // 如果指令译码的结果需要读reg1，就说明操作数1来自寄存器
+    // 如果指令译码的结果需要读reg1，就说明操作�???1来自寄存�???
     end else if (reg1_re_out == `Enable) begin
       data1_out <= reg1_data_in;
-    // 如果指令译码的结果不需要读reg1，就说明操作数1来自立即数
+    // 如果指令译码的结果不�???要读reg1，就说明操作�???1来自立即�???
     end else if (reg1_re_out == `Disable) begin
       data1_out <= immed;
     // 兜底

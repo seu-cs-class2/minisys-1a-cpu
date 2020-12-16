@@ -29,19 +29,16 @@ module ex_mem (
 
 );
 
-  always @(posedge clk) begin
+  wire clk_pause;
+  assign clk_pause = clk | pause;
+
+  always @(posedge clk_pause) begin
     if (rst == `Enable) begin
       mem_wreg_e <= `Disable;
       mem_wreg_data <= `ZeroWord;
       mem_hilo_we <= `Disable;
       mem_hi_data <= `ZeroWord;
       mem_lo_data <= `ZeroWord;
-    end else if (pause == `Enable) begin
-      mem_wreg_e <= `Disable;
-      mem_wreg_data <= `ZeroWord;
-      mem_hilo_we <= `Disable;
-      mem_hi_data <= `ZeroWord;
-      mem_lo_data <= `ZeroWord;  
     end else begin
       mem_wreg_e <= `Enable;
       mem_wreg_addr <= ex_wreg_addr;

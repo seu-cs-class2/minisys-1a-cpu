@@ -19,14 +19,17 @@ module if_id (
   
 );
 
-  always @(posedge clk) begin
+  wire clk_pause;
+  assign clk_pause = clk | pause;
+
+  always @(posedge clk_pause) begin
     // 重置时向下级送0x0
     if (rst == `Enable) begin
       id_pc <= `ZeroWord;
       id_ins <= `ZeroWord;
     if (pause == `Enable) begin
-      id_pc <= `ZeroWord;
-      id_ins <= `ZeroWord; // nop
+      id_pc <= if_pc;
+      id_ins <= if_ins;
     end
     // 否则向下级直通传递
     end else begin

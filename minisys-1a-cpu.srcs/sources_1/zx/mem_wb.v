@@ -30,15 +30,11 @@ module mem_wb (
 
 );
 
-  always @(posedge clk) begin
+  wire clk_pause;
+  assign clk_pause = clk | pause;
+  always @(posedge clk_pause) begin
     // 重置时送disbale、0x0
     if (rst == `Enable) begin
-      wb_wreg_e <= `Disable;
-      wb_wreg_data <= `ZeroWord;
-      wb_hilo_we <= `Disable;
-      wb_hi_data <= `ZeroWord;
-      wb_lo_data <= `ZeroWord;
-    end else if (pause == `Enable) begin
       wb_wreg_e <= `Disable;
       wb_wreg_data <= `ZeroWord;
       wb_hilo_we <= `Disable;

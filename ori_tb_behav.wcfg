@@ -1,0 +1,435 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="ori_tb_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="glbl" />
+            <top_module name="ori_tb" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="0fs"></ZoomStartTime>
+      <ZoomEndTime time="269726841fs"></ZoomEndTime>
+      <Cursor1Time time="210000000fs"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="175"></NameColumnWidth>
+      <ValueColumnWidth column_width="122"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="103" />
+   <wvobject fp_name="/ori_tb/rst" type="logic">
+      <obj_property name="ElementShortName">rst</obj_property>
+      <obj_property name="ObjectShortName">rst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/CLOCK_50MHZ" type="logic">
+      <obj_property name="ElementShortName">CLOCK_50MHZ</obj_property>
+      <obj_property name="ObjectShortName">CLOCK_50MHZ</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_ex/rst" type="logic">
+      <obj_property name="ElementShortName">rst</obj_property>
+      <obj_property name="ObjectShortName">rst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_ex/aluop_in" type="array">
+      <obj_property name="ElementShortName">aluop_in[5:0]</obj_property>
+      <obj_property name="ObjectShortName">aluop_in[5:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_ex/data1_in" type="array">
+      <obj_property name="ElementShortName">data1_in[31:0]</obj_property>
+      <obj_property name="ObjectShortName">data1_in[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_ex/data2_in" type="array">
+      <obj_property name="ElementShortName">data2_in[31:0]</obj_property>
+      <obj_property name="ObjectShortName">data2_in[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_ex/wreg_addr_in" type="array">
+      <obj_property name="ElementShortName">wreg_addr_in[4:0]</obj_property>
+      <obj_property name="ObjectShortName">wreg_addr_in[4:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_ex/wreg_e_in" type="logic">
+      <obj_property name="ElementShortName">wreg_e_in</obj_property>
+      <obj_property name="ObjectShortName">wreg_e_in</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_ex/wreg_addr_out" type="array">
+      <obj_property name="ElementShortName">wreg_addr_out[4:0]</obj_property>
+      <obj_property name="ObjectShortName">wreg_addr_out[4:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_ex/wreg_e_out" type="logic">
+      <obj_property name="ElementShortName">wreg_e_out</obj_property>
+      <obj_property name="ObjectShortName">wreg_e_out</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_ex/wreg_data_out" type="array">
+      <obj_property name="ElementShortName">wreg_data_out[31:0]</obj_property>
+      <obj_property name="ObjectShortName">wreg_data_out[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_ex/hi_data_in" type="array">
+      <obj_property name="ElementShortName">hi_data_in[31:0]</obj_property>
+      <obj_property name="ObjectShortName">hi_data_in[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_ex/lo_data_in" type="array">
+      <obj_property name="ElementShortName">lo_data_in[31:0]</obj_property>
+      <obj_property name="ObjectShortName">lo_data_in[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_ex/mem_hilo_we_in" type="logic">
+      <obj_property name="ElementShortName">mem_hilo_we_in</obj_property>
+      <obj_property name="ObjectShortName">mem_hilo_we_in</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_ex/mem_hi_data_in" type="array">
+      <obj_property name="ElementShortName">mem_hi_data_in[31:0]</obj_property>
+      <obj_property name="ObjectShortName">mem_hi_data_in[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_ex/mem_lo_data_in" type="array">
+      <obj_property name="ElementShortName">mem_lo_data_in[31:0]</obj_property>
+      <obj_property name="ObjectShortName">mem_lo_data_in[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_ex/wb_hilo_we_in" type="logic">
+      <obj_property name="ElementShortName">wb_hilo_we_in</obj_property>
+      <obj_property name="ObjectShortName">wb_hilo_we_in</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_ex/wb_hi_data_in" type="array">
+      <obj_property name="ElementShortName">wb_hi_data_in[31:0]</obj_property>
+      <obj_property name="ObjectShortName">wb_hi_data_in[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_ex/wb_lo_data_in" type="array">
+      <obj_property name="ElementShortName">wb_lo_data_in[31:0]</obj_property>
+      <obj_property name="ObjectShortName">wb_lo_data_in[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_ex/hilo_we_out" type="logic">
+      <obj_property name="ElementShortName">hilo_we_out</obj_property>
+      <obj_property name="ObjectShortName">hilo_we_out</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_ex/hi_data_out" type="array">
+      <obj_property name="ElementShortName">hi_data_out[31:0]</obj_property>
+      <obj_property name="ObjectShortName">hi_data_out[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_ex/lo_data_out" type="array">
+      <obj_property name="ElementShortName">lo_data_out[31:0]</obj_property>
+      <obj_property name="ObjectShortName">lo_data_out[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_ex/pause_req" type="logic">
+      <obj_property name="ElementShortName">pause_req</obj_property>
+      <obj_property name="ObjectShortName">pause_req</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_ex/link_addr_in" type="array">
+      <obj_property name="ElementShortName">link_addr_in[31:0]</obj_property>
+      <obj_property name="ObjectShortName">link_addr_in[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_ex/div_data1_signed" type="array">
+      <obj_property name="ElementShortName">div_data1_signed[31:0]</obj_property>
+      <obj_property name="ObjectShortName">div_data1_signed[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_ex/div_data2_signed" type="array">
+      <obj_property name="ElementShortName">div_data2_signed[31:0]</obj_property>
+      <obj_property name="ObjectShortName">div_data2_signed[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_ex/div_data1_unsigned" type="array">
+      <obj_property name="ElementShortName">div_data1_unsigned[31:0]</obj_property>
+      <obj_property name="ObjectShortName">div_data1_unsigned[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_ex/div_data2_unsigned" type="array">
+      <obj_property name="ElementShortName">div_data2_unsigned[31:0]</obj_property>
+      <obj_property name="ObjectShortName">div_data2_unsigned[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_ex/div_data_valid_signed" type="logic">
+      <obj_property name="ElementShortName">div_data_valid_signed</obj_property>
+      <obj_property name="ObjectShortName">div_data_valid_signed</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_ex/div_data_valid_unsigned" type="logic">
+      <obj_property name="ElementShortName">div_data_valid_unsigned</obj_property>
+      <obj_property name="ObjectShortName">div_data_valid_unsigned</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_ex/div_result_signed" type="array">
+      <obj_property name="ElementShortName">div_result_signed[63:0]</obj_property>
+      <obj_property name="ObjectShortName">div_result_signed[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_ex/div_result_valid_signed" type="logic">
+      <obj_property name="ElementShortName">div_result_valid_signed</obj_property>
+      <obj_property name="ObjectShortName">div_result_valid_signed</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_ex/div_result_unsigned" type="array">
+      <obj_property name="ElementShortName">div_result_unsigned[63:0]</obj_property>
+      <obj_property name="ObjectShortName">div_result_unsigned[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_ex/div_result_valid_unsigned" type="logic">
+      <obj_property name="ElementShortName">div_result_valid_unsigned</obj_property>
+      <obj_property name="ObjectShortName">div_result_valid_unsigned</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_ex/is_in_delayslot" type="logic">
+      <obj_property name="ElementShortName">is_in_delayslot</obj_property>
+      <obj_property name="ObjectShortName">is_in_delayslot</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_ex/alu_res" type="array">
+      <obj_property name="ElementShortName">alu_res[31:0]</obj_property>
+      <obj_property name="ObjectShortName">alu_res[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_ex/mov_res" type="array">
+      <obj_property name="ElementShortName">mov_res[31:0]</obj_property>
+      <obj_property name="ObjectShortName">mov_res[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_ex/hi_temp" type="array">
+      <obj_property name="ElementShortName">hi_temp[31:0]</obj_property>
+      <obj_property name="ObjectShortName">hi_temp[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_ex/lo_temp" type="array">
+      <obj_property name="ElementShortName">lo_temp[31:0]</obj_property>
+      <obj_property name="ObjectShortName">lo_temp[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_ex/pause_for_div" type="logic">
+      <obj_property name="ElementShortName">pause_for_div</obj_property>
+      <obj_property name="ObjectShortName">pause_for_div</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_pc/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_pc/rst" type="logic">
+      <obj_property name="ElementShortName">rst</obj_property>
+      <obj_property name="ObjectShortName">rst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_pc/pc" type="array">
+      <obj_property name="ElementShortName">pc[31:0]</obj_property>
+      <obj_property name="ObjectShortName">pc[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_pc/imem_e_out" type="logic">
+      <obj_property name="ElementShortName">imem_e_out</obj_property>
+      <obj_property name="ObjectShortName">imem_e_out</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_pc/pause" type="logic">
+      <obj_property name="ElementShortName">pause</obj_property>
+      <obj_property name="ObjectShortName">pause</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_pc/branch_e_in" type="logic">
+      <obj_property name="ElementShortName">branch_e_in</obj_property>
+      <obj_property name="ObjectShortName">branch_e_in</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_pc/branch_addr_in" type="array">
+      <obj_property name="ElementShortName">branch_addr_in[31:0]</obj_property>
+      <obj_property name="ObjectShortName">branch_addr_in[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_if_id/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_if_id/rst" type="logic">
+      <obj_property name="ElementShortName">rst</obj_property>
+      <obj_property name="ObjectShortName">rst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_if_id/if_pc" type="array">
+      <obj_property name="ElementShortName">if_pc[31:0]</obj_property>
+      <obj_property name="ObjectShortName">if_pc[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_if_id/if_ins" type="array">
+      <obj_property name="ElementShortName">if_ins[31:0]</obj_property>
+      <obj_property name="ObjectShortName">if_ins[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_if_id/id_pc" type="array">
+      <obj_property name="ElementShortName">id_pc[31:0]</obj_property>
+      <obj_property name="ObjectShortName">id_pc[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_if_id/id_ins" type="array">
+      <obj_property name="ElementShortName">id_ins[31:0]</obj_property>
+      <obj_property name="ObjectShortName">id_ins[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_if_id/pause" type="logic">
+      <obj_property name="ElementShortName">pause</obj_property>
+      <obj_property name="ObjectShortName">pause</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_id_ex/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_id_ex/rst" type="logic">
+      <obj_property name="ElementShortName">rst</obj_property>
+      <obj_property name="ObjectShortName">rst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_id_ex/id_aluop" type="array">
+      <obj_property name="ElementShortName">id_aluop[5:0]</obj_property>
+      <obj_property name="ObjectShortName">id_aluop[5:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_id_ex/id_data1" type="array">
+      <obj_property name="ElementShortName">id_data1[31:0]</obj_property>
+      <obj_property name="ObjectShortName">id_data1[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_id_ex/id_data2" type="array">
+      <obj_property name="ElementShortName">id_data2[31:0]</obj_property>
+      <obj_property name="ObjectShortName">id_data2[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_id_ex/id_wreg_e" type="logic">
+      <obj_property name="ElementShortName">id_wreg_e</obj_property>
+      <obj_property name="ObjectShortName">id_wreg_e</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_id_ex/id_wreg_addr" type="array">
+      <obj_property name="ElementShortName">id_wreg_addr[4:0]</obj_property>
+      <obj_property name="ObjectShortName">id_wreg_addr[4:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_id_ex/id_link_addr" type="array">
+      <obj_property name="ElementShortName">id_link_addr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">id_link_addr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_id_ex/ex_aluop" type="array">
+      <obj_property name="ElementShortName">ex_aluop[5:0]</obj_property>
+      <obj_property name="ObjectShortName">ex_aluop[5:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_id_ex/ex_data1" type="array">
+      <obj_property name="ElementShortName">ex_data1[31:0]</obj_property>
+      <obj_property name="ObjectShortName">ex_data1[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_id_ex/ex_data2" type="array">
+      <obj_property name="ElementShortName">ex_data2[31:0]</obj_property>
+      <obj_property name="ObjectShortName">ex_data2[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_id_ex/ex_wreg_e" type="logic">
+      <obj_property name="ElementShortName">ex_wreg_e</obj_property>
+      <obj_property name="ObjectShortName">ex_wreg_e</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_id_ex/ex_wreg_addr" type="array">
+      <obj_property name="ElementShortName">ex_wreg_addr[4:0]</obj_property>
+      <obj_property name="ObjectShortName">ex_wreg_addr[4:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_id_ex/ex_link_addr" type="array">
+      <obj_property name="ElementShortName">ex_link_addr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">ex_link_addr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_id_ex/id_is_in_delayslot" type="logic">
+      <obj_property name="ElementShortName">id_is_in_delayslot</obj_property>
+      <obj_property name="ObjectShortName">id_is_in_delayslot</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_id_ex/next_is_in_delayslot" type="logic">
+      <obj_property name="ElementShortName">next_is_in_delayslot</obj_property>
+      <obj_property name="ObjectShortName">next_is_in_delayslot</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_id_ex/ex_is_in_delayslot" type="logic">
+      <obj_property name="ElementShortName">ex_is_in_delayslot</obj_property>
+      <obj_property name="ObjectShortName">ex_is_in_delayslot</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_id_ex/is_in_delayslot" type="logic">
+      <obj_property name="ElementShortName">is_in_delayslot</obj_property>
+      <obj_property name="ObjectShortName">is_in_delayslot</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_id_ex/pause" type="logic">
+      <obj_property name="ElementShortName">pause</obj_property>
+      <obj_property name="ObjectShortName">pause</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_id_ex/clk_pause" type="logic">
+      <obj_property name="ElementShortName">clk_pause</obj_property>
+      <obj_property name="ObjectShortName">clk_pause</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_ex_mem/rst" type="logic">
+      <obj_property name="ElementShortName">rst</obj_property>
+      <obj_property name="ObjectShortName">rst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_ex_mem/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_ex_mem/ex_wreg_e" type="logic">
+      <obj_property name="ElementShortName">ex_wreg_e</obj_property>
+      <obj_property name="ObjectShortName">ex_wreg_e</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_ex_mem/ex_wreg_addr" type="array">
+      <obj_property name="ElementShortName">ex_wreg_addr[4:0]</obj_property>
+      <obj_property name="ObjectShortName">ex_wreg_addr[4:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_ex_mem/ex_wreg_data" type="array">
+      <obj_property name="ElementShortName">ex_wreg_data[31:0]</obj_property>
+      <obj_property name="ObjectShortName">ex_wreg_data[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_ex_mem/mem_wreg_e" type="logic">
+      <obj_property name="ElementShortName">mem_wreg_e</obj_property>
+      <obj_property name="ObjectShortName">mem_wreg_e</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_ex_mem/mem_wreg_addr" type="array">
+      <obj_property name="ElementShortName">mem_wreg_addr[4:0]</obj_property>
+      <obj_property name="ObjectShortName">mem_wreg_addr[4:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_ex_mem/mem_wreg_data" type="array">
+      <obj_property name="ElementShortName">mem_wreg_data[31:0]</obj_property>
+      <obj_property name="ObjectShortName">mem_wreg_data[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_ex_mem/ex_hilo_we" type="logic">
+      <obj_property name="ElementShortName">ex_hilo_we</obj_property>
+      <obj_property name="ObjectShortName">ex_hilo_we</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_ex_mem/ex_hi_data" type="array">
+      <obj_property name="ElementShortName">ex_hi_data[31:0]</obj_property>
+      <obj_property name="ObjectShortName">ex_hi_data[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_ex_mem/ex_lo_data" type="array">
+      <obj_property name="ElementShortName">ex_lo_data[31:0]</obj_property>
+      <obj_property name="ObjectShortName">ex_lo_data[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_ex_mem/mem_hilo_we" type="logic">
+      <obj_property name="ElementShortName">mem_hilo_we</obj_property>
+      <obj_property name="ObjectShortName">mem_hilo_we</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_ex_mem/mem_hi_data" type="array">
+      <obj_property name="ElementShortName">mem_hi_data[31:0]</obj_property>
+      <obj_property name="ObjectShortName">mem_hi_data[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_ex_mem/mem_lo_data" type="array">
+      <obj_property name="ElementShortName">mem_lo_data[31:0]</obj_property>
+      <obj_property name="ObjectShortName">mem_lo_data[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_ex_mem/pause" type="logic">
+      <obj_property name="ElementShortName">pause</obj_property>
+      <obj_property name="ObjectShortName">pause</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_ex_mem/clk_pause" type="logic">
+      <obj_property name="ElementShortName">clk_pause</obj_property>
+      <obj_property name="ObjectShortName">clk_pause</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_mem/rst" type="logic">
+      <obj_property name="ElementShortName">rst</obj_property>
+      <obj_property name="ObjectShortName">rst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_mem/wreg_e_in" type="logic">
+      <obj_property name="ElementShortName">wreg_e_in</obj_property>
+      <obj_property name="ObjectShortName">wreg_e_in</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_mem/wreg_data_in" type="array">
+      <obj_property name="ElementShortName">wreg_data_in[31:0]</obj_property>
+      <obj_property name="ObjectShortName">wreg_data_in[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_mem/wreg_addr_in" type="array">
+      <obj_property name="ElementShortName">wreg_addr_in[4:0]</obj_property>
+      <obj_property name="ObjectShortName">wreg_addr_in[4:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_mem/wreg_e_out" type="logic">
+      <obj_property name="ElementShortName">wreg_e_out</obj_property>
+      <obj_property name="ObjectShortName">wreg_e_out</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_mem/wreg_data_out" type="array">
+      <obj_property name="ElementShortName">wreg_data_out[31:0]</obj_property>
+      <obj_property name="ObjectShortName">wreg_data_out[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_mem/wreg_addr_out" type="array">
+      <obj_property name="ElementShortName">wreg_addr_out[4:0]</obj_property>
+      <obj_property name="ObjectShortName">wreg_addr_out[4:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_mem/hilo_we_in" type="logic">
+      <obj_property name="ElementShortName">hilo_we_in</obj_property>
+      <obj_property name="ObjectShortName">hilo_we_in</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_mem/hi_data_in" type="array">
+      <obj_property name="ElementShortName">hi_data_in[31:0]</obj_property>
+      <obj_property name="ObjectShortName">hi_data_in[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_mem/lo_data_in" type="array">
+      <obj_property name="ElementShortName">lo_data_in[31:0]</obj_property>
+      <obj_property name="ObjectShortName">lo_data_in[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_mem/hilo_we_out" type="logic">
+      <obj_property name="ElementShortName">hilo_we_out</obj_property>
+      <obj_property name="ObjectShortName">hilo_we_out</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_mem/hi_data_out" type="array">
+      <obj_property name="ElementShortName">hi_data_out[31:0]</obj_property>
+      <obj_property name="ObjectShortName">hi_data_out[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ori_tb/u_host/u_cpu/u_mem/lo_data_out" type="array">
+      <obj_property name="ElementShortName">lo_data_out[31:0]</obj_property>
+      <obj_property name="ObjectShortName">lo_data_out[31:0]</obj_property>
+   </wvobject>
+</wave_config>
