@@ -4,15 +4,15 @@
 `include "public.v"
 
 // 指令译码模块，译码的结果要保存在
-// 对指令进行译码，输出包括�???
-// 源操作数1、源操作�???2、写入的目的寄存器�?�运算类型（逻辑、移位�?�算术）
+// 对指令进行译码，输出包括：
+// 源操作数1、源操作数2、写入的目的寄存器的运算类型（逻辑、移位、算术）
 module id (
 
   input rst, // 复位
   input wire[`WordRange] pc_in, // 输入的PC值，译码阶段指令地址
   input wire[`WordRange] ins_in, // 输入的指令，即取出的指令
 
-  // 先这样写，不直�?�，这为后面流水暂存提供条件
+  // 先这样写，不直通，这为后面流水暂存提供条件
   input wire[`WordRange] reg1_data_in, // 输入的寄存器数据1
   input wire[`WordRange] reg2_data_in, // 输入的寄存器数据2
 
@@ -23,34 +23,34 @@ module id (
 
   output reg[`ALUOpRange] aluop_out, // 输出的ALUOp
 
-  output reg[`WordRange] data1_out, // 输出的数�???1
-  output reg[`WordRange] data2_out, // 输出的数�???2
+  output reg[`WordRange] data1_out, // 输出的数据1
+  output reg[`WordRange] data2_out, // 输出的数据2
   
   output reg wreg_e_out, // 写寄存器使能输出
   output reg[`RegRangeLog2] wreg_addr_out, // 写寄存器地址输出
 
-  // 下面部分用于采用数据前�?�法解决相隔0条（ID-EX）和相隔1条（ID-MEM）阶段的RAW数据相关
-  // EX阶段运算结果(即上�???条指�???)
+  // 下面部分用于采用数据前推（转移）法解决相隔0条（ID-EX）和相隔1条（ID-MEM）阶段的RAW数据相关
+  // EX阶段运算结果(即上条指令)
   input wire ex_wreg_e_in,
   input wire[`WordRange] ex_wreg_data_in,
   input wire[`RegRangeLog2] ex_wreg_addr_in,
-  // MEM阶段运算结果(上两条指�???)
+  // MEM阶段运算结果(上两条指令)
   input wire mem_wreg_e_in,
   input wire[`WordRange] mem_wreg_data_in,
   input wire[`RegRangeLog2] mem_wreg_addr_in,
 
   output reg pause_req,
 
-  input wire is_in_delayslot_in, //当前（位于译码阶段）指令是否是延迟槽内指令（必须执行�???
-  output reg is_in_delayslot_out,  //当前（位于译码阶段）指令是否是延迟槽内指令（必须执行�???
+  input wire is_in_delayslot_in, //当前（位于译码阶段）指令是否是延迟槽内指令（必须执行）
+  output reg is_in_delayslot_out,  //当前（位于译码阶段）指令是否是延迟槽内指令（必须执行）
   output reg next_is_in_delayslot, //下条指令是否处是延迟槽内指令（即当前指令是否要跳转）
   output reg branch_e_out,  //分支生效信号
   output reg[`WordRange] branch_addr_out,   //分支跳转地址
-  output reg[`WordRange] link_addr_out  //转移指令�???要保存的地址
+  output reg[`WordRange] link_addr_out  //转移指令需要保存的地址
 
 );
 
-  // 指令的各个可能组�???
+  // 指令的各个可能组成
   wire[5:0] op = ins_in[`OpRange];
   wire[4:0] rs = ins_in[`RsRange];
   wire[4:0] rt = ins_in[`RtRange];
@@ -73,7 +73,7 @@ module id (
 
   // 指令译码
   always @(*) begin
-    // rst时关掉所有使能，清空立即数暂�???
+    // rst时关掉所有使能，清空立即数暂�???
     if (rst == `Enable) begin
       aluop_out <= `ALUOP_NOP;
       wreg_e_out <= `Disable;
@@ -82,7 +82,7 @@ module id (
       immed <= `ZeroWord;
     // 具体译码逻辑
     end else begin
-      // 先赋默认值，以免有些指令不需要修改其中一些�?�时出现错误
+      // 先赋默认值，以免有些指令不需要修改其中一些值时出现错误
       aluop_out <= `ALUOP_NOP;
       wreg_e_out <= `Disable;
       reg1_re_out <= `Disable;
@@ -90,7 +90,7 @@ module id (
       immed <= `ZeroWord;
       link_addr_out <= `ZeroWord;
       // 根据op翻译
-      // R类指令（寄存器操作类型，除了eret指令之外，op全为000000�???
+      // R类指令（寄存器操作类型，除了eret指令之外，op全为000000
       if (op == `OP_RTYPE) begin
         case (func)
           `FUNC_OR: begin
@@ -192,7 +192,7 @@ module id (
             reg2_addr_out <= rt;
             immed <= {27'h0, shamt};
           end
-          // 注意HI/LO不在32个寄存器组中，使能不要给�???
+          // 注意HI/LO不在32个寄存器组中，使能不要给错
           `FUNC_MFHI: begin   //MFHI 读HI至rd
             wreg_e_out <= `Enable;
             wreg_addr_out <= rd;
@@ -215,13 +215,13 @@ module id (
             reg2_re_out <= `Disable;
           end
           `FUNC_MTLO: begin
-            wreg_e_out <= `Disable;
+            wreg_e_out <= `Disable;   //此处虽然写HI和LO但是寄存器写使能为disable
             aluop_out <= `EXOP_MTLO;
             reg1_re_out <= `Enable;
             reg1_addr_out <= rs;
             reg2_re_out <= `Disable;
           end
-          `FUNC_SLT: begin   //比大�??? �???1
+          `FUNC_SLT: begin   //比大小 置1
             wreg_e_out <= `Enable;
             wreg_addr_out <= rd;
             aluop_out <= `ALUOP_SLT;
@@ -332,7 +332,7 @@ module id (
           end
         endcase
       end else begin
-        // I类或J�???
+        // I类或J类
         case (op)
           `OP_ORI: begin
             wreg_e_out <= `Enable;
@@ -362,7 +362,7 @@ module id (
             immed <= {16'h0, ins_in[`ImmedRange]};
           end
           `OP_LUI: begin
-            // 借助rs�???$0的特性，可等价如下实�???
+            // 借助rs=$0的特性，可等价如下实现
             wreg_e_out <= `Enable;
             wreg_addr_out <= rt;
             aluop_out <= `ALUOP_OR;
@@ -433,8 +433,8 @@ module id (
             reg1_addr_out <= rs;
             reg2_re_out <= `Enable;
             reg2_addr_out <= rt;
-            // FIXME: 在这里做合�?�吗�???
-            // 原理上是可以的，因为gpr不是在上升沿触发，完全可以在pc+4之前得到寄存器数�???
+            // FIXME: 在这里做合适吗
+            // 原理上是可以的，因为gpr不是在上升沿触发，完全可以在pc+4之前得到寄存器值
             if (reg1_data_in == reg2_data_in) begin
               branch_e_out <= `Enable;
               branch_addr_out <= pc_plus_4 + {{14{offset[15]}}, offset[15:0], 2'b00};
@@ -546,24 +546,24 @@ module id (
     end
   end
 
-  // 下面�???始确定�?�到ALU的数据具体是�???�???
-  // 这取决于来源：是寄存器，还是立即�???
+  // 下面开始确定送到ALU的数据具体来自于哪里
+  // 这取决于来源：是寄存器，还是立即数
   always @(*) begin
     // rst时固定出0x0
     if (rst == `Enable) begin
       data1_out <= `ZeroWord;
     // 解决相隔0条（ID-EX）的流水数据相关
-    // 如果前面的EX要写的就是后面的ID要读的，则穿�???
+    // 如果前面的EX要写的就是后面的ID要读的，则穿透（转发）
     end else if (ex_wreg_e_in == `Enable && reg1_re_out == `Enable && reg1_addr_out == ex_wreg_addr_in) begin
       data1_out <= ex_wreg_data_in;
     // 解决相隔1条（ID-MEM）的流水数据相关
-    // 如果前面的MEM要写的就是后面的ID要读的，则穿�???
+    // 如果前面的MEM要写的就是后面的ID要读的，则穿透（转发（
     end else if (mem_wreg_e_in == `Enable && reg1_re_out == `Enable && reg1_addr_out == mem_wreg_addr_in) begin
       data1_out <= mem_wreg_data_in;  
-    // 如果指令译码的结果需要读reg1，就说明操作�???1来自寄存�???
+    // 如果指令译码的结果需要读reg1，就说明操作数1来自寄存器
     end else if (reg1_re_out == `Enable) begin
       data1_out <= reg1_data_in;
-    // 如果指令译码的结果不�???要读reg1，就说明操作�???1来自立即�???
+    // 如果指令译码的结果不需要读reg1，就说明操作1是立即数
     end else if (reg1_re_out == `Disable) begin
       data1_out <= immed;
     // 兜底

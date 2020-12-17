@@ -24,9 +24,9 @@ module id_ex(
   output reg[`WordRange] ex_link_addr,
 
   input wire id_is_in_delayslot,  //当前处在译码阶段的指令是否是延迟槽内指令
-  input wire next_is_in_delayslot,    //新增加的与延迟槽相关，下�?条进入译码阶段的指令是否是延迟槽内指�?
+  input wire next_is_in_delayslot,    //新增加的与延迟槽相关，下条进入译码阶段的指令是否是延迟槽内指令
   output reg ex_is_in_delayslot,    //当前处在执行阶段的指令是否是延迟槽内指令
-  output reg is_in_delayslot,   //当前在译码阶段的指令是否是延迟槽内指�?
+  output reg is_in_delayslot,   //当前在译码阶段的指令是否是延迟槽内指令
 
   input wire pause
   
@@ -46,7 +46,7 @@ module id_ex(
       ex_link_addr <= `ZeroWord;
       ex_is_in_delayslot <= `Disable;
       is_in_delayslot <= `Disable;
-    end else if (pause == `Enable) begin  //这里肯定有问题，如果此处修改了exaluop的�?�则ex部分直接无法保持乘除法，流水暂停直接失效�?
+    end else if (pause == `Enable) begin  //这里肯定有问题，如果此处修改了exaluop的值则ex部分直接无法保持乘除法，流水暂停直接失效！
       ex_aluop <= id_aluop;
       ex_data1 <= id_data1;
       ex_data2 <= id_data2;

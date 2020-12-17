@@ -17,30 +17,30 @@ module ex (
   output reg wreg_e_out,
   output reg[`WordRange] wreg_data_out,
 
-  input wire[`WordRange] hi_data_in,  //【此条指令�?�在译码阶段时hi给出的�??
-  input wire[`WordRange] lo_data_in,  //lo给出的�??
-  input wire mem_hilo_we_in, //目前处于访存阶段的hi,lo的写使能（即词条指令的上�????条指令）
-  input wire[`WordRange] mem_hi_data_in,  //访存阶段写入hi的�??
-  input wire[`WordRange] mem_lo_data_in,  //访存阶段写入lo的�??
+  input wire[`WordRange] hi_data_in,  //此条指令（译码阶段）hi给出的结果
+  input wire[`WordRange] lo_data_in,  //lo给出的结果
+  input wire mem_hilo_we_in, //目前处于访存阶段的hi,lo的写使能（即此条指令的上一条指令）
+  input wire[`WordRange] mem_hi_data_in,  //访存阶段写入hi的值
+  input wire[`WordRange] mem_lo_data_in,  //访存阶段写入lo的值
   input wire wb_hilo_we_in,  //目前处于写回阶段的hilo写使能（即词条指令的上两条指令）
-  input wire[`WordRange] wb_hi_data_in,  //写回阶段写入hi的�??
-  input wire[`WordRange] wb_lo_data_in,  //写回阶段写入lo的�??
+  input wire[`WordRange] wb_hi_data_in,  //写回阶段写入hi的值
+  input wire[`WordRange] wb_lo_data_in,  //写回阶段写入lo的值
   
-  output reg hilo_we_out,  //【此条指令�?�是否要写hilo
+  output reg hilo_we_out,  //此条指令是否要写hilo
   output reg[`WordRange] hi_data_out,  //写入的hi数据
   output reg[`WordRange] lo_data_out,  //写入的lo数据
 
 
   output reg pause_req,
 
-  input wire[`WordRange] link_addr_in, //保存的返回地�???
+  input wire[`WordRange] link_addr_in, //保存的返回地址
 
 
-  output reg[`WordRange] div_data1_signed,   // 有符号除法的被除�???
+  output reg[`WordRange] div_data1_signed,   // 有符号除法的被除数
   output reg[`WordRange] div_data2_signed,
   output reg[`WordRange] div_data1_unsigned,
   output reg[`WordRange] div_data2_unsigned,
-  output reg div_data_valid_signed,   // 有符号除法数据是否有效（是否�????始除法）
+  output reg div_data_valid_signed,   // 有符号除法数据是否有效（是否开始除法）
   output reg div_data_valid_unsigned,
   input wire[`DivMulResultRange] div_result_signed,  // 结果 64（位
   input wire div_result_valid_signed,  //有符号除法结果是否有效（有效说明除法结束，应该获取结果）
@@ -51,7 +51,7 @@ module ex (
 
 );
 
-  wire[`WordRange] alu_res;  //alu的结�????
+  wire[`WordRange] alu_res;  //alu的结果
   reg[`WordRange] mov_res;  //转移指令（如读hi和lo）的结果
   
   reg[`WordRange] hi_temp;  //暂存hi
@@ -93,12 +93,12 @@ module ex (
             div_data1_signed <= data1_in;
             div_data2_signed <= data2_in;
             div_data_valid_signed <= `Enable;  //数据有效
-            pause_for_div <= `Enable;  //暂停流水�????
-          end else if(div_result_valid_signed == `Enable) begin  //除法结束�????
+            pause_for_div <= `Enable;  //暂停流水
+          end else if(div_result_valid_signed == `Enable) begin  //除法结束
             div_data1_signed <= data1_in;
             div_data2_signed <= data2_in;
             div_data_valid_signed <= `Disable;  //数据无效
-            pause_for_div <= `Disable;  //启动流水�????
+            pause_for_div <= `Disable;  //启动流水
           end
         end
         `ALUOP_DIVU: begin
@@ -136,7 +136,7 @@ module ex (
   end
 
   always @(*) begin
-    pause_req = pause_for_div || 1'b0;    // 如果后续乘法也需要暂停流水线就在此处�????
+    pause_req = pause_for_div || 1'b0;    // 如果后续乘法也需要暂停流水线就在此处修改
   end
 
 
@@ -183,7 +183,7 @@ module ex (
       case (aluop_in)
        `ALUOP_DIV: begin
          hilo_we_out <= `Enable;
-         hi_data_out <= div_result_signed[31:0];  //HI存余�?  LO存商
+         hi_data_out <= div_result_signed[31:0];  //HI存余数  LO存商
          lo_data_out <= div_result_signed[63:32];
        end
        `ALUOP_DIVU: begin
