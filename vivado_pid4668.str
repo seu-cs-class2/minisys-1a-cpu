@@ -1,0 +1,164 @@
+/*
+
+Xilinx Vivado v2018.3 (64-bit) [Major: 2018, Minor: 3]
+SW Build: 2405991 on Thu Dec  6 23:38:27 MST 2018
+IP Build: 2404404 on Fri Dec  7 01:43:56 MST 2018
+
+Process ID (PID): 4668
+License: Customer
+
+Current time: 	Thu Dec 17 10:37:24 CST 2020
+Time zone: 	China Standard Time (Asia/Shanghai)
+
+OS: Windows 10
+OS Version: 10.0
+OS Architecture: amd64
+Available processors (cores): 8
+
+Screen size: 1920x1080
+Screen resolution (DPI): 120
+Available screens: 1
+Available disk space: 48 GB
+Default font: family=Dialog,name=Dialog,style=plain,size=15
+
+Java version: 	9.0.4 64-bit
+Java home: 	D:/XILINX/Vivado/2018.3/tps/win64/jre9.0.4
+Java executable location: 	D:/XILINX/Vivado/2018.3/tps/win64/jre9.0.4/bin/java.exe
+Java initial memory (-Xms): 	128 MB
+Java maximum memory (-Xmx):	 3 GB
+
+
+User name: 	lenovo
+User home directory: C:/Users/lenovo
+User working directory: D:/minisys-1a-cpu
+User country: 	CN
+User language: 	zh
+User locale: 	zh_CN
+
+RDI_BASEROOT: D:/XILINX/Vivado
+HDI_APPROOT: D:/XILINX/Vivado/2018.3
+RDI_DATADIR: D:/XILINX/Vivado/2018.3/data
+RDI_BINDIR: D:/XILINX/Vivado/2018.3/bin
+
+Vivado preferences file location: C:/Users/lenovo/AppData/Roaming/Xilinx/Vivado/2018.3/vivado.xml
+Vivado preferences directory: C:/Users/lenovo/AppData/Roaming/Xilinx/Vivado/2018.3/
+Vivado layouts directory: C:/Users/lenovo/AppData/Roaming/Xilinx/Vivado/2018.3/layouts
+PlanAhead jar file location: 	D:/XILINX/Vivado/2018.3/lib/classes/planAhead.jar
+Vivado log file location: 	D:/minisys-1a-cpu/vivado.log
+Vivado journal file location: 	D:/minisys-1a-cpu/vivado.jou
+Engine tmp dir: 	D:/minisys-1a-cpu/.Xil/Vivado-4668-LostBlackCat-shikigami
+
+Xilinx Environment Variables
+----------------------------
+XILINX: D:/XILINX/Vivado/2018.3/ids_lite/ISE
+XILINX_DSP: D:/XILINX/Vivado/2018.3/ids_lite/ISE
+XILINX_PLANAHEAD: D:/XILINX/Vivado/2018.3
+XILINX_SDK: D:/XILINX/SDK/2018.3
+XILINX_VIVADO: D:/XILINX/Vivado/2018.3
+XILINX_VIVADO_HLS: D:/XILINX/Vivado/2018.3
+
+
+GUI allocated memory:	128 MB
+GUI max memory:		3,072 MB
+Engine allocated memory: 554 MB
+
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+*/
+
+// TclEventType: START_GUI
+// Tcl Message: start_gui 
+// TclEventType: PROJECT_OPEN_DIALOG
+// [GUI Memory]: 86 MB (+88106kb) [00:00:34]
+// [Engine Memory]: 544 MB (+419097kb) [00:00:34]
+// bx (cp):  Open Project : addNotify
+// Opening Vivado Project: D:\minisys-1a-cpu\minisys-1a-cpu.xpr. Version: Vivado v2018.3 
+// WARNING: HEventQueue.dispatchEvent() is taking  2184 ms.
+// WARNING: HTimer (HSTRUtils Dump STR Log Timer) is taking 804ms to process. Increasing delay to 4000 ms.
+// TclEventType: DEBUG_PROBE_SET_CHANGE
+// Tcl Message: open_project D:/minisys-1a-cpu/minisys-1a-cpu.xpr 
+// HMemoryUtils.trashcanNow. Engine heap size: 555 MB. GUI used memory: 49 MB. Current time: 12/17/20, 10:37:26 AM CST
+// TclEventType: MSGMGR_MOVEMSG
+// HMemoryUtils.trashcanNow. Engine heap size: 606 MB. GUI used memory: 45 MB. Current time: 12/17/20, 10:37:41 AM CST
+// TclEventType: FILE_SET_NEW
+// TclEventType: RUN_CURRENT
+// TclEventType: PROJECT_DASHBOARD_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 657 MB. GUI used memory: 45 MB. Current time: 12/17/20, 10:38:01 AM CST
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: IP_LOCK_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_NEW
+// [GUI Memory]: 95 MB (+4353kb) [00:01:18]
+// [Engine Memory]: 716 MB (+151374kb) [00:01:18]
+// [GUI Memory]: 100 MB (+478kb) [00:01:21]
+// WARNING: HEventQueue.dispatchEvent() is taking  8331 ms.
+// Tcl Message: open_project D:/minisys-1a-cpu/minisys-1a-cpu.xpr 
+// Tcl Message: INFO: [Project 1-313] Project file moved from 'D:/ProgramSave/minisys-1a-cpu' since last save. 
+// Tcl Message: Scanning sources... Finished scanning sources 
+// Tcl Message: INFO: [IP_Flow 19-234] Refreshing IP repositories 
+// Tcl Message: INFO: [IP_Flow 19-2313] Loaded Vivado IP repository 'D:/XILINX/Vivado/2018.3/data/ip'. 
+// Project name: minisys-1a-cpu; location: D:/minisys-1a-cpu; part: xc7a100tfgg484-1
+// [Engine Memory]: 755 MB (+3457kb) [00:01:24]
+// Tcl Message: open_project: Time (s): cpu = 00:00:22 ; elapsed = 00:00:47 . Memory (MB): peak = 770.414 ; gain = 175.410 
+dismissDialog("Open Project"); // bx (cp)
+// a (cp): Critical Messages: addNotify
+// [GUI Memory]: 105 MB (+291kb) [00:01:26]
+selectButton(PAResourceAtoD.CmdMsgDialog_OK, "OK"); // f (a)
+dismissDialog("Critical Messages"); // a (cp)
+// Elapsed time: 14 seconds
+expandTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, host (host.v)]", 2); // B (D, cp)
+expandTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, host (host.v), u_cpu : cpu (cpu.v)]", 3); // B (D, cp)
+// [GUI Memory]: 111 MB (+428kb) [00:02:28]
+// Elapsed time: 39 seconds
+selectTreeTable(PAResourceEtoH.ExpRunTreePanel_EXP_RUN_TREE_TABLE, "Out-of-Context Module Runs ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ; ", 2, "Out-of-Context Module Runs", 0, true); // ax (Q, cp) - Node
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
