@@ -73,7 +73,7 @@ module id (
 
   // 指令译码
   always @(*) begin
-    // rst时关掉所有使能，清空立即数暂�???
+    // rst时关掉所有使能，清空立即数
     if (rst == `Enable) begin
       aluop_out <= `ALUOP_NOP;
       wreg_e_out <= `Disable;
