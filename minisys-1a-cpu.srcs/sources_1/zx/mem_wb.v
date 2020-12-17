@@ -42,7 +42,7 @@ module mem_wb (
       wb_lo_data <= `ZeroWord;
     end else begin
     // 否则穿透
-      wb_wreg_e <= `Enable;
+      wb_wreg_e <= mem_wreg_e;
       wb_wreg_addr <= mem_wreg_addr;
       wb_wreg_data <= mem_wreg_data;
       wb_hilo_we <= mem_hilo_we;

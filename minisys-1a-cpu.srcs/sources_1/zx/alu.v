@@ -21,6 +21,8 @@ module alu (
   reg [32:0] result;
   wire signed [31:0] s_data1;
   wire signed [31:0] s_data2;
+  assign s_data1 = data1;
+  assign s_data2 = data2;
 
   assign res = result[`WordRange];
 

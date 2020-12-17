@@ -41,8 +41,8 @@ module id (
 
   output reg pause_req,
 
-  input wire is_in_delayslot_in, //当前（位于译码阶段）指令是否是延迟槽内指令（必须执行）
-  output reg is_in_delayslot_out,  //当前（位于译码阶段）指令是否是延迟槽内指令（必须执行）
+  input wire is_in_delayslot_in, //当前要进入（译码阶段）指令是否是延迟槽内指令（必须执行）
+  output reg is_in_delayslot_out,  //当前要出（译码阶段）指令是否是延迟槽内指令（必须执行）
   output reg next_is_in_delayslot, //下条指令是否处是延迟槽内指令（即当前指令是否要跳转）
   output reg branch_e_out,  //分支生效信号
   output reg[`WordRange] branch_addr_out,   //分支跳转地址
@@ -89,6 +89,8 @@ module id (
       reg2_re_out <= `Disable;
       immed <= `ZeroWord;
       link_addr_out <= `ZeroWord;
+      next_is_in_delayslot <= `Disable;
+      branch_e_out <= `Disable;
       // 根据op翻译
       // R类指令（寄存器操作类型，除了eret指令之外，op全为000000
       if (op == `OP_RTYPE) begin
@@ -327,7 +329,7 @@ module id (
             branch_e_out <= `Enable;
             branch_addr_out <= data1_out;
             // TODO
-            link_addr_out <= pc_plus_8;
+            link_addr_out <= pc_plus_4;
             next_is_in_delayslot <= `Enable;
           end
         endcase
@@ -435,7 +437,7 @@ module id (
             reg2_addr_out <= rt;
             // FIXME: 在这里做合适吗
             // 原理上是可以的，因为gpr不是在上升沿触发，完全可以在pc+4之前得到寄存器值
-            if (reg1_data_in == reg2_data_in) begin
+            if (data1_out == data2_out) begin
               branch_e_out <= `Enable;
               branch_addr_out <= pc_plus_4 + {{14{offset[15]}}, offset[15:0], 2'b00};
               next_is_in_delayslot <= `Enable;
@@ -447,7 +449,7 @@ module id (
             reg1_re_out <= `Enable;
             reg1_addr_out <= rs;
             reg2_re_out <= `Disable;
-            if (reg1_data_in[31] == 1'b0 && reg1_data_in != `ZeroWord) begin
+            if (data1_out[31] == 1'b0 && data1_out != `ZeroWord) begin
               branch_e_out <= `Enable;
               branch_addr_out <= pc_plus_4 + {{14{offset[15]}}, offset[15:0], 2'b00};
               next_is_in_delayslot <= `Enable;
@@ -459,7 +461,7 @@ module id (
             reg1_re_out <= `Enable;
             reg1_addr_out <= rs;
             reg2_re_out <= `Disable;
-            if (reg1_data_in[31] == 1'b1 || reg1_data_in == `ZeroWord) begin
+            if (data1_out[31] == 1'b1 || data1_out == `ZeroWord) begin
               branch_e_out <= `Enable;
               branch_addr_out <= pc_plus_4 + {{14{offset[15]}}, offset[15:0], 2'b00};
               next_is_in_delayslot <= `Enable;
@@ -472,37 +474,51 @@ module id (
             reg1_addr_out <= rs;
             reg2_re_out <= `Enable;
             reg2_addr_out <= rt;
-            if (reg1_data_in != reg2_data_in) begin
+            if (data1_out != data2_out) begin
               branch_e_out <= `Enable;
               branch_addr_out <= pc_plus_4 + {{14{offset[15]}}, offset[15:0], 2'b00};
               next_is_in_delayslot <= `Enable;
             end
           end
           `OP_BGEZ: begin
-            wreg_e_out <= `Disable;
-            aluop_out <= `EXOP_BGEZ;
-            reg1_re_out <= `Enable;
-            reg1_addr_out <= rs;
-            reg2_re_out <= `Disable;
-            if (reg1_data_in[31] == 1'b0) begin
-              branch_e_out <= `Enable;
-              branch_addr_out <= pc_plus_4 + {{14{offset[15]}}, offset[15:0], 2'b00};
-              next_is_in_delayslot <= `Enable;
-            end
-          end
-          `OP_BGEZAL: begin
-            wreg_e_out <= `Enable;
-            wreg_addr_out <= `RegCountLog2'd31;
-            aluop_out <= `EXOP_BGEZAL;
-            reg1_re_out <= `Enable;
-            reg1_addr_out <= rs;
-            reg2_re_out <= `Disable;
-            link_addr_out <= pc_plus_8;
-            if (reg1_data_in[31] == 1'b0) begin
-              branch_e_out <= `Enable;
-              branch_addr_out <= pc_plus_4 + {{14{offset[15]}}, offset[15:0], 2'b00};
-              next_is_in_delayslot <= `Enable;
-            end
+            if(rt == 5'b00001)begin
+               wreg_e_out <= `Disable;
+              aluop_out <= `EXOP_BGEZ;
+              reg1_re_out <= `Enable;
+              reg1_addr_out <= rs;
+              reg2_re_out <= `Disable;
+              if (data1_out[31] == 1'b0) begin
+                branch_e_out <= `Enable;
+                branch_addr_out <= pc_plus_4 + {{14{offset[15]}}, offset[15:0], 2'b00};
+                next_is_in_delayslot <= `Enable;
+              end
+            end else if(rt == 5'b10001) begin  //bgezal
+              wreg_e_out <= `Enable;
+              wreg_addr_out <= `RegCountLog2'd31;
+              aluop_out <= `EXOP_BGEZAL;
+              reg1_re_out <= `Enable;
+              reg1_addr_out <= rs;
+              reg2_re_out <= `Disable;
+              link_addr_out <= pc_plus_4;
+              if (data1_out[31] == 1'b0) begin
+                branch_e_out <= `Enable;
+                branch_addr_out <= pc_plus_4 + {{14{offset[15]}}, offset[15:0], 2'b00};
+                next_is_in_delayslot <= `Enable;
+              end
+            end else if(rt == 5'b10000) begin //bltzal
+              wreg_e_out <= `Enable;
+              wreg_addr_out <= `RegCountLog2'd31;
+              aluop_out <= `EXOP_BLTZAL;
+              reg1_re_out <= `Enable;
+              reg1_addr_out <= rs;
+              reg2_re_out <= `Disable;
+              link_addr_out <= pc_plus_4;
+              if (data1_out[31] == 1'b1) begin
+                branch_e_out <= `Enable;
+                branch_addr_out <= pc_plus_4 + {{14{offset[15]}}, offset[15:0], 2'b00};
+                next_is_in_delayslot <= `Enable;
+              end
+            end  
           end
           `OP_BLTZ: begin
             wreg_e_out <= `Disable;
@@ -510,21 +526,7 @@ module id (
             reg1_re_out <= `Enable;
             reg1_addr_out <= rs;
             reg2_re_out <= `Disable;
-            if (reg1_data_in[31] == 1'b1) begin
-              branch_e_out <= `Enable;
-              branch_addr_out <= pc_plus_4 + {{14{offset[15]}}, offset[15:0], 2'b00};
-              next_is_in_delayslot <= `Enable;
-            end
-          end
-          `OP_BLTZAL: begin
-            wreg_e_out <= `Enable;
-            wreg_addr_out <= `RegCountLog2'd31;
-            aluop_out <= `EXOP_BLTZAL;
-            reg1_re_out <= `Enable;
-            reg1_addr_out <= rs;
-            reg2_re_out <= `Disable;
-            link_addr_out <= pc_plus_8;
-            if (reg1_data_in[31] == 1'b1) begin
+            if (data1_out[31] == 1'b1) begin
               branch_e_out <= `Enable;
               branch_addr_out <= pc_plus_4 + {{14{offset[15]}}, offset[15:0], 2'b00};
               next_is_in_delayslot <= `Enable;

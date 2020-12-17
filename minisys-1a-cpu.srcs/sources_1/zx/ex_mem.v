@@ -40,7 +40,7 @@ module ex_mem (
       mem_hi_data <= `ZeroWord;
       mem_lo_data <= `ZeroWord;
     end else begin
-      mem_wreg_e <= `Enable;
+      mem_wreg_e <= ex_wreg_e;
       mem_wreg_addr <= ex_wreg_addr;
       mem_wreg_data <= ex_wreg_data;
       mem_hilo_we <= ex_hilo_we;

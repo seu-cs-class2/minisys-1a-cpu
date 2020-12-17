@@ -24,9 +24,9 @@ module id_ex(
   output reg[`WordRange] ex_link_addr,
 
   input wire id_is_in_delayslot,  //当前处在译码阶段的指令是否是延迟槽内指令
-  input wire next_is_in_delayslot,    //新增加的与延迟槽相关，下条进入译码阶段的指令是否是延迟槽内指令
+  input wire next_is_in_delayslot,    //新增加的与延迟槽相关，译码阶段的指令通知是否下一条指令在延迟槽内
   output reg ex_is_in_delayslot,    //当前处在执行阶段的指令是否是延迟槽内指令
-  output reg is_in_delayslot,   //当前在译码阶段的指令是否是延迟槽内指令
+  output reg is_in_delayslot,   //下一条要进入译码阶段的指令是不是延迟槽内指令
 
   input wire pause
   

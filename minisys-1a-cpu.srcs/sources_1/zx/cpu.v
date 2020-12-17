@@ -97,7 +97,7 @@ module cpu (
   wire[`RegRangeLog2] reg1_addr;
   wire[`RegRangeLog2] reg2_addr;
 
-  //流水线暂停相�??
+  //流水线暂停相�??
   wire pause_req_id;
   wire pause_req_ex;
   wire pause_res_pc;
@@ -131,7 +131,7 @@ module cpu (
   .re2                      (reg2_re),
   .raddr2                   (reg2_addr),
   .rdata1                   (reg1_data),
-  .rdata2                   (reg2_addr)
+  .rdata2                   (reg2_data)
   );
 
   // IF
