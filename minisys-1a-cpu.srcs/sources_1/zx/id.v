@@ -482,7 +482,7 @@ module id (
           end
           `OP_BGEZ: begin
             if(rt == 5'b00001)begin
-               wreg_e_out <= `Disable;
+              wreg_e_out <= `Disable;
               aluop_out <= `EXOP_BGEZ;
               reg1_re_out <= `Enable;
               reg1_addr_out <= rs;
