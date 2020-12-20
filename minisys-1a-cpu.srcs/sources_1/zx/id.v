@@ -46,7 +46,9 @@ module id (
   output reg next_is_in_delayslot, //下条指令是否处是延迟槽内指令（即当前指令是否要跳转）
   output reg branch_e_out,  //分支生效信号
   output reg[`WordRange] branch_addr_out,   //分支跳转地址
-  output reg[`WordRange] link_addr_out  //转移指令需要保存的地址
+  output reg[`WordRange] link_addr_out,  //转移指令需要保存的地址
+  
+  output wire[`WordRange] ins_out   //向流水线后续传递的指令 在添加存储指令时需要用到
 
 );
 
@@ -70,6 +72,8 @@ module id (
   assign pc_plus_4 = pc_in + 32'd4;
   wire[`WordRange] pc_plus_8;
   assign pc_plus_8 = pc_in + 32'd8;
+
+  assign ins_out = ins_in;  //直接向下传递
 
   // 指令译码
   always @(*) begin
@@ -532,6 +536,70 @@ module id (
               next_is_in_delayslot <= `Enable;
             end
           end
+          `OP_LB:begin
+            wreg_e_out <= `Enable;
+            wreg_addr_out <= rt;
+            aluop_out <= `EXOP_LB;
+            reg1_re_out <= `Enable;
+            reg1_addr_out <= rs;
+            reg2_re_out <= `Disable;
+          end
+          `OP_LBU:begin
+            wreg_e_out <= `Enable;
+            wreg_addr_out <= rt;
+            aluop_out <= `EXOP_LBU;
+            reg1_re_out <= `Enable;
+            reg1_addr_out <= rs;
+            reg2_re_out <= `Disable;
+          end
+          `OP_LH:begin
+            wreg_e_out <= `Enable;
+            wreg_addr_out <= rt;
+            aluop_out <= `EXOP_LH;
+            reg1_re_out <= `Enable;
+            reg1_addr_out <= rs;
+            reg2_re_out <= `Disable;
+          end
+          `OP_LHU:begin
+            wreg_e_out <= `Enable;
+            wreg_addr_out <= rt;
+            aluop_out <= `EXOP_LHU;
+            reg1_re_out <= `Enable;
+            reg1_addr_out <= rs;
+            reg2_re_out <= `Disable;
+          end
+          `OP_SB:begin
+            wreg_e_out <= `Disable;
+            aluop_out <= `EXOP_SB;
+            reg1_re_out <= `Enable;
+            reg1_addr_out <= rs;
+            reg2_re_out <= `Enable;
+            reg2_addr_out <= rt;
+          end
+          `OP_SH:begin
+            wreg_e_out <= `Disable;
+            aluop_out <= `EXOP_SH;
+            reg1_re_out <= `Enable;
+            reg1_addr_out <= rs;
+            reg2_re_out <= `Enable;
+            reg2_addr_out <= rt;
+          end
+          `OP_LW:begin
+            wreg_e_out <= `Enable;
+            wreg_addr_out <= rt;
+            aluop_out <= `EXOP_LW;
+            reg1_re_out <= `Enable;
+            reg1_addr_out <= rs;
+            reg2_re_out <= `Disable;
+          end
+          `OP_SW:begin
+            wreg_e_out <= `Disable;
+            aluop_out <= `EXOP_SW;
+            reg1_re_out <= `Enable;
+            reg1_addr_out <= rs;
+            reg2_re_out <= `Enable;
+            reg2_addr_out <= rt;
+          end
           default: begin 
           end
         endcase
@@ -562,7 +630,7 @@ module id (
     // 如果前面的MEM要写的就是后面的ID要读的，则穿透（转发（
     end else if (mem_wreg_e_in == `Enable && reg1_re_out == `Enable && reg1_addr_out == mem_wreg_addr_in) begin
       data1_out <= mem_wreg_data_in;  
-    // 如果指令译码的结果需要读reg1，就说明操作数1来自寄存器
+    // 如果指令译码的结果需要读reg1，就说明操作数1来自寄存器（rs）
     end else if (reg1_re_out == `Enable) begin
       data1_out <= reg1_data_in;
     // 如果指令译码的结果不需要读reg1，就说明操作1是立即数
@@ -582,7 +650,7 @@ module id (
       data2_out <= ex_wreg_data_in;
     end else if (mem_wreg_e_in == `Enable && reg2_re_out == `Enable && reg2_addr_out == mem_wreg_addr_in) begin
       data2_out <= mem_wreg_data_in;  
-    end else if (reg2_re_out == `Enable) begin
+    end else if (reg2_re_out == `Enable) begin //（rt）
       data2_out <= reg2_data_in;
     end else if (reg2_re_out == `Disable) begin
       data2_out <= immed;

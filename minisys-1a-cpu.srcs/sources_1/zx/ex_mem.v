@@ -25,7 +25,14 @@ module ex_mem (
   output reg[`WordRange] mem_hi_data,
   output reg[`WordRange] mem_lo_data,
 
-  input wire pause
+  input wire pause,
+
+  input wire[`ALUOpRange] f_ex_aluop,
+  input wire[`WordRange] f_ex_mem_addr,
+  input wire[`WordRange] f_ex_mem_data,
+  output wire[`ALUOpRange] t_mem_aluop,
+  output wire[`WordRange] t_mem_addr,
+  output wire[`WordRange] t_mem_data
 
 );
 
@@ -39,6 +46,9 @@ module ex_mem (
       mem_hilo_we <= `Disable;
       mem_hi_data <= `ZeroWord;
       mem_lo_data <= `ZeroWord;
+      t_mem_aluop <= 6'b000000;
+      t_mem_addr <= `ZeroWord;
+      t_mem_data <= `ZeroWord;
     end else begin
       mem_wreg_e <= ex_wreg_e;
       mem_wreg_addr <= ex_wreg_addr;
@@ -46,6 +56,9 @@ module ex_mem (
       mem_hilo_we <= ex_hilo_we;
       mem_hi_data <= ex_hi_data;
       mem_lo_data <= ex_lo_data;
+      t_mem_addr <= f_ex_mem_addr;
+      t_mem_data <= f_ex_mem_data;
+      t_mem_aluop <= f_ex_aluop;
     end
   end
 

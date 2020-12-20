@@ -8,8 +8,8 @@ module ex (
 
   input rst,
   input wire[`ALUOpRange] aluop_in,
-  input wire[`WordRange] data1_in,
-  input wire[`WordRange] data2_in,
+  input wire[`WordRange] data1_in,  //一般是rs
+  input wire[`WordRange] data2_in,  //一般是rt
   input wire[`RegRangeLog2] wreg_addr_in,
   input wire wreg_e_in,
 
@@ -47,7 +47,12 @@ module ex (
   input wire[`DivMulResultRange] div_result_unsigned,
   input wire div_result_valid_unsigned,
 
-  input is_in_delayslot //新增的延迟槽信号，代表处于执行阶段的指令是否是延迟槽指令
+  input is_in_delayslot, //新增的延迟槽信号，代表处于执行阶段的指令是否是延迟槽指令
+
+  input wire[`WordRange] ins_in,  // 新增的指令信号，从id阶段一直传递过来
+  output wire[`ALUOpRange] aluop_out,   //要向访存部分传递aluop
+  output wire[`WordRange] mem_addr_out,  //要向访存部分传递计算出的内存地址（所有存储相关指令均会用到）
+  output wire[`WordRange] mem_data_out   //要向访存部分传递写入内存的数据（store指令才会用到）
 
 );
 
@@ -65,6 +70,10 @@ module ex (
   .op         (aluop_in),
   .res        (alu_res)
   );
+
+  assign aluop_out = aluop_in;
+  assign mem_addr_out = data1_in + {{16{ins_in[15]}},ins_in[15:0]}; //在这里计算是为了让传递的信号少，并且时序逻辑清晰，增加在ex部分的工作
+  assign mem_data_out = data2_in; //无论是什么存储操作，都会去使用rt的数据
 
   always @(*) begin
     if (rst == `Enable) begin
@@ -129,7 +138,7 @@ module ex (
           wreg_data_out <= link_addr_in;
         end
         default: begin
-          wreg_data_out <= alu_res;
+          wreg_data_out <= alu_res;  //这里不需要管存储指令的wreg输出，反正在mem阶段还会再修改
         end
       endcase
     end

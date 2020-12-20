@@ -65,6 +65,14 @@
 `define EXOP_BGEZAL 6'd31
 `define EXOP_BLTZ 6'd32
 `define EXOP_BLTZAL 6'd33
+`define EXOP_LB 6'd34
+`define EXOP_LBU 6'd35
+`define EXOP_LH 6'd36
+`define EXOP_LHU 6'd37
+`define EXOP_SB 6'd38
+`define EXOP_SH 6'd39
+`define EXOP_LW 6'd40
+`define EXOP_SW 6'd41
 
 // Minisys指令集
 // R型指令
