@@ -10,7 +10,7 @@ module ram(
     input wire[`WordRange] addr,
     input wire[3:0] byte_sel,
     input wire[`WordRange] data_in,
-    output reg[`WordRange] data_out
+    output wire[`WordRange] data_out
 );
 
 wire weA,weB,weC,weD;

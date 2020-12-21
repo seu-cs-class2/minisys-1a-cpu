@@ -347,7 +347,7 @@ module cpu (
 
 
   ram u_ram(
-  .clk                    (clk),
+  .clk                    (~clk),
   .eable                  (mem_e_out),
   .we                     (mem_we_out),
   .addr                   (mem_addr_out),

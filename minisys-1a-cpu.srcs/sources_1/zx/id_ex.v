@@ -31,7 +31,7 @@ module id_ex(
   input wire pause,
 
   input wire[`WordRange] id_ins,
-  output wire[`WordRange] ex_ins
+  output reg[`WordRange] ex_ins
   
 );
 

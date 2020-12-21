@@ -1,10 +1,10 @@
 -- Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2018.3 (win64) Build 2405991 Thu Dec  6 23:38:27 MST 2018
--- Date        : Sun Dec 20 18:19:18 2020
+-- Date        : Mon Dec 21 14:02:04 2020
 -- Host        : DESKTOP-ED5SFTK running 64-bit major release  (build 9200)
 -- Command     : write_vhdl -force -mode synth_stub
---               d:/ProgramSave/minisys-1a-cpu/minisys-1a-cpu.srcs/sources_1/ip/blk_mem_ram_byte/blk_mem_ram_byte_stub.vhdl
+--               D:/ProgramSave/minisys-1a-cpu/minisys-1a-cpu.srcs/sources_1/ip/blk_mem_ram_byte/blk_mem_ram_byte_stub.vhdl
 -- Design      : blk_mem_ram_byte
 -- Purpose     : Stub declaration of top-level module interface
 -- Device      : xc7a100tfgg484-1

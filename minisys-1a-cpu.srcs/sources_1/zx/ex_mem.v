@@ -30,9 +30,9 @@ module ex_mem (
   input wire[`ALUOpRange] f_ex_aluop,
   input wire[`WordRange] f_ex_mem_addr,
   input wire[`WordRange] f_ex_mem_data,
-  output wire[`ALUOpRange] t_mem_aluop,
-  output wire[`WordRange] t_mem_addr,
-  output wire[`WordRange] t_mem_data
+  output reg[`ALUOpRange] t_mem_aluop,
+  output reg[`WordRange] t_mem_addr,
+  output reg[`WordRange] t_mem_data
 
 );
 
