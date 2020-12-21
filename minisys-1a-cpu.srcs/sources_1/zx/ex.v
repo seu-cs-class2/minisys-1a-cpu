@@ -64,6 +64,12 @@ module ex (
 
   reg pause_for_div;
 
+  wire signed [`WordRange] mul_signed_data1;
+  wire signed [`WordRange] mul_signed_data2;
+  assign mul_signed_data1 = data1_in;
+  assign mul_signed_data2 = data2_in;
+  reg[`DivMulResultRange] mul_result;
+
   alu u_alu (
   .data1      (data1_in),
   .data2      (data2_in),
@@ -122,6 +128,12 @@ module ex (
             div_data_valid_unsigned <= `Disable;
             pause_for_div <= `Disable;
           end
+        end
+        `ALUOP_MULT:begin
+          mul_result = mul_signed_data1 * mul_signed_data2;
+        end
+        `ALUOP_MULTU:begin
+          mul_result = data1_in * data2_in;
         end
         `EXOP_JR,
         `EXOP_JALR,
@@ -199,6 +211,16 @@ module ex (
          hilo_we_out <= `Enable;
          hi_data_out <= div_result_unsigned[31:0];
          lo_data_out <= div_result_unsigned[63:32];
+       end
+       `ALUOP_MULT:begin
+         hilo_we_out <= `Enable;
+         hi_data_out <= mul_result[63:32];
+         lo_data_out <= mul_result[31:0];
+       end
+       `ALUOP_MULTU:begin
+         hilo_we_out <= `Enable;
+         hi_data_out <= mul_result[63:32];
+         lo_data_out <= mul_result[31:0];
        end
        `EXOP_MTHI: begin
           hilo_we_out <= `Enable;

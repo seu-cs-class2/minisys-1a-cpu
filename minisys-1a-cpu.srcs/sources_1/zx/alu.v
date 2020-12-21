@@ -43,13 +43,6 @@ module alu (
       `ALUOP_SUB: begin
         result <= s_data1 - s_data2;
       end
-      // TODO: 下面四条运算要多周期执行，需要阻塞流水、访问HILO
-      `ALUOP_MULTU: begin
-        
-      end
-      `ALUOP_MULT: begin
-        
-      end
       `ALUOP_AND: begin
         result = data1 & data2;
       end
