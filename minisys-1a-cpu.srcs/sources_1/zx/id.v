@@ -333,7 +333,7 @@ module id (
             branch_e_out <= `Enable;
             branch_addr_out <= data1_out;
             // TODO
-            link_addr_out <= pc_plus_4;
+            link_addr_out <= pc_plus_8;
             next_is_in_delayslot <= `Enable;
           end
         endcase
@@ -503,7 +503,7 @@ module id (
               reg1_re_out <= `Enable;
               reg1_addr_out <= rs;
               reg2_re_out <= `Disable;
-              link_addr_out <= pc_plus_4;
+              link_addr_out <= pc_plus_8;
               if (data1_out[31] == 1'b0) begin
                 branch_e_out <= `Enable;
                 branch_addr_out <= pc_plus_4 + {{14{offset[15]}}, offset[15:0], 2'b00};
@@ -516,7 +516,7 @@ module id (
               reg1_re_out <= `Enable;
               reg1_addr_out <= rs;
               reg2_re_out <= `Disable;
-              link_addr_out <= pc_plus_4;
+              link_addr_out <= pc_plus_8;
               if (data1_out[31] == 1'b1) begin
                 branch_e_out <= `Enable;
                 branch_addr_out <= pc_plus_4 + {{14{offset[15]}}, offset[15:0], 2'b00};
