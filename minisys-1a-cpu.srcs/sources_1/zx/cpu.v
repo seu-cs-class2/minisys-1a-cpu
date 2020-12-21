@@ -33,6 +33,7 @@ module cpu (
   wire[`WordRange] link_addr_out;
   wire next_is_in_delayslot;
   wire is_in_delayslot_out;
+  wire[`WordRange] id_ins_out;
 
   // EX输入
   wire[`ALUOpRange] ex_aluop_in;
@@ -49,6 +50,8 @@ module cpu (
   wire div_result_valid_unsigned;
   wire[`WordRange] ex_link_addr_in;
   wire ex_is_in_delayslot;
+  wire[`WordRange] ex_ins_in;
+
 
   // EX输出
   wire ex_wreg_e_out;
@@ -63,6 +66,9 @@ module cpu (
   wire[`WordRange] div_data2_unsigned;
   wire div_data_valid_signed;
   wire div_data_valid_unsigned;
+  wire[`WordRange] ex_mem_addr_out;
+  wire[`WordRange] ex_mem_data_out;
+  wire[`ALUOpRange] ex_aluop_out;
 
   // MEM输入
   wire mem_wreg_e_in;
@@ -71,6 +77,10 @@ module cpu (
   wire mem_hilo_we_in;
   wire[`WordRange] mem_hi_data_in;
   wire[`WordRange] mem_lo_data_in;
+  wire[`ALUOpRange] mem_aluop_in;
+  wire[`WordRange] mem_addr_in;
+  wire[`WordRange] mem_store_data_in;
+  wire[`WordRange] mem_read_data_in;
 
   // MEM输出
   wire mem_wreg_e_out;
@@ -79,6 +89,11 @@ module cpu (
   wire mem_hilo_we_out;
   wire[`WordRange] mem_hi_data_out;
   wire[`WordRange] mem_lo_data_out;
+  wire[`WordRange] mem_addr_out;
+  wire[`WordRange] mem_store_data_out;
+  wire[3:0] mem_byte_sel_out;
+  wire mem_we_out;
+  wire mem_e_out;
 
   // WB输入
   wire wb_wreg_e_in;
@@ -184,7 +199,8 @@ module cpu (
   .link_addr_out            (link_addr_out),
   .is_in_delayslot_in       (is_in_delayslot_in),
   .is_in_delayslot_out      (is_in_delayslot_out),
-  .next_is_in_delayslot     (next_is_in_delayslot)
+  .next_is_in_delayslot     (next_is_in_delayslot),
+  .ins_out                  (id_ins_out)
   );
 
   // ID-EX
@@ -207,7 +223,9 @@ module cpu (
   .id_is_in_delayslot       (is_in_delayslot_out),
   .next_is_in_delayslot     (next_is_in_delayslot),
   .ex_is_in_delayslot       (ex_is_in_delayslot),
-  .is_in_delayslot          (is_in_delayslot_in)
+  .is_in_delayslot          (is_in_delayslot_in),
+  .id_ins                   (id_ins_out),
+  .ex_ins                   (ex_ins_in)
   );
 
   // EX
@@ -244,7 +262,11 @@ module cpu (
   .div_result_unsigned      (div_result_unsigned),
   .div_result_valid_signed  (div_result_valid_signed),
   .div_result_valid_unsigned(div_result_valid_unsigned),
-  .is_in_delayslot          (ex_is_in_delayslot)  //******
+  .is_in_delayslot          (ex_is_in_delayslot),  //******
+  .ins_in                   (ex_ins_in),
+  .aluop_out                (ex_aluop_out),
+  .mem_addr_out             (ex_mem_addr_out),
+  .mem_data_out             (ex_mem_data_out)
   );
 
   div_signed u_div_signed(
@@ -288,7 +310,13 @@ module cpu (
   .mem_hilo_we              (mem_hilo_we_in),
   .mem_hi_data              (mem_hi_data_in),
   .mem_lo_data              (mem_lo_data_in),
-  .pause                    (pause_res_mem)
+  .pause                    (pause_res_mem),
+  .f_ex_aluop               (ex_aluop_out),
+  .f_ex_mem_addr            (ex_mem_addr_out),
+  .f_ex_mem_data            (ex_mem_data_out),
+  .t_mem_addr               (mem_addr_in),
+  .t_mem_aluop              (mem_aluop_in),
+  .t_mem_data               (mem_store_data_in)
   );
 
   // MEM
@@ -305,7 +333,27 @@ module cpu (
   .lo_data_in             (mem_lo_data_in),
   .hilo_we_out            (mem_hilo_we_out),
   .hi_data_out            (mem_hi_data_out),
-  .lo_data_out            (mem_lo_data_out)
+  .lo_data_out            (mem_lo_data_out),
+  .mem_addr_in            (mem_addr_in),
+  .aluop_in               (mem_aluop_in),
+  .mem_store_data_in      (mem_store_data_in),
+  .mem_read_data_in       (mem_read_data_in),
+  .mem_addr_out           (mem_addr_out),
+  .mem_store_data_out     (mem_store_data_out),
+  .mem_we_out             (mem_we_out),
+  .mem_e_out              (mem_e_out),
+  .mem_byte_sel_out       (mem_byte_sel_out)
+  );
+
+
+  ram u_ram(
+  .clk                    (~clk),
+  .eable                  (mem_e_out),
+  .we                     (mem_we_out),
+  .addr                   (mem_addr_out),
+  .byte_sel               (mem_byte_sel_out),
+  .data_in                (mem_store_data_out),
+  .data_out               (mem_read_data_in)
   );
 
   // MEM-WB
