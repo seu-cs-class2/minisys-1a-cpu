@@ -11,7 +11,7 @@ module pwm_testbench();
   reg en;
   reg[2:0] port;
   reg[15:0] data;
-  reg[15:0] result;
+  wire result;
 
   pwm u_pwm(
   .rst(rst),
@@ -26,23 +26,29 @@ module pwm_testbench();
   initial begin
     CLOCK_50MHZ = 1'b0;
     forever #10 CLOCK_50MHZ = ~CLOCK_50MHZ;
+  end
 
+  initial begin
     rst = `Enable;
     cs = `Disable;
     en = `Disable;
     port = 3'd0;
     data = 16'd0;
 
+    #100 begin
+      rst = `Disable;
+    end
+
     #200 begin
       en = `Enable;
       cs = `Enable;
       port = 3'd0;
-      data = 16'd16; // threshold
+      data = 16'd32; // threshold
     end
     
-    #400 begin
+    #300 begin
       port = 3'd2;
-      data = 16'd8; // compare
+      data = 16'd16; // compare
     end
     
     #3000 $stop;
