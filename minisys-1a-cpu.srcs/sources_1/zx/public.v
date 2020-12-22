@@ -138,3 +138,14 @@
 `define OP_JAL 6'b000011
 // FIXME NOP
 `define OP_NOP 6'b000000
+
+//CP0中各个寄存器的地址
+`define CP0_REG_COUNT 5'b01001
+`define CP0_REG_COMPARE 5'b01011
+`define CP0_REG_STATUE 5'b01100
+`define CP0_REG_CAUSE 5'b01101
+`define CP0_REG_EPC 5'b01110
+`define CP0_REG_CONFIG 5'b10000
+
+`define InterruptAssert 1'b1
+`define InterruptNotAssert 1'b0

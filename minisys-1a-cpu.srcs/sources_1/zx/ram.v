@@ -3,6 +3,8 @@
 //每次读直接出来32bit
 //写根据byte_sel的情况来写
 
+`include "public.v"
+
 module ram(
     input wire clk,
     input wire eable,
