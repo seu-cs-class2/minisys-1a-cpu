@@ -56,8 +56,8 @@
 //  Output     Output      Phase    Duty Cycle   Pk-to-Pk     Phase
 //   Clock     Freq (MHz)  (degrees)    (%)     Jitter (ps)  Error (ps)
 //----------------------------------------------------------------------------
-// clk_out1____22.000______0.000______50.0______363.317____307.118
-// clk_out2____10.000______0.000______50.0______413.212____307.118
+// _cpu_clk____22.000______0.000______50.0______363.317____307.118
+// uart_clk____10.000______0.000______50.0______413.212____307.118
 //
 //----------------------------------------------------------------------------
 // Input Clock   Freq (MHz)    Input Jitter (UI)
@@ -70,8 +70,8 @@ module clocking_clk_wiz
 
  (// Clock in ports
   // Clock out ports
-  output        clk_out1,
-  output        clk_out2,
+  output        cpu_clk,
+  output        uart_clk,
   input         clk_in1
  );
   // Input buffering
@@ -92,8 +92,8 @@ wire clk_in2_clocking;
   //    * Unused inputs are tied off
   //    * Unused outputs are labeled unused
 
-  wire        clk_out1_clocking;
-  wire        clk_out2_clocking;
+  wire        cpu_clk_clocking;
+  wire        uart_clk_clocking;
   wire        clk_out3_clocking;
   wire        clk_out4_clocking;
   wire        clk_out5_clocking;
@@ -133,8 +133,8 @@ wire clk_in2_clocking;
     // Output clocks
    (
     .CLKFBOUT            (clkfbout_clocking),
-    .CLKOUT0             (clk_out1_clocking),
-    .CLKOUT1             (clk_out2_clocking),
+    .CLKOUT0             (cpu_clk_clocking),
+    .CLKOUT1             (uart_clk_clocking),
     .CLKOUT2             (clkout2_unused),
     .CLKOUT3             (clkout3_unused),
     .CLKOUT4             (clkout4_unused),
@@ -173,13 +173,13 @@ wire clk_in2_clocking;
 
 
   BUFG clkout1_buf
-   (.O   (clk_out1),
-    .I   (clk_out1_clocking));
+   (.O   (cpu_clk),
+    .I   (cpu_clk_clocking));
 
 
   BUFG clkout2_buf
-   (.O   (clk_out2),
-    .I   (clk_out2_clocking));
+   (.O   (uart_clk),
+    .I   (uart_clk_clocking));
 
 
 

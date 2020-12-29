@@ -4,6 +4,7 @@
 `include "public.v"
 
 // 协处理器CP0
+// 内部寄存器请参考补充讲义P93
 module cp0 (
 
   input clk,
@@ -17,8 +18,8 @@ module cp0 (
   input wire[5:0] int_in,
 
   output reg[`WordRange] data_out,
-  output reg[`WordRange] count_out,// Count寄存器，用于定时中断的产生
-  output reg[`WordRange] compare_out,// Compare寄存器，配合count实现定时中断
+  output reg[`WordRange] count_out, // Count寄存器，用于定时中断的产生
+  output reg[`WordRange] compare_out, // Compare寄存器，配合count实现定时中断
   // Status寄存器，存放中断屏蔽信息等
   // 31..16   15..8   7..1      0
   // Reserved IntMask Reserved  0

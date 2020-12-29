@@ -2,14 +2,24 @@
 // 2020-11 @ https://github.com/seu-cs-class2/minisys-1a-cpu
 
 `include "public.v"
- 
-// 主机
-module host (
 
-  input rst, // 重置
-  input clk // 时钟
+// 顶层
+module minisys (
+
+  input rst, // 板上重置
+  input board_clk // 板上时钟
 
 );
+
+  wire cpu_clk;
+  wire uart_clk;
+  // 时钟分频
+  clocking u_clocking(
+    .clk_in1(board_clk), // 100MHz
+    .cpu_clk(cpu_clk), // 22MHz
+    .uart_clk(uart_clk) // 10MHz
+  );
+
   wire [`WordRange] cpu_imem_data_in;
   wire [`WordRange] cpu_imem_addr_out;
   wire cpu_imem_e_out;
@@ -25,7 +35,7 @@ module host (
   // CPU
   cpu u_cpu (
   .rst                      (rst),
-  .clk                      (clk),
+  .clk                      (cpu_clk),
   .imem_data_in             (cpu_imem_data_in),
   .imem_addr_out            (cpu_imem_addr_out),
   .imem_e_out               (cpu_imem_e_out)
@@ -33,14 +43,14 @@ module host (
 
   // IMEM
   blk_mem_gen_0 u_blk_mem_gen_0 (
-  .addra                    (imem_imem_addr_in[15:2]), // 16->14，65536/4=16384
-  .clka                     (~clk), //为什么这里不是相反的时钟，这样在pc上升沿变化的时候mem会取的是当前pc的值还是下一个pc的值？
-  .ena                      (imem_imem_e_in),
+  .addra                    (imem_imem_addr_in[15:2]),
+  .clka                     (~cpu_clk),
   .douta                    (imem_imem_data_out)
   );
 
+  // DMEM
   ram u_ram(
-  .clk                    (~clk),
+  .clk                    (~cpu_clk),
   .we                     (mem_we_out),
   .addr                   (mem_addr_out),
   .byte_sel               (mem_byte_sel_out),
@@ -49,6 +59,6 @@ module host (
   );
 
   // 接口部分
-  
+  // TODO
 
 endmodule
