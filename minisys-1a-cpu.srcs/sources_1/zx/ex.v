@@ -52,8 +52,23 @@ module ex (
   input wire[`WordRange] ins_in,  // 新增的指令信号，从id阶段一直传递过来
   output wire[`ALUOpRange] aluop_out,   //要向访存部分传递aluop
   output wire[`WordRange] mem_addr_out,  //要向访存部分传递计算出的内存地址（所有存储相关指令均会用到）
-  output wire[`WordRange] mem_data_out   //要向访存部分传递写入内存的数据（store指令才会用到）
+  output wire[`WordRange] mem_data_out,   //要向访存部分传递写入内存的数据（store指令才会用到）
 
+
+  input wire[`WordRange] cp0_data_in,//从cp0读取的数据
+
+  input wire f_mem_cp0_we_in, //当前处在访存阶段的指令是否要写cp0
+  input wire[4:0] f_mem_cp0_w_addr, //要写的地址
+  //*******   fix me:为什么地址是五位
+  input wire[`WordRange] f_mem_cp0_w_data, //要写入的数据
+  input wire f_wb_cp0_we_in,   //同理  当前处在写回阶段的指令是否要写cp0
+  input wire[4:0] f_wb_cp0_w_addr, //写入的地址
+  input wire[`WordRange] f_wb_cp0_w_data,  //写入的数据
+
+  output reg cp0_we_out,    //cp0是否要被写（当前指令 向下传入流水
+  output reg[4:0] cp0_addr,  //cp0读写地址  
+  output reg cp0_re_out,    //是否要读cp0（当前指令 不需要传入流水 即刻从cp0处读出
+  output reg[`WordRange] cp0_w_data   //要写入cp0的数据
 );
 
   wire[`WordRange] alu_res;  //alu的结果
@@ -148,6 +163,36 @@ module ex (
         `EXOP_BLTZ,
         `EXOP_BLTZAL: begin
           wreg_data_out <= link_addr_in;
+        end
+        `ALUOP_DIV: begin
+          hilo_we_out <= `Enable;
+          hi_data_out <= div_result_signed[31:0];  //HI存余数  LO存商
+          lo_data_out <= div_result_signed[63:32];
+        end
+        `ALUOP_DIVU: begin
+          hilo_we_out <= `Enable;
+          hi_data_out <= div_result_unsigned[31:0];
+          lo_data_out <= div_result_unsigned[63:32];
+        end
+        `ALUOP_MULT:begin
+          hilo_we_out <= `Enable;
+          hi_data_out <= mul_result[63:32];
+          lo_data_out <= mul_result[31:0];
+        end
+         `ALUOP_MULTU:begin
+          hilo_we_out <= `Enable;
+          hi_data_out <= mul_result[63:32];
+          lo_data_out <= mul_result[31:0];
+        end
+        `EXOP_MTHI: begin
+          hilo_we_out <= `Enable;
+          hi_data_out <= data1_in;
+          lo_data_out <= lo_data_in;
+        end
+         `EXOP_MTLO: begin
+          hilo_we_out <= `Enable;
+          hi_data_out <= hi_data_in;
+          lo_data_out <= data1_in;
         end
         default: begin
           wreg_data_out <= alu_res;  //这里不需要管存储指令的wreg输出，反正在mem阶段还会再修改
