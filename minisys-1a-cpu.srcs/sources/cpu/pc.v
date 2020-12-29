@@ -3,7 +3,7 @@
 
 `include "public.v"
 
-// 指令计数器
+// 指令计数器PC
 module pc (
 
   input clk, // 时钟
@@ -11,10 +11,10 @@ module pc (
   output reg[`WordRange] pc, // 当前PC
   output reg imem_e_out, // 指令存储器使能
   
-  input wire pause,
+  input wire pause, // 流水暂停信号
 
-  input wire branch_e_in, //是否转移
-  input wire[`WordRange] branch_addr_in  //转移的地址
+  input wire branch_e_in, // 是否转移
+  input wire[`WordRange] branch_addr_in  // 转移的地址
 
 );
 
@@ -32,8 +32,9 @@ module pc (
     if (rst == `Enable) begin
       pc <= `ZeroWord;
     end else if (pause == `Enable) begin
+      // 流水暂停时保持PC不变
       pc <= pc;
-    end else if (branch_e_in == `Enable) begin  //如果要转移，则pc直接赋值为转移地址
+    end else if (branch_e_in == `Enable) begin  // 如果要转移，则PC直接赋值为转移地址
       pc <= branch_addr_in;
     end else begin
       pc <= pc + 32'd4;

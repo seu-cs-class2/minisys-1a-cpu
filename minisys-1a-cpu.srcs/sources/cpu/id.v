@@ -12,7 +12,6 @@ module id (
   input wire[`WordRange] pc_in, // 输入的PC值，译码阶段指令地址
   input wire[`WordRange] ins_in, // 输入的指令，即取出的指令
 
-  // 先这样写，不直通，这为后面流水暂存提供条件
   input wire[`WordRange] reg1_data_in, // 输入的寄存器数据1
   input wire[`WordRange] reg2_data_in, // 输入的寄存器数据2
 
@@ -39,16 +38,16 @@ module id (
   input wire[`WordRange] mem_wreg_data_in,
   input wire[`RegRangeLog2] mem_wreg_addr_in,
 
-  output reg pause_req,
+  output reg pause_req, // 要求进行流水暂停信号
 
-  input wire is_in_delayslot_in, //当前要进入（译码阶段）指令是否是延迟槽内指令（必须执行）
-  output reg is_in_delayslot_out,  //当前要出（译码阶段）指令是否是延迟槽内指令（必须执行）
-  output reg next_is_in_delayslot, //下条指令是否处是延迟槽内指令（即当前指令是否要跳转）
-  output reg branch_e_out,  //分支生效信号
-  output reg[`WordRange] branch_addr_out,   //分支跳转地址
-  output reg[`WordRange] link_addr_out,  //转移指令需要保存的地址
+  input wire is_in_delayslot_in, // 当前要进入（译码阶段）指令是否是延迟槽内指令（必须执行）
+  output reg is_in_delayslot_out,  // 当前要出（译码阶段）指令是否是延迟槽内指令（必须执行）
+  output reg next_is_in_delayslot, // 下条指令是否处是延迟槽内指令（即当前指令是否要跳转）
+  output reg branch_e_out,  // 分支生效信号
+  output reg[`WordRange] branch_addr_out,   // 分支跳转地址
+  output reg[`WordRange] link_addr_out,  // 转移指令需要保存的地址
   
-  output wire[`WordRange] ins_out   //向流水线后续传递的指令 在添加存储指令时需要用到
+  output wire[`WordRange] ins_out   // 向流水线后续传递的指令 在添加存储指令时需要用到
 
 );
 
@@ -65,9 +64,6 @@ module id (
 
   reg[`WordRange] immed; // 指令中的立即数的扩展结果
 
-  // j some_where   <- PC
-  // nop            <- PC+4, delay-slot
-  // real_ret_loc   <- PC+8
   wire[`WordRange] pc_plus_4;
   assign pc_plus_4 = pc_in + 32'd4;
   wire[`WordRange] pc_plus_8;

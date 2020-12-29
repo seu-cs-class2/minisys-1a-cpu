@@ -24,6 +24,7 @@ module ppl_scheduler (
 
   always @(*) begin
     if (rst == `Enable) begin
+      // rst时撤销所有暂停
       pause_res_pc <= `Disable;
       pause_res_if <= `Disable;
       pause_res_id <= `Disable;
@@ -31,6 +32,7 @@ module ppl_scheduler (
       pause_res_mem <= `Disable;
       pause_res_wb <= `Disable;
     end else if (pause_req_id == `Enable || pause_req_ex == `Enable) begin
+      // 当有暂停请求时，暂停所有流水级
       pause_res_pc <= `Enable;
       pause_res_if <= `Enable;
       pause_res_id <= `Enable;
@@ -38,6 +40,7 @@ module ppl_scheduler (
       pause_res_mem <= `Enable;
       pause_res_wb <= `Enable;
     end else begin
+      // 默认不暂停
       pause_res_pc <= `Disable;
       pause_res_if <= `Disable;
       pause_res_id <= `Disable;

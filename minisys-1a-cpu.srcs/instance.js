@@ -1,0 +1,41 @@
+// 快速例化 by z0gSh1u @ 2020-12
+// node instance.js <path_to_.v_file>
+const fs = require('fs')
+const path = require('path')
+const vPath = process.argv.slice(2)[0]
+const vModule = path.basename(vPath, '.v')
+const vContent = String(fs.readFileSync(vPath))
+const vLines = vContent.replace(/\r\n/, '\n').split('\n')
+const ios = []
+vLines.forEach((line) => {
+  line = line.trim()
+  const isInput = line.startsWith('input')
+  const isOutput = line.startsWith('output')
+  if (isInput || isOutput) {
+    const type = ['input', 'output'][+isOutput]
+    ios.push({
+      type,
+      follow: line
+        .replace(type, '')
+        .replace(new RegExp(`${type}\\s+{reg|wire}?`), '')
+        .replace(',', '')
+        .trim(),
+    })
+  }
+})
+let output = '// 被测信号\n'
+ios.forEach((v) => {
+  output += ['reg ', 'wire '][+(v.type == 'output')] + v.follow + ';\n'
+})
+output += '\n// 例化被测模块\n'
+output += `${vModule} u_${vModule}(\n`
+ios.forEach((v, i) => {
+  const port = v.follow
+    .replace(/\/\/.*/, '')
+    .trim()
+    .split(/\s+/)
+    .slice(-1)[0]
+  output += `  .${port}(${port})${i == ios.length - 1 ? '' : ','}\n`
+})
+output += ');'
+process.stdout.write(output)
