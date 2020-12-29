@@ -10,13 +10,13 @@ module mem_wb (
   input rst, // 重置
   input clk, // 时钟
 
-  input wire mem_wreg_e, // MEM级输入 - 寄存器组写使能
-  input wire[`RegRangeLog2] mem_wreg_addr, // MEM级输入 - 寄存器组写地址
-  input wire[`WordRange] mem_wreg_data, // MEM级输入 - 寄存器组写数据
+  input wire mem_wreg_e, // 寄存器组写使能
+  input wire[`RegRangeLog2] mem_wreg_addr, // 寄存器组写地址
+  input wire[`WordRange] mem_wreg_data, // 寄存器组写数据
 
-  output reg wb_wreg_e, // WB级输出 - 寄存器组写使能
-  output reg[`RegRangeLog2] wb_wreg_addr, // WB级输出 - 寄存器组写地址
-  output reg[`WordRange] wb_wreg_data, // WB级输出 - 寄存器组写数据
+  output reg wb_wreg_e, // 寄存器组写使能
+  output reg[`RegRangeLog2] wb_wreg_addr, // 寄存器组写地址
+  output reg[`WordRange] wb_wreg_data, // 寄存器组写数据
 
   input wire mem_hilo_we,
   input wire[`WordRange] mem_hi_data,
@@ -32,6 +32,7 @@ module mem_wb (
 
   wire clk_pause;
   assign clk_pause = clk | pause;
+  
   always @(posedge clk_pause) begin
     // 重置时送disbale、0x0
     if (rst == `Enable) begin

@@ -110,7 +110,7 @@ module timer (
 
   // 处理CNT1边界结束后的重复逻辑
   always @(cout1) begin
-    
+    // TODO
   end
 
 endmodule

@@ -52,7 +52,6 @@ module cpu (
   wire ex_is_in_delayslot;
   wire[`WordRange] ex_ins_in;
 
-
   // EX输出
   wire ex_wreg_e_out;
   wire[`RegRangeLog2] ex_wreg_addr_out;
@@ -99,7 +98,7 @@ module cpu (
   wire wb_wreg_e_in;
   wire[`RegRangeLog2] wb_wreg_addr_in;
   wire[`WordRange] wb_wreg_data_in;
-  // 下面三根线直接�?�到HILO
+  // 下面三根线直接到HILO
   wire wb_hilo_we_in;
   wire[`WordRange] wb_hi_data_in;
   wire[`WordRange] wb_lo_data_in;
@@ -112,7 +111,7 @@ module cpu (
   wire[`RegRangeLog2] reg1_addr;
   wire[`RegRangeLog2] reg2_addr;
 
-  //流水线暂停相�??
+  // 流水线暂停相关
   wire pause_req_id;
   wire pause_req_ex;
   wire pause_res_pc;
@@ -121,7 +120,6 @@ module cpu (
   wire pause_res_ex;
   wire pause_res_mem;
   wire pause_res_wb;
-
 
   // HILO
   hilo  u_hilo (  
@@ -289,11 +287,6 @@ module cpu (
     .m_axis_dout_tvalid     (div_result_valid_unsigned)
   );
 
-
-
-
-
-
   // EX-MEM
   ex_mem  u_ex_mem (
   .rst                      (rst),
@@ -343,17 +336,6 @@ module cpu (
   .mem_we_out             (mem_we_out),
   .mem_e_out              (mem_e_out),
   .mem_byte_sel_out       (mem_byte_sel_out)
-  );
-
-
-  ram u_ram(
-  .clk                    (~clk),
-  .eable                  (mem_e_out),
-  .we                     (mem_we_out),
-  .addr                   (mem_addr_out),
-  .byte_sel               (mem_byte_sel_out),
-  .data_in                (mem_store_data_out),
-  .data_out               (mem_read_data_in)
   );
 
   // MEM-WB

@@ -1,9 +1,9 @@
 `timescale 1ns / 1ps
 
-`include "../../sources_1/zx/public.v"
+`include "../../sources/cpu/public.v"
 
 // PWM 测试
-module pwm_testbench();
+module pwm_tb();
 
   reg rst;
   reg CLOCK_50MHZ; // T = 20ns

@@ -1,4 +1,4 @@
-// host.v
+// minisys.v
 // 2020-11 @ https://github.com/seu-cs-class2/minisys-1a-cpu
 
 `include "public.v"
@@ -10,18 +10,12 @@ module host (
   input clk // 时钟
 
 );
-  (* mark_debug="true" *)
   wire [`WordRange] cpu_imem_data_in;
-  (* mark_debug="true" *)
   wire [`WordRange] cpu_imem_addr_out;
-  (* mark_debug="true" *)
   wire cpu_imem_e_out;
   
-  (* mark_debug="true" *)
   wire [`WordRange] imem_imem_data_out;
-  (* mark_debug="true" *)
   wire [`WordRange] imem_imem_addr_in;
-  (* mark_debug="true" *)
   wire imem_imem_e_in;
 
   assign cpu_imem_data_in = imem_imem_data_out;
@@ -44,5 +38,17 @@ module host (
   .ena                      (imem_imem_e_in),
   .douta                    (imem_imem_data_out)
   );
+
+  ram u_ram(
+  .clk                    (~clk),
+  .we                     (mem_we_out),
+  .addr                   (mem_addr_out),
+  .byte_sel               (mem_byte_sel_out),
+  .data_in                (mem_store_data_out),
+  .data_out               (mem_read_data_in)
+  );
+
+  // 接口部分
+  
 
 endmodule

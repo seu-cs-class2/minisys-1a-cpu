@@ -16,8 +16,8 @@ vLines.forEach((line) => {
     ios.push({
       type,
       follow: line
+        .replace(new RegExp(`${type}\\s+(reg|wire)?`), '')
         .replace(type, '')
-        .replace(new RegExp(`${type}\\s+{reg|wire}?`), '')
         .replace(',', '')
         .trim(),
     })
@@ -25,7 +25,13 @@ vLines.forEach((line) => {
 })
 let output = '// 被测信号\n'
 ios.forEach((v) => {
-  output += ['reg ', 'wire '][+(v.type == 'output')] + v.follow + ';\n'
+  let commentIndex = v.follow.indexOf('//')
+  if (commentIndex == -1) commentIndex = v.follow.length
+  const comment = v.follow.substring(commentIndex)
+  output +=
+    ['reg ', 'wire '][+(v.type == 'output')] +
+    v.follow.substring(0, commentIndex).trim() +
+    `; ${comment}\n`
 })
 output += '\n// 例化被测模块\n'
 output += `${vModule} u_${vModule}(\n`

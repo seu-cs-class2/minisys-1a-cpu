@@ -48,7 +48,6 @@
 `define ALUOP_SLT 6'd16
 `define ALUOP_SLTU 6'd17
 // EXOP
-// FIXME: 简化
 `define EXOP_MFHI 6'd18
 `define EXOP_MFLO 6'd19
 `define EXOP_MTHI 6'd20
@@ -136,10 +135,9 @@
 // J型指令
 `define OP_J 6'b000010
 `define OP_JAL 6'b000011
-// FIXME NOP
 `define OP_NOP 6'b000000
 
-//CP0中各个寄存器的地址
+// CP0中各个寄存器的地址
 `define CP0_REG_COUNT 5'b01001
 `define CP0_REG_COMPARE 5'b01011
 `define CP0_REG_STATUE 5'b01100
