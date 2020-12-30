@@ -72,6 +72,8 @@
 `define EXOP_SH 6'd39
 `define EXOP_LW 6'd40
 `define EXOP_SW 6'd41
+`define EXOP_MFC0 6'd42
+`define EXOP_MTC0 6'd43
 
 // Minisys指令集
 // R型指令
@@ -135,6 +137,9 @@
 // J型指令
 `define OP_J 6'b000010
 `define OP_JAL 6'b000011
+// cp0相关
+`define OP_CP0 6'b010000
+// FIXME NOP
 `define OP_NOP 6'b000000
 
 // CP0中各个寄存器的地址

@@ -595,8 +595,23 @@ module id (
             reg2_re_out <= `Enable;
             reg2_addr_out <= rt;
           end
-          default: begin
-            // nothing
+          `OP_CP0:begin
+            if(rs == 5'b00000) begin //是mfc0
+              wreg_e_out <= `Enable;
+              wreg_addr_out <= rt;
+              aluop_out <= `EXOP_MFC0;
+              reg1_re_out <= `Disable;
+              reg2_re_out <= `Disable;
+            end
+            if(rs == 5'b00100) begin //是mtc0
+              wreg_e_out <= `Disable;
+              aluop_out <= `EXOP_MTC0;
+              reg1_re_out <= `Enable;
+              reg1_addr_out <= rt;
+              reg2_re_out <= `Disable;
+            end
+          end
+          default: begin 
           end
         endcase
       end
