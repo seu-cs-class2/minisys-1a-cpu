@@ -4,7 +4,6 @@
 `include "public.v"
 
 // 访存控制模块
-// TODO: 统一编址访接口怎么控制？
 module mem (
 
   input rst,
@@ -33,9 +32,41 @@ module mem (
   output reg[`WordRange] mem_addr_out, // 发给存储器的地址信息
   output reg mem_we_out, // 发给存储器的写使能信号
   output reg[3:0] mem_byte_sel_out, // 发给存储器的字节选择信号
-  output reg[`WordRange] mem_store_data_out // 发给存储器的写入数据
+  output reg[`WordRange] mem_store_data_out, // 发给存储器的写入数据
+
+  // 接口部件使能
+  output reg beep_en_out, // 0xFFFF_FD10
+  output reg digits_en_out, // 0xFFFF_FC00
+  output reg keyboard_en_out, // 0xFFFF_FC10
+  output reg leds_en_out, // 0xFFFF_FC60
+  output reg pwm_en_out, // 0xFFFF_FC30
+  output reg switches_en_out, // 0xFFFF_FC70
+  output reg timer_en_out, // 0xFFFF_FC20
+  output reg watchdog_en_out // 0xFFFF_FC50
 
 );
+
+  // 负责根据当前地址给出接口部件的使能
+  always @(*) begin
+    beep_en_out <= `Disable;
+    digits_en_out <= `Disable;
+    keyboard_en_out <= `Disable;
+    leds_en_out <= `Disable;
+    pwm_en_out <= `Disable;
+    switches_en_out <= `Disable;
+    timer_en_out <= `Disable;
+    watchdog_en_out <= `Disable;
+    case (mem_addr_in[31:4])
+      28'hFFFFFC0: digits_en_out <= `Enable;
+      28'hFFFFFC1: keyboard_en_out <= `Enable;
+      28'hFFFFFC2: timer_en_out <= `Enable;
+      28'hFFFFFC3: pwm_en_out <= `Enable;
+      28'hFFFFFC5: watchdog_en_out <= `Enable;
+      28'hFFFFFC6: leds_en_out <= `Enable;
+      28'hFFFFFC7: switches_en_out <= `Enable;
+      28'hFFFFFD1: beep_en_out <= `Enable;
+    endcase
+  end
 
   always @(*) begin
     if (rst == `Enable) begin

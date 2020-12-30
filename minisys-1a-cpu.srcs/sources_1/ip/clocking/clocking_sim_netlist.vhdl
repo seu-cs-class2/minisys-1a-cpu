@@ -1,10 +1,10 @@
 -- Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2018.3 (win64) Build 2405991 Thu Dec  6 23:38:27 MST 2018
--- Date        : Sat Dec 26 12:28:43 2020
+-- Date        : Wed Dec 30 14:07:43 2020
 -- Host        : ZHUOXUPC running 64-bit major release  (build 9200)
 -- Command     : write_vhdl -force -mode funcsim
---               f:/minisys-1a-cpu/minisys-1a-cpu.srcs/sources_1/ip/clocking/clocking_sim_netlist.vhdl
+--               F:/minisys-1a-cpu/minisys-1a-cpu.srcs/sources/ip/clocking/clocking_sim_netlist.vhdl
 -- Design      : clocking
 -- Purpose     : This VHDL netlist is a functional simulation representation of the design and should not be modified or
 --               synthesized. This netlist cannot be used for SDF annotated simulation.
@@ -16,8 +16,8 @@ library UNISIM;
 use UNISIM.VCOMPONENTS.ALL;
 entity clocking_clocking_clk_wiz is
   port (
-    clk_out1 : out STD_LOGIC;
-    clk_out2 : out STD_LOGIC;
+    cpu_clk : out STD_LOGIC;
+    uart_clk : out STD_LOGIC;
     clk_in1 : in STD_LOGIC
   );
   attribute ORIG_REF_NAME : string;
@@ -26,10 +26,10 @@ end clocking_clocking_clk_wiz;
 
 architecture STRUCTURE of clocking_clocking_clk_wiz is
   signal clk_in1_clocking : STD_LOGIC;
-  signal clk_out1_clocking : STD_LOGIC;
-  signal clk_out2_clocking : STD_LOGIC;
   signal clkfbout_buf_clocking : STD_LOGIC;
   signal clkfbout_clocking : STD_LOGIC;
+  signal cpu_clk_clocking : STD_LOGIC;
+  signal uart_clk_clocking : STD_LOGIC;
   signal NLW_plle2_adv_inst_CLKOUT2_UNCONNECTED : STD_LOGIC;
   signal NLW_plle2_adv_inst_CLKOUT3_UNCONNECTED : STD_LOGIC;
   signal NLW_plle2_adv_inst_CLKOUT4_UNCONNECTED : STD_LOGIC;
@@ -65,13 +65,13 @@ clkin1_ibufg: unisim.vcomponents.IBUF
     );
 clkout1_buf: unisim.vcomponents.BUFG
      port map (
-      I => clk_out1_clocking,
-      O => clk_out1
+      I => cpu_clk_clocking,
+      O => cpu_clk
     );
 clkout2_buf: unisim.vcomponents.BUFG
      port map (
-      I => clk_out2_clocking,
-      O => clk_out2
+      I => uart_clk_clocking,
+      O => uart_clk
     );
 plle2_adv_inst: unisim.vcomponents.PLLE2_ADV
     generic map(
@@ -113,8 +113,8 @@ plle2_adv_inst: unisim.vcomponents.PLLE2_ADV
       CLKIN1 => clk_in1_clocking,
       CLKIN2 => '0',
       CLKINSEL => '1',
-      CLKOUT0 => clk_out1_clocking,
-      CLKOUT1 => clk_out2_clocking,
+      CLKOUT0 => cpu_clk_clocking,
+      CLKOUT1 => uart_clk_clocking,
       CLKOUT2 => NLW_plle2_adv_inst_CLKOUT2_UNCONNECTED,
       CLKOUT3 => NLW_plle2_adv_inst_CLKOUT3_UNCONNECTED,
       CLKOUT4 => NLW_plle2_adv_inst_CLKOUT4_UNCONNECTED,
@@ -137,8 +137,8 @@ library UNISIM;
 use UNISIM.VCOMPONENTS.ALL;
 entity clocking is
   port (
-    clk_out1 : out STD_LOGIC;
-    clk_out2 : out STD_LOGIC;
+    cpu_clk : out STD_LOGIC;
+    uart_clk : out STD_LOGIC;
     clk_in1 : in STD_LOGIC
   );
   attribute NotValidForBitStream : boolean;
@@ -150,7 +150,7 @@ begin
 inst: entity work.clocking_clocking_clk_wiz
      port map (
       clk_in1 => clk_in1,
-      clk_out1 => clk_out1,
-      clk_out2 => clk_out2
+      cpu_clk => cpu_clk,
+      uart_clk => uart_clk
     );
 end STRUCTURE;

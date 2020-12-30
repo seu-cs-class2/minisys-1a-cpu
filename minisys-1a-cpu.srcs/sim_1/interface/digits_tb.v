@@ -1,6 +1,6 @@
 `timescale 1ns / 1ps
 
-`include "../../sources/cpu/public.v"
+`include "../../sources_1/cpu/public.v"
 
 // 数码管测试
 module digits_tb();

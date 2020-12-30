@@ -1,10 +1,10 @@
 // Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2018.3 (win64) Build 2405991 Thu Dec  6 23:38:27 MST 2018
-// Date        : Sat Dec 26 12:28:43 2020
+// Date        : Wed Dec 30 14:07:43 2020
 // Host        : ZHUOXUPC running 64-bit major release  (build 9200)
 // Command     : write_verilog -force -mode funcsim
-//               f:/minisys-1a-cpu/minisys-1a-cpu.srcs/sources_1/ip/clocking/clocking_sim_netlist.v
+//               F:/minisys-1a-cpu/minisys-1a-cpu.srcs/sources/ip/clocking/clocking_sim_netlist.v
 // Design      : clocking
 // Purpose     : This verilog netlist is a functional simulation representation of the design and should not be modified
 //               or synthesized. This netlist cannot be used for SDF annotated simulation.
@@ -14,40 +14,40 @@
 
 (* NotValidForBitStream *)
 module clocking
-   (clk_out1,
-    clk_out2,
+   (cpu_clk,
+    uart_clk,
     clk_in1);
-  output clk_out1;
-  output clk_out2;
+  output cpu_clk;
+  output uart_clk;
   input clk_in1;
 
   (* IBUF_LOW_PWR *) wire clk_in1;
-  wire clk_out1;
-  wire clk_out2;
+  wire cpu_clk;
+  wire uart_clk;
 
   clocking_clocking_clk_wiz inst
        (.clk_in1(clk_in1),
-        .clk_out1(clk_out1),
-        .clk_out2(clk_out2));
+        .cpu_clk(cpu_clk),
+        .uart_clk(uart_clk));
 endmodule
 
 (* ORIG_REF_NAME = "clocking_clk_wiz" *) 
 module clocking_clocking_clk_wiz
-   (clk_out1,
-    clk_out2,
+   (cpu_clk,
+    uart_clk,
     clk_in1);
-  output clk_out1;
-  output clk_out2;
+  output cpu_clk;
+  output uart_clk;
   input clk_in1;
 
   wire clk_in1;
   wire clk_in1_clocking;
-  wire clk_out1;
-  wire clk_out1_clocking;
-  wire clk_out2;
-  wire clk_out2_clocking;
   wire clkfbout_buf_clocking;
   wire clkfbout_clocking;
+  wire cpu_clk;
+  wire cpu_clk_clocking;
+  wire uart_clk;
+  wire uart_clk_clocking;
   wire NLW_plle2_adv_inst_CLKOUT2_UNCONNECTED;
   wire NLW_plle2_adv_inst_CLKOUT3_UNCONNECTED;
   wire NLW_plle2_adv_inst_CLKOUT4_UNCONNECTED;
@@ -71,12 +71,12 @@ module clocking_clocking_clk_wiz
         .O(clk_in1_clocking));
   (* BOX_TYPE = "PRIMITIVE" *) 
   BUFG clkout1_buf
-       (.I(clk_out1_clocking),
-        .O(clk_out1));
+       (.I(cpu_clk_clocking),
+        .O(cpu_clk));
   (* BOX_TYPE = "PRIMITIVE" *) 
   BUFG clkout2_buf
-       (.I(clk_out2_clocking),
-        .O(clk_out2));
+       (.I(uart_clk_clocking),
+        .O(uart_clk));
   (* BOX_TYPE = "PRIMITIVE" *) 
   PLLE2_ADV #(
     .BANDWIDTH("OPTIMIZED"),
@@ -116,8 +116,8 @@ module clocking_clocking_clk_wiz
         .CLKIN1(clk_in1_clocking),
         .CLKIN2(1'b0),
         .CLKINSEL(1'b1),
-        .CLKOUT0(clk_out1_clocking),
-        .CLKOUT1(clk_out2_clocking),
+        .CLKOUT0(cpu_clk_clocking),
+        .CLKOUT1(uart_clk_clocking),
         .CLKOUT2(NLW_plle2_adv_inst_CLKOUT2_UNCONNECTED),
         .CLKOUT3(NLW_plle2_adv_inst_CLKOUT3_UNCONNECTED),
         .CLKOUT4(NLW_plle2_adv_inst_CLKOUT4_UNCONNECTED),

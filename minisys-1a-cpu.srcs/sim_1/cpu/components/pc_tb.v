@@ -1,4 +1,4 @@
-`include "../../../sources/cpu/public.v"
+`include "../../../sources_1/cpu/public.v"
 
 // 程序计数器PC测试
 module pc_tb();

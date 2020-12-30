@@ -1,6 +1,6 @@
 `timescale 1ns / 1ps
 
-`include "../../sources/cpu/public.v"
+`include "../../sources_1/cpu/public.v"
 
 // PWM 测试
 module pwm_tb();
