@@ -35,10 +35,7 @@ module id_ex(
   
 );
 
-  wire clk_pause;
-  assign clk_pause = clk | pause;
-
-  always @(posedge clk_pause) begin
+  always @(posedge clk) begin
     if (rst == `Enable) begin
       ex_aluop <= `ALUOP_NOP;
       ex_data1 <= `ZeroWord;

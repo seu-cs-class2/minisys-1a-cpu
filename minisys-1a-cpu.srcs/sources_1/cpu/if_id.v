@@ -19,10 +19,7 @@ module if_id (
   
 );
 
-  wire clk_pause;
-  assign clk_pause = clk | pause;
-
-  always @(posedge clk_pause) begin
+  always @(posedge clk) begin
     // 重置时向下级送0x0
     if (rst == `Enable) begin
       id_pc <= `ZeroWord;
