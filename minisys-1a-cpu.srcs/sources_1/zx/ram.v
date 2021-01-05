@@ -28,6 +28,7 @@ assign weD = byte_sel[3] & we;
 
 
 always @(*)begin
+    abt_eable <= `Disable;
     if(addr[31:16] == 16'h0000 && eable == `Enable)begin 
         abt_eable <= `Enable;   //如果地址正确  就向仲裁器提交申请
     end
