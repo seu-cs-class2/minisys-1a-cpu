@@ -9,10 +9,17 @@ module cpu (
   input rst, // 重置
   input clk, // 时钟
 
-  input [`WordRange] imem_data_in,
-  output wire[`WordRange] imem_addr_out,
-  output wire imem_e_out
+  input [`WordRange] imem_data_in,  //指令存储器发给cpu的数据
+  output wire[`WordRange] imem_addr_out,  //cpu发给指令存储器的地址
+  output wire imem_e_out,  //cpu发给指令存储器的使能信号
 
+  output wire[`WordRange] bus_addr_out, //发给数据总线的地址
+  output wire[`WordRange] bus_write_data_out,  //发给写数据总线的数据
+  output wire bus_eable_out, //发给控制总线的总使能信号
+  output wire bus_we_out, //发给控制总线的写使能信号
+  output wire[3:0] bus_byte_sel_out, //发给控制总线的比特选择信号
+  
+  input wire[`WordRange] bus_read_in//从读控制总线读入的数据
 );
 
   // ID输入
@@ -337,24 +344,14 @@ module cpu (
   .mem_addr_in            (mem_addr_in),
   .aluop_in               (mem_aluop_in),
   .mem_store_data_in      (mem_store_data_in),
-  .mem_read_data_in       (mem_read_data_in),
-  .mem_addr_out           (mem_addr_out),
-  .mem_store_data_out     (mem_store_data_out),
-  .mem_we_out             (mem_we_out),
-  .mem_e_out              (mem_e_out),
-  .mem_byte_sel_out       (mem_byte_sel_out)
+  .mem_read_data_in       (bus_read_in),
+  .mem_addr_out           (bus_addr_out),
+  .mem_store_data_out     (bus_write_data_out),
+  .mem_we_out             (bus_write_eable),
+  .mem_e_out              (bus_eable_out),
+  .mem_byte_sel_out       (bus_byte_sel_out)
   );
 
-
-  ram u_ram(
-  .clk                    (~clk),
-  .eable                  (mem_e_out),
-  .we                     (mem_we_out),
-  .addr                   (mem_addr_out),
-  .byte_sel               (mem_byte_sel_out),
-  .data_in                (mem_store_data_out),
-  .data_out               (mem_read_data_in)
-  );
 
   // MEM-WB
   mem_wb  u_mem_wb (

@@ -164,36 +164,6 @@ module ex (
         `EXOP_BLTZAL: begin
           wreg_data_out <= link_addr_in;
         end
-        `ALUOP_DIV: begin
-          hilo_we_out <= `Enable;
-          hi_data_out <= div_result_signed[31:0];  //HI存余数  LO存商
-          lo_data_out <= div_result_signed[63:32];
-        end
-        `ALUOP_DIVU: begin
-          hilo_we_out <= `Enable;
-          hi_data_out <= div_result_unsigned[31:0];
-          lo_data_out <= div_result_unsigned[63:32];
-        end
-        `ALUOP_MULT:begin
-          hilo_we_out <= `Enable;
-          hi_data_out <= mul_result[63:32];
-          lo_data_out <= mul_result[31:0];
-        end
-         `ALUOP_MULTU:begin
-          hilo_we_out <= `Enable;
-          hi_data_out <= mul_result[63:32];
-          lo_data_out <= mul_result[31:0];
-        end
-        `EXOP_MTHI: begin
-          hilo_we_out <= `Enable;
-          hi_data_out <= data1_in;
-          lo_data_out <= lo_data_in;
-        end
-         `EXOP_MTLO: begin
-          hilo_we_out <= `Enable;
-          hi_data_out <= hi_data_in;
-          lo_data_out <= data1_in;
-        end
         default: begin
           wreg_data_out <= alu_res;  //这里不需要管存储指令的wreg输出，反正在mem阶段还会再修改
         end

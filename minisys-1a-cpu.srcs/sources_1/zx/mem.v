@@ -29,11 +29,11 @@ module mem (
 
   input wire[`WordRange] mem_read_data_in,   //从存储器来的读出的数据
  
-  output reg[`WordRange] mem_addr_out,  //发给存储器的地址信息
-  output reg mem_we_out,   //发给存储器的写使能信号
-  output reg[3:0] mem_byte_sel_out,   //发给存储器的字节选择信号
-  output reg[`WordRange] mem_store_data_out,   //发给存储器的写入数据
-  output reg mem_e_out  //发给存储器的总使能信号
+  output reg[`WordRange] mem_addr_out,  //发给地址总线的地址
+  output reg mem_we_out,   //发给控制总线的写使能
+  output reg[3:0] mem_byte_sel_out,   //发给控制总线的比特使能
+  output reg[`WordRange] mem_store_data_out,   //发给写数据总线的数据
+  output reg mem_e_out  //发给控制总线的总使能 （好像没什么用？？先留着了
 
 );
 
@@ -113,11 +113,13 @@ module mem (
           mem_we_out <= `Disable;
           mem_e_out <= `Enable;
           case (mem_addr_in[1:0])
-            2'b00:begin
+            2'b00,
+            2'b01:begin
               wreg_data_out <= {{16{mem_read_data_in[15]}},mem_read_data_in[15:0]};
               mem_byte_sel_out <= 4'b0011;  //小端存储 这样做对吗？ 感觉书上的大端存储是错误的
             end
-            2'b10:begin
+            2'b10,
+            2'b11:begin
               wreg_data_out <= {{16{mem_read_data_in[31]}},mem_read_data_in[31:16]};
               mem_byte_sel_out <= 4'b1100;
             end
@@ -128,11 +130,13 @@ module mem (
           mem_we_out <= `Disable;
           mem_e_out <= `Enable;
           case (mem_addr_in[1:0])
-            2'b00:begin
+            2'b00,
+            2'b01:begin
               wreg_data_out <= {{16{1'b0}},mem_read_data_in[15:0]};
               mem_byte_sel_out <= 4'b0011;  //小端存储 这样做对吗？ 感觉书上的大端存储是错误的
             end
-            2'b10:begin
+            2'b10,
+            2'b11:begin
               wreg_data_out <= {{16{1'b0}},mem_read_data_in[31:16]};
               mem_byte_sel_out <= 4'b1100;
             end
@@ -166,11 +170,13 @@ module mem (
           mem_we_out <= `Enable;
           mem_e_out <= `Enable;
           case (mem_addr_in[1:0])
-            2'b00:begin
+            2'b00,
+            2'b01:begin
               mem_store_data_out <= {{24{1'b0}},mem_store_data_in[15:0]};
               mem_byte_sel_out <= 4'b0011;
             end
-            2'b10:begin
+            2'b10,
+            2'b11:begin
               mem_store_data_out <= {mem_store_data_in[15:0],{24{1'b0}}};
               mem_byte_sel_out <= 4'b1100;
             end

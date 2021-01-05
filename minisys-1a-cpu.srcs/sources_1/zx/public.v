@@ -153,3 +153,20 @@
 
 `define InterruptAssert 1'b1
 `define InterruptNotAssert 1'b0
+
+
+//外设设备的地址（高六位）
+`define IO_SEVEN_DISPLAY 6'b000000  //七段数码管
+`define IO_KEYBORAD 6'b000001  //4*4键盘
+`define IO_COUNTER 6'b000010  //计数器
+`define IO_PWM 6'b000011  //PWM控制器
+`define IO_UART 6'b000100  //UART串口
+`define IO_WATCH_DOG 6'b000101  //看门狗
+`define IO_LED_LIGHT 6'b000110  //led灯
+`define IO_SWITCH 6'b000111  //拨码开关
+`define IO_BUZZER 6'b010001  //蜂鸣器
+
+
+
+
+
