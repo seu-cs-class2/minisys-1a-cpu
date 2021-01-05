@@ -129,7 +129,7 @@
 `define OP_BGEZ 6'b000001
 `define OP_BGTZ 6'b000111
 `define OP_BLEZ 6'b000110
-`define OP_BLTZ 6'b000111
+`define OP_BLTZ 6'b000001
 `define OP_BGEZAL 6'b000001
 `define OP_BLTZAL 6'b000001
 `define OP_SLTI 6'b001010

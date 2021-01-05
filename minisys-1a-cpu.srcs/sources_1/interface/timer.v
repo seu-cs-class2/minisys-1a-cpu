@@ -19,8 +19,8 @@ module timer (
   output reg[15:0] out1, // CNT1输出
   output reg[15:0] out2, // CNT2输出
 
-  output reg cout1, // COUT1
-  output reg cout2 // COUT2
+  output reg cout1, // COUT1，低电平有效
+  output reg cout2 // COUT2，低电平有效
 
 );
 
@@ -108,9 +108,48 @@ module timer (
     end
   end
 
-  // 处理CNT1边界结束后的重复逻辑
+  // 按照时钟对CNT2进行步进
+  always @(posedge clk) begin
+    current2 <= current2 - 16'd1;
+    // 处理边界逻辑
+    if (config2[0] == `Disable) begin
+      // 定时模式  
+      if (current2 == 16'd1) begin
+        // 设置状态寄存器有效位为0，定时到位为1
+        status2 <= status2 & 16'h7FFF | 16'h0001;
+        cout1 <= `Disable;
+      end
+    end else begin
+      // 计数模式
+      if (current2 == 16'd0) begin
+        // 设置状态寄存器有效位为0，计数到位为1
+        status2 <= status2 & 16'h7FFF | 16'h0002;
+        cout1 <= `Disable;
+      end
+    end
+  end
+
+  // 进一步处理计数到后的重复逻辑
   always @(cout1) begin
-    // TODO
+    if (cout1 == `Disable) begin
+      if (config1[1] == `Enable) begin // 重复模式
+        current1 <= init1;
+        cout1 <= `Enable;
+      end else begin // 非重复模式
+        // TODO
+      end
+    end
+  end
+
+  always @(cout2) begin
+    if (cout2 == `Disable) begin
+      if (config2[1] == `Enable) begin // 重复模式
+        current2 <= init2;
+        cout2 <= `Enable;
+      end else begin // 非重复模式
+        // TODO
+      end
+    end
   end
 
 endmodule
