@@ -77,8 +77,6 @@ module minisys (
   assign pwm_data = {32'hffffffff};
   assign uart_data = {32'hffffffff};
   assign watch_dog_data = {32'hffffffff};
-  assign switch_data = {32'hffffffff};
-  assign led_light_data = {32'hffffffff};
   assign buzzer_data = {32'hffffffff};
   //测试相关
 
@@ -148,15 +146,30 @@ module minisys (
 
   // 接口部分 后续再添加
   
-  // leds u_leds(
-  //   .rst(rst),
-  //   .clk(cpu_clk),
-  //   .cs(leds_en_out),
-  //   .port(cpu_dmem_addr_out[2:0]),
-  //   .data(cpu_dmem_store_data_out[15:0]),
-  //   .RLD(led_RLD_out),
-  //   .YLD(led_YLD_out),
-  //   .GLD(led_GLD_out)
-  // );
+  leds u_leds(
+    .rst                    (rst),
+    .clk                    (~cpu_clk),
+    .addr                   (bus_addr),
+    .en                     (bus_eable),
+    .byte_sel               (bus_byte_sel),
+    .data_in                (bus_write_data),
+    .we                     (bus_we),
+    .data_out               (led_light_data),
+    .RLD                    (led_RLD_out),
+    .YLD                    (led_YLD_out),
+    .GLD                    (led_GLD_out)
+  );
+
+  switches u_switches(
+    .rst                    (rst),
+    .clk                    (~cpu_clk),
+    .addr                   (bus_addr),
+    .en                     (bus_eable),
+    .byte_sel               (bus_byte_sel),
+    .data_in                (bus_write_data),
+    .we                     (bus_we),
+    .data_out               (switch_data),
+    .switch_in              (switches_in)
+  )
 
 endmodule

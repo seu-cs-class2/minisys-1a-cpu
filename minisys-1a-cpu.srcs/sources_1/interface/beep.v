@@ -3,34 +3,49 @@
 
 `include "public.v"
 
+
+// 所有驱动都应该以寄存器为中介（即最后的输出信号应该是reg类型）
 // 蜂鸣器驱动
+// 蜂鸣器物理地址范围：0xFFFFFD10~0xFFFFFD1F
+// 唯一寄存器地址: 0xFFFFFD10
 // by zx
 // edit by wxy in 2021/01/05
 module beep (
   //从总线来的数据 所有外设驱动都应有以下信号
+  input wire rst,
+  input wire clk,
   input wire[`WordRange] addr,
   input wire en, // 使能
   input wire[3:0] byte_sel,
   input wire[`WordRange] data_in, // 声信号输入
-  input wire ew, //写使能
+  input wire we, //写使能
 
   //发送给仲裁器 所有外设都应有此输出
   output reg[`WordRange] data_out,
 
   //发送给外设的信号
-  output reg signal_out // 声信号输出
+  output signal_out // 声信号输出
 
 );
 
- always @(*) begin
+reg signal_out; //唯一的寄存器
+
+always @(posedge clk) begin  //写是上升沿
+  if(rst == `Enable) begin
+    signal_out <= 0'b0;
+  end else if(en == `Enable && addr == 32'hfffffd10 && ew == `Enable) begin //使能有效  地址正确  并且是写操作
+    signal_out <= data_in[0];  //数据最低位给蜂鸣器
+  end
+end
+
+always @(*) begin //读是随时读
+  if(rst == `Enable)begin
     data_out <= `ZeroWord;
-    if (en == `Enable && addr[31:4] == 28'hfffffd1) begin //使能有效  地址在范围内
-      if(ew == `Enable && addr[3:0] == 4'h0)begin  //如果是写  且写的是最低字节（不用管字节控制信号）
-        signal_out <= data_in[0];
-      end else if(ew == `Disable && addr[3:0] == 4'h0)begin //如果是读 且读的是最低字节（不用管字节控制信号）
-        data_out <= {28'hfffffff, 3'b000, signal_out};
-      end
-    end
- end
+  end else if(en == `Enable && addr == 32'hfffffd10 && ew == `Disable) begin
+    data_out <= {28'h0000000,3'b000,signal_out};
+  end else begin
+    data_out <= `ZeroWord;
+  end
+end
 
 endmodule

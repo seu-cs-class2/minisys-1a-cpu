@@ -35,7 +35,6 @@ initial begin
     board_clk <= 1'b0;
     #10000
     rst <= 1'b0;
-
 end 
 
 endmodule
