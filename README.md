@@ -8,7 +8,7 @@ Minisys 体系五级流水CPU。
   - 执行 EX (EXecute)
   - 访存 MEM (MEMory)
   - 写回 WB (Write Back)
-## 端口与引脚信息
+## 外设端口、规范与引脚信息
 ### 板上器件
 
 | 板上器件                            | 类型 | 芯片引脚                                                     | 编址       | 重写进度 |
@@ -28,6 +28,31 @@ Minisys 体系五级流水CPU。
 | PWM 脉冲宽度调制 | 0xFFFFFC30 | 需要     |
 | UART 串口通讯    | 0xFFFFFC40 | 需要     |
 | Watch Dog        | 0xFFFFFC50 | 需要     |
+
+### 外设驱动规范
+
+cpu使用总线连接RAM与外设，总线包括`地址总线` `写入数据总线` `控制总线` 与 `读数据总线`   
+
+其中，地址总线、写数据总线与控制总线的主设备只可能是CPU，因此不需要仲裁 ，读数据总线的主设备可能是任意外设（RAM），因此需要一个控制部件来控制总线的使用权。  
+
+所有的外设驱动应包含总线的输入输出，包括：  
+
+```
+input wire rst,  					// 重置
+input wire clk,						// 时钟
+input wire[`WordRange] addr,		// 数据总线（32bits）
+input wire en, 						// 控制-使能（高电平有效）
+input wire[3:0] byte_sel,			// 控制-自己额选择
+input wire[`WordRange] data_in, 	// 写入数据总线（32bits）
+input wire we, 						// 控制-写使能（高电平有效）
+
+output reg[`WordRange] data_out		// 读数据总线（32bits，接到仲裁器上）
+```
+
+同时，所有外设都是用端口（寄存器）来缓存数据，每个外设最多拥有16字节（4个字）的端口，外设驱动应指明端口所对应的物理地址，并在驱动内部进行地址译码判断CPU是否读/写此外设端口。  
+
+对于直通型外设（如led灯、蜂鸣器）也同样适用上述规范。
+
 
 ## 测试记录
 
