@@ -46,7 +46,7 @@ end
 always @(*) begin
   if(rst == `Enable) begin
     data_out <= `ZeroWord;
-  end else if (addr == 32'hfffffc60 && en == `Enable && ew ==`Disable) begin
+  end else if (addr == 32'hfffffc60 && en == `Enable && we ==`Disable) begin
       data_out <= {8'h00, RLD, YLD, GLD};
   end else begin
       data_out <= `ZeroWord;

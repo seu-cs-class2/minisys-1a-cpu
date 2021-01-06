@@ -76,6 +76,7 @@ module cpu (
   wire[`WordRange] ex_mem_addr_out;
   wire[`WordRange] ex_mem_data_out;
   wire[`ALUOpRange] ex_aluop_out;
+  wire[`WordRange] ex_ins_out;
 
   // MEM输入
   wire mem_wreg_e_in;
@@ -88,6 +89,10 @@ module cpu (
   wire[`WordRange] mem_addr_in;
   wire[`WordRange] mem_store_data_in;
   wire[`WordRange] mem_read_data_in;
+  wire[`WordRange] mem_ins_in;
+  wire mem_f_ahead_reg_we;
+  wire[`RegRangeLog2] mem_f_ahead_reg_addr;
+  wire[`WordRange] mem_f_ahead_reg_data;
 
   // MEM输出
   wire mem_wreg_e_out;
@@ -272,7 +277,8 @@ module cpu (
   .ins_in                   (ex_ins_in),
   .aluop_out                (ex_aluop_out),
   .mem_addr_out             (ex_mem_addr_out),
-  .mem_data_out             (ex_mem_data_out)
+  .mem_data_out             (ex_mem_data_out),
+  .ins_out                  (ex_ins_out)
   );
 
   div_signed u_div_signed(
@@ -322,7 +328,9 @@ module cpu (
   .f_ex_mem_data            (ex_mem_data_out),
   .t_mem_addr               (mem_addr_in),
   .t_mem_aluop              (mem_aluop_in),
-  .t_mem_data               (mem_store_data_in)
+  .t_mem_data               (mem_store_data_in),
+  .f_ex_ins                 (ex_ins_out),
+  .t_mem_ins                (mem_ins_in)
   );
 
   // MEM
@@ -348,7 +356,14 @@ module cpu (
   .mem_store_data_out     (bus_write_data_out),
   .mem_we_out             (bus_we_out),
   .mem_e_out              (bus_eable_out),
-  .mem_byte_sel_out       (bus_byte_sel_out)
+  .mem_byte_sel_out       (bus_byte_sel_out),
+  .ins_in                 (mem_ins_in),
+  .f_wb_reg_we            (wb_wreg_e_in),
+  .f_wb_reg_addr          (wb_wreg_addr_in),
+  .f_wb_reg_data          (wb_wreg_data_in),
+  .f_ahead_reg_we         (mem_f_ahead_reg_we),
+  .f_ahead_reg_addr       (mem_f_ahead_reg_addr),
+  .f_ahead_reg_data       (mem_f_ahead_reg_data)
   );
 
 
@@ -370,6 +385,19 @@ module cpu (
   .wb_lo_data               (wb_lo_data_in),
   .pause                    (pause_res_wb)
   );
+
+  wb_after u_wb_after(
+    .rst                    (rst),
+    .clk                    (clk),
+    .pause                  (pause_res_wb),
+    .reg_we_in              (wb_wreg_e_in),
+    .reg_addr_in            (wb_wreg_addr_in),
+    .reg_data_in            (wb_wreg_data_in),
+    .reg_we_out             (mem_f_ahead_reg_we),
+    .reg_addr_out           (mem_f_ahead_reg_addr),
+    .reg_data_out           (mem_f_ahead_reg_data)
+  );
+
 
   ppl_scheduler u_ppl_sch(
   .rst                      (rst),

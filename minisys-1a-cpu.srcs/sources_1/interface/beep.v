@@ -33,7 +33,7 @@ reg signal_out; //唯一的寄存器
 always @(posedge clk) begin  //写是上升沿
   if(rst == `Enable) begin
     signal_out <= 0'b0;
-  end else if(en == `Enable && addr == 32'hfffffd10 && ew == `Enable) begin //使能有效  地址正确  并且是写操作
+  end else if(en == `Enable && addr == 32'hfffffd10 && we == `Enable) begin //使能有效  地址正确  并且是写操作
     signal_out <= data_in[0];  //数据最低位给蜂鸣器
   end
 end
@@ -41,7 +41,7 @@ end
 always @(*) begin //读是随时读
   if(rst == `Enable)begin
     data_out <= `ZeroWord;
-  end else if(en == `Enable && addr == 32'hfffffd10 && ew == `Disable) begin
+  end else if(en == `Enable && addr == 32'hfffffd10 && we == `Disable) begin
     data_out <= {28'h0000000,3'b000,signal_out};
   end else begin
     data_out <= `ZeroWord;

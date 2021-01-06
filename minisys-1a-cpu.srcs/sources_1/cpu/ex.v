@@ -66,7 +66,11 @@ module ex (
   output reg cp0_we_out,    //cp0是否要被写（当前指令 向下传入流水
   output reg[4:0] cp0_addr,  //cp0读写地址  
   output reg cp0_re_out,    //是否要读cp0（当前指令 不需要传入流水 即刻从cp0处读出
-  output reg[`WordRange] cp0_w_data   //要写入cp0的数据
+  output reg[`WordRange] cp0_w_data,   //要写入cp0的数据
+
+
+  //新增加的要向下级流水传的数据
+  output reg[`WordRange] ins_out
 );
 
   wire[`WordRange] alu_res;  // alu的结果
@@ -105,6 +109,7 @@ module ex (
       div_data1_unsigned <= `ZeroWord;
       div_data2_unsigned <= `ZeroWord;
     end else begin
+      ins_out <= ins_in;
       wreg_e_out <= wreg_e_in;
       wreg_addr_out <= wreg_addr_in;
       pause_for_div <= `Disable;

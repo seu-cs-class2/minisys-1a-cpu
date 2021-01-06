@@ -32,7 +32,12 @@ module ex_mem (
   input wire[`WordRange] f_ex_mem_data,
   output reg[`ALUOpRange] t_mem_aluop,
   output reg[`WordRange] t_mem_addr,
-  output reg[`WordRange] t_mem_data
+  output reg[`WordRange] t_mem_data,
+
+
+  //新增加的接口
+  input wire[`WordRange] f_ex_ins,
+  output reg[`WordRange] t_mem_ins
 
 );
 
@@ -49,6 +54,7 @@ module ex_mem (
       t_mem_aluop <= 6'b000000;
       t_mem_addr <= `ZeroWord;
       t_mem_data <= `ZeroWord;
+      t_mem_ins <= `ZeroWord;
     end else begin
       mem_wreg_e <= ex_wreg_e;
       mem_wreg_addr <= ex_wreg_addr;
@@ -59,6 +65,7 @@ module ex_mem (
       t_mem_addr <= f_ex_mem_addr;
       t_mem_data <= f_ex_mem_data;
       t_mem_aluop <= f_ex_aluop;
+      t_mem_ins <= f_ex_ins;
     end
   end
 

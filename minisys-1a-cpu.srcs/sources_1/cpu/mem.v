@@ -33,9 +33,19 @@ module mem (
   output reg mem_we_out,   //发给控制总线的写使能
   output reg[3:0] mem_byte_sel_out,   //发给控制总线的比特使能
   output reg[`WordRange] mem_store_data_out,   //发给写数据总线的数据
-  output reg mem_e_out  //发给控制总线的总使能 （好像没什么用？？先留着了
+  output reg mem_e_out,  //发给控制总线的总使能 （好像没什么用？？先留着了
 
+  //解决数据相关的输入端口
+  input wire[`WordRange] ins_in,
+  input wire f_wb_reg_we,
+  input wire[`RegRangeLog2] f_wb_reg_addr,
+  input wire[`WordRange] f_wb_reg_data,
+  input wire f_ahead_reg_we,
+  input wire[`RegRangeLog2] f_ahead_reg_addr,
+  input wire[`WordRange] f_ahead_reg_data
 );
+
+  reg[`WordRange] real_store_data;
 
   always @(*) begin
     if (rst == `Enable) begin
@@ -49,6 +59,7 @@ module mem (
       mem_byte_sel_out <= 4'b0000;
       mem_store_data_out <= `ZeroWord;
       mem_e_out <= `Disable;
+      real_store_data <= `ZeroWord;
     end else begin
       wreg_e_out <= wreg_e_in;
       wreg_data_out <= wreg_data_in;
@@ -59,8 +70,9 @@ module mem (
       mem_addr_out <= `ZeroWord;
       mem_we_out <= `Disable;
       mem_byte_sel_out <= 4'b1111;
-      mem_store_data_out <= `ZeroWord;
-      mem_e_out <= `Disable;  
+      mem_e_out <= `Disable;
+      mem_store_data_out <= `ZeroWord; 
+
       case (aluop_in)
         `EXOP_LB: begin
           mem_addr_out <= mem_addr_in;
@@ -148,19 +160,19 @@ module mem (
           mem_e_out <= `Enable;
           case (mem_addr_in[1:0])
             2'b00:begin
-              mem_store_data_out <= {{24{1'b0}},mem_store_data_in[7:0]};
+              mem_store_data_out <= {{24{1'b0}},real_store_data[7:0]};
               mem_byte_sel_out <= 4'b0001;
             end
             2'b01:begin
-              mem_store_data_out <= { {16{1'b0}} ,mem_store_data_in[7:0], {8{1'b0}} };
+              mem_store_data_out <= { {16{1'b0}} ,real_store_data[7:0], {8{1'b0}} };
               mem_byte_sel_out <= 4'b0010;
             end
             2'b10:begin
-              mem_store_data_out <= {{8{1'b0}},mem_store_data_in[7:0],{16{1'b0}}};
+              mem_store_data_out <= {{8{1'b0}},real_store_data[7:0],{16{1'b0}}};
               mem_byte_sel_out <= 4'b0100;
             end
             2'b11:begin
-              mem_store_data_out <= {mem_store_data_in[7:0],{24{1'b0}}};
+              mem_store_data_out <= {real_store_data[7:0],{24{1'b0}}};
               mem_byte_sel_out <= 4'b1000;
             end
           endcase
@@ -172,12 +184,12 @@ module mem (
           case (mem_addr_in[1:0])
             2'b00,
             2'b01:begin
-              mem_store_data_out <= {{24{1'b0}},mem_store_data_in[15:0]};
+              mem_store_data_out <= {{24{1'b0}},real_store_data[15:0]};
               mem_byte_sel_out <= 4'b0011;
             end
             2'b10,
             2'b11:begin
-              mem_store_data_out <= {mem_store_data_in[15:0],{24{1'b0}}};
+              mem_store_data_out <= {real_store_data[15:0],{24{1'b0}}};
               mem_byte_sel_out <= 4'b1100;
             end
           endcase
@@ -193,11 +205,32 @@ module mem (
           mem_addr_out <= mem_addr_in;
           mem_we_out <= `Enable;
           mem_e_out <= `Enable;
-          mem_store_data_out <= mem_store_data_in;
+          mem_store_data_out <= real_store_data;
           mem_byte_sel_out <= 4'b1111;
         end
       endcase
     end
+  end
+
+
+  always @(*)begin
+      //解决数据相关********
+      real_store_data <= mem_store_data_in;
+      if(f_wb_reg_we == `Enable)begin
+        if(f_wb_reg_addr == ins_in[`RtRange])begin
+          real_store_data <= f_wb_reg_data;
+        end else if(f_ahead_reg_we == `Enable)begin
+          if(f_ahead_reg_addr == ins_in[`RtRange]) begin
+            real_store_data <= f_ahead_reg_data;
+          end 
+        end
+      end else begin
+        if(f_ahead_reg_we == `Enable)begin
+          if(f_ahead_reg_addr == ins_in[`RtRange]) begin
+            real_store_data <= f_ahead_reg_data;
+          end
+        end
+      end
   end
 
 endmodule

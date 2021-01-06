@@ -170,6 +170,6 @@ module minisys (
     .we                     (bus_we),
     .data_out               (switch_data),
     .switch_in              (switches_in)
-  )
+  );
 
 endmodule

@@ -27,7 +27,6 @@ module mem_wb (
   output reg[`WordRange] wb_lo_data,
 
   input wire pause
-
 );
 
   wire clk_pause;
@@ -39,6 +38,7 @@ module mem_wb (
       wb_wreg_e <= `Disable;
       wb_wreg_data <= `ZeroWord;
       wb_hilo_we <= `Disable;
+      wb_wreg_addr <= 5'b00000;
       wb_hi_data <= `ZeroWord;
       wb_lo_data <= `ZeroWord;
     end else begin
@@ -51,5 +51,4 @@ module mem_wb (
       wb_lo_data <= mem_lo_data;
     end
   end
-
 endmodule

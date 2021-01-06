@@ -37,7 +37,7 @@ always @(posedge clk) begin  //从外设读并写入寄存器 此寄存器不允
 end
 
 always @(*) begin
-  if(rst == `Enalbe) begin
+  if(rst == `Enable) begin
     data_out <= `ZeroWord;
   end else if(addr == 32'hfffffc70 && en == `Enable && we == `Disable)begin
     data_out <= switch_reg;

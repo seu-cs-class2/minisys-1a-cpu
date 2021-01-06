@@ -27,7 +27,7 @@ minisys my_minisys(
 
 
 initial begin
-    assign switches_in = {24'h000000};
+    assign switches_in = {24'hffffff};
     assign buttons_in = {5'b00000};
     assign keyboard_cols_in = {4'h0};
 
