@@ -9,19 +9,19 @@ module minisys (
   input rst, // 板上重置
   input board_clk, // 板上时钟
 
-  // 拨码�?�?
+  // 拨码开关
   input wire[23:0] switches_in,
   // 按钮
   input wire[4:0] buttons_in,
   // 矩阵键盘
   input wire[3:0] keyboard_cols_in,
   output wire[3:0] keyboard_rows_out,
-  // 数码�?
+  // 数码管
   output wire[7:0] digits_sel_out,
   output wire[7:0] digits_data_out,
-  // 蜂鸣�?
+  // 蜂鸣器
   output wire beep_out,
-  // LED�?
+  // LED灯
   output wire[7:0] led_RLD_out,
   output wire[7:0] led_YLD_out,
   output wire[7:0] led_GLD_out
@@ -52,13 +52,13 @@ module minisys (
 
   //相关总线(共六个，四种)
   wire[`WordRange] bus_addr;  //地址总线（仅有一个主设备cpu
-  wire[`WordRange] bus_write_data; //写数据�?�线（仅有一个主设备cpu
-  wire[`WordRange] bus_read_data; //读数据�?�线（主设备很多，需要仲裁）
+  wire[`WordRange] bus_write_data; //写数据总线（仅有一个主设备cpu
+  wire[`WordRange] bus_read_data; //读数据总线（主设备很多，需要仲裁）
   wire bus_eable; //控制总线之一
   wire bus_we; //控制总线
-  wire[3:0] bus_byte_sel; //控制总线 主设备也仅有cpu，无�?仲裁
+  wire[3:0] bus_byte_sel; //控制总线 主设备也仅有cpu，无需仲裁
 
-  //相关输出（包含ram与io设备，目前共十个�?
+  //相关输出（包含ram与io设备，目前共十个）
   wire[`WordRange] ram_data;
   wire[`WordRange] seven_display_data;
   wire[`WordRange] keyboard_data;
@@ -146,7 +146,7 @@ module minisys (
   );
 
 
-  // 接口部分
+  // 接口部分 后续再添加
   
   // leds u_leds(
   //   .rst(rst),

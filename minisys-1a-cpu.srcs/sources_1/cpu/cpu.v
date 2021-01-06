@@ -9,17 +9,17 @@ module cpu (
   input rst, // 重置
   input clk, // 时钟
 
-  input [`WordRange] imem_data_in,  //指令存储器发给cpu的数�?
+  input [`WordRange] imem_data_in,  //指令存储器发给cpu的指令
   output wire[`WordRange] imem_addr_out,  //cpu发给指令存储器的地址
   output wire imem_e_out,  //cpu发给指令存储器的使能信号
 
-  output wire[`WordRange] bus_addr_out, //发给数据总线的地�?
-  output wire[`WordRange] bus_write_data_out,  //发给写数据�?�线的数�?
-  output wire bus_eable_out, //发给控制总线的�?�使能信�?
-  output wire bus_we_out, //发给控制总线的写使能信号
-  output wire[3:0] bus_byte_sel_out, //发给控制总线的比特�?�择信号
+  output wire[`WordRange] bus_addr_out, //发给数据总线的地址
+  output wire[`WordRange] bus_write_data_out,  //发给写数据总线的数据
+  output wire bus_eable_out, //发给控制总线的读写使能信号
+  output wire bus_we_out, //发给控制总线的写使能信号（0代表读）
+  output wire[3:0] bus_byte_sel_out, //发给控制总线的比特选择信号
   
-  input wire[`WordRange] bus_read_in//从读控制总线读入的数�?
+  input wire[`WordRange] bus_read_in//从读控制总线读入的外设/ram数据
 );
 
   // ID输入
@@ -106,7 +106,7 @@ module cpu (
   wire wb_wreg_e_in;
   wire[`RegRangeLog2] wb_wreg_addr_in;
   wire[`WordRange] wb_wreg_data_in;
-  // 下面三根线直接�?�到HILO
+  // 下面三根线直接连到HILO
   wire wb_hilo_we_in;
   wire[`WordRange] wb_hi_data_in;
   wire[`WordRange] wb_lo_data_in;
@@ -119,7 +119,7 @@ module cpu (
   wire[`RegRangeLog2] reg1_addr;
   wire[`RegRangeLog2] reg2_addr;
 
-  //流水线暂停相�???
+  //流水线暂停相关
   wire pause_req_id;
   wire pause_req_ex;
   wire pause_res_pc;
@@ -162,7 +162,7 @@ module cpu (
   .rst                      (rst),
   .pc                       (pc),
   .pause                    (pause_res_pc),
-  .branch_en_in              (branch_e_out),
+  .branch_en_in             (branch_e_out),
   .branch_addr_in           (branch_addr_out)
   );
 
