@@ -1,10 +1,15 @@
 -- Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2018.3 (win64) Build 2405991 Thu Dec  6 23:38:27 MST 2018
+<<<<<<< HEAD
 -- Date        : Tue Jan  5 12:09:59 2021
 -- Host        : DESKTOP-ED5SFTK running 64-bit major release  (build 9200)
+=======
+-- Date        : Tue Dec 29 16:10:48 2020
+-- Host        : ZHUOXUPC running 64-bit major release  (build 9200)
+>>>>>>> 30a523eedc958722de5b0d76b97ae6c8fcf98ab3
 -- Command     : write_vhdl -force -mode funcsim
---               D:/ProgramSave/minisys-1a-cpu/minisys-1a-cpu.srcs/sources_1/ip/blk_mem_ram_byte/blk_mem_ram_byte_sim_netlist.vhdl
+--               F:/minisys-1a-cpu/minisys-1a-cpu.srcs/sources/ip/blk_mem_ram_byte/blk_mem_ram_byte_sim_netlist.vhdl
 -- Design      : blk_mem_ram_byte
 -- Purpose     : This VHDL netlist is a functional simulation representation of the design and should not be modified or
 --               synthesized. This netlist cannot be used for SDF annotated simulation.
@@ -16,8 +21,12 @@ library UNISIM;
 use UNISIM.VCOMPONENTS.ALL;
 entity blk_mem_ram_byte_bindec is
   port (
+<<<<<<< HEAD
     ena_array : out STD_LOGIC_VECTOR ( 2 downto 0 );
     ena : in STD_LOGIC;
+=======
+    ena_array : out STD_LOGIC_VECTOR ( 1 downto 0 );
+>>>>>>> 30a523eedc958722de5b0d76b97ae6c8fcf98ab3
     addra : in STD_LOGIC_VECTOR ( 1 downto 0 )
   );
   attribute ORIG_REF_NAME : string;
@@ -26,6 +35,7 @@ end blk_mem_ram_byte_bindec;
 
 architecture STRUCTURE of blk_mem_ram_byte_bindec is
 begin
+<<<<<<< HEAD
 \DEVICE_7SERIES.NO_BMM_INFO.SP.SIMPLE_PRIM36.ram_i_1\: unisim.vcomponents.LUT3
     generic map(
       INIT => X"02"
@@ -226,6 +236,176 @@ begin
       D => \no_softecc_sel_reg.ce_pri.sel_pipe[1]_i_1_n_0\,
       Q => sel_pipe(1),
       R => '0'
+=======
+\DEVICE_7SERIES.NO_BMM_INFO.SP.SIMPLE_PRIM36.ram_i_1\: unisim.vcomponents.LUT2
+    generic map(
+      INIT => X"1"
+    )
+        port map (
+      I0 => addra(1),
+      I1 => addra(0),
+      O => ena_array(0)
+    );
+\DEVICE_7SERIES.NO_BMM_INFO.SP.SIMPLE_PRIM36.ram_i_1__0\: unisim.vcomponents.LUT2
+    generic map(
+      INIT => X"8"
+    )
+        port map (
+      I0 => addra(1),
+      I1 => addra(0),
+      O => ena_array(1)
+>>>>>>> 30a523eedc958722de5b0d76b97ae6c8fcf98ab3
+    );
+end STRUCTURE;
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+library UNISIM;
+use UNISIM.VCOMPONENTS.ALL;
+<<<<<<< HEAD
+entity blk_mem_ram_byte_blk_mem_gen_prim_wrapper is
+  port (
+    douta_array : out STD_LOGIC_VECTOR ( 7 downto 0 );
+    clka : in STD_LOGIC;
+=======
+entity blk_mem_ram_byte_blk_mem_gen_mux is
+  port (
+    douta : out STD_LOGIC_VECTOR ( 7 downto 0 );
+    addra : in STD_LOGIC_VECTOR ( 1 downto 0 );
+    clka : in STD_LOGIC;
+    douta_array : in STD_LOGIC_VECTOR ( 31 downto 0 )
+  );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of blk_mem_ram_byte_blk_mem_gen_mux : entity is "blk_mem_gen_mux";
+end blk_mem_ram_byte_blk_mem_gen_mux;
+
+architecture STRUCTURE of blk_mem_ram_byte_blk_mem_gen_mux is
+  signal sel_pipe : STD_LOGIC_VECTOR ( 1 downto 0 );
+begin
+\douta[0]_INST_0\: unisim.vcomponents.LUT6
+    generic map(
+      INIT => X"CCFFAAF0CC00AAF0"
+    )
+        port map (
+      I0 => douta_array(16),
+      I1 => douta_array(24),
+      I2 => douta_array(0),
+      I3 => sel_pipe(1),
+      I4 => sel_pipe(0),
+      I5 => douta_array(8),
+      O => douta(0)
+    );
+\douta[1]_INST_0\: unisim.vcomponents.LUT6
+    generic map(
+      INIT => X"CCFFAAF0CC00AAF0"
+    )
+        port map (
+      I0 => douta_array(17),
+      I1 => douta_array(25),
+      I2 => douta_array(1),
+      I3 => sel_pipe(1),
+      I4 => sel_pipe(0),
+      I5 => douta_array(9),
+      O => douta(1)
+    );
+\douta[2]_INST_0\: unisim.vcomponents.LUT6
+    generic map(
+      INIT => X"CCFFAAF0CC00AAF0"
+    )
+        port map (
+      I0 => douta_array(18),
+      I1 => douta_array(26),
+      I2 => douta_array(2),
+      I3 => sel_pipe(1),
+      I4 => sel_pipe(0),
+      I5 => douta_array(10),
+      O => douta(2)
+    );
+\douta[3]_INST_0\: unisim.vcomponents.LUT6
+    generic map(
+      INIT => X"CCFFAAF0CC00AAF0"
+    )
+        port map (
+      I0 => douta_array(19),
+      I1 => douta_array(27),
+      I2 => douta_array(3),
+      I3 => sel_pipe(1),
+      I4 => sel_pipe(0),
+      I5 => douta_array(11),
+      O => douta(3)
+    );
+\douta[4]_INST_0\: unisim.vcomponents.LUT6
+    generic map(
+      INIT => X"CCFFAAF0CC00AAF0"
+    )
+        port map (
+      I0 => douta_array(20),
+      I1 => douta_array(28),
+      I2 => douta_array(4),
+      I3 => sel_pipe(1),
+      I4 => sel_pipe(0),
+      I5 => douta_array(12),
+      O => douta(4)
+    );
+\douta[5]_INST_0\: unisim.vcomponents.LUT6
+    generic map(
+      INIT => X"CCFFAAF0CC00AAF0"
+    )
+        port map (
+      I0 => douta_array(21),
+      I1 => douta_array(29),
+      I2 => douta_array(5),
+      I3 => sel_pipe(1),
+      I4 => sel_pipe(0),
+      I5 => douta_array(13),
+      O => douta(5)
+    );
+\douta[6]_INST_0\: unisim.vcomponents.LUT6
+    generic map(
+      INIT => X"CCFFAAF0CC00AAF0"
+    )
+        port map (
+      I0 => douta_array(22),
+      I1 => douta_array(30),
+      I2 => douta_array(6),
+      I3 => sel_pipe(1),
+      I4 => sel_pipe(0),
+      I5 => douta_array(14),
+      O => douta(6)
+    );
+\douta[7]_INST_0\: unisim.vcomponents.LUT6
+    generic map(
+      INIT => X"CCFFAAF0CC00AAF0"
+    )
+        port map (
+      I0 => douta_array(23),
+      I1 => douta_array(31),
+      I2 => douta_array(7),
+      I3 => sel_pipe(1),
+      I4 => sel_pipe(0),
+      I5 => douta_array(15),
+      O => douta(7)
+    );
+\no_softecc_sel_reg.ce_pri.sel_pipe_reg[0]\: unisim.vcomponents.FDRE
+    generic map(
+      INIT => '0'
+    )
+        port map (
+      C => clka,
+      CE => '1',
+      D => addra(0),
+      Q => sel_pipe(0),
+      R => '0'
+    );
+\no_softecc_sel_reg.ce_pri.sel_pipe_reg[1]\: unisim.vcomponents.FDRE
+    generic map(
+      INIT => '0'
+    )
+        port map (
+      C => clka,
+      CE => '1',
+      D => addra(1),
+      Q => sel_pipe(1),
+      R => '0'
     );
 end STRUCTURE;
 library IEEE;
@@ -236,6 +416,7 @@ entity blk_mem_ram_byte_blk_mem_gen_prim_wrapper is
   port (
     douta_array : out STD_LOGIC_VECTOR ( 7 downto 0 );
     clka : in STD_LOGIC;
+>>>>>>> 30a523eedc958722de5b0d76b97ae6c8fcf98ab3
     ena_array : in STD_LOGIC_VECTOR ( 0 to 0 );
     addra : in STD_LOGIC_VECTOR ( 11 downto 0 );
     dina : in STD_LOGIC_VECTOR ( 7 downto 0 );
@@ -489,8 +670,12 @@ entity \blk_mem_ram_byte_blk_mem_gen_prim_wrapper__parameterized0\ is
   port (
     douta_array : out STD_LOGIC_VECTOR ( 7 downto 0 );
     clka : in STD_LOGIC;
+<<<<<<< HEAD
     ena_array : in STD_LOGIC_VECTOR ( 0 to 0 );
     addra : in STD_LOGIC_VECTOR ( 11 downto 0 );
+=======
+    addra : in STD_LOGIC_VECTOR ( 13 downto 0 );
+>>>>>>> 30a523eedc958722de5b0d76b97ae6c8fcf98ab3
     dina : in STD_LOGIC_VECTOR ( 7 downto 0 );
     wea : in STD_LOGIC_VECTOR ( 0 to 0 )
   );
@@ -499,6 +684,10 @@ entity \blk_mem_ram_byte_blk_mem_gen_prim_wrapper__parameterized0\ is
 end \blk_mem_ram_byte_blk_mem_gen_prim_wrapper__parameterized0\;
 
 architecture STRUCTURE of \blk_mem_ram_byte_blk_mem_gen_prim_wrapper__parameterized0\ is
+<<<<<<< HEAD
+=======
+  signal \DEVICE_7SERIES.NO_BMM_INFO.SP.SIMPLE_PRIM36.ram_i_1_n_0\ : STD_LOGIC;
+>>>>>>> 30a523eedc958722de5b0d76b97ae6c8fcf98ab3
   signal \DEVICE_7SERIES.NO_BMM_INFO.SP.SIMPLE_PRIM36.ram_n_71\ : STD_LOGIC;
   signal \NLW_DEVICE_7SERIES.NO_BMM_INFO.SP.SIMPLE_PRIM36.ram_CASCADEOUTA_UNCONNECTED\ : STD_LOGIC;
   signal \NLW_DEVICE_7SERIES.NO_BMM_INFO.SP.SIMPLE_PRIM36.ram_CASCADEOUTB_UNCONNECTED\ : STD_LOGIC;
@@ -715,7 +904,11 @@ begin
       DOPADOP(0) => \DEVICE_7SERIES.NO_BMM_INFO.SP.SIMPLE_PRIM36.ram_n_71\,
       DOPBDOP(3 downto 0) => \NLW_DEVICE_7SERIES.NO_BMM_INFO.SP.SIMPLE_PRIM36.ram_DOPBDOP_UNCONNECTED\(3 downto 0),
       ECCPARITY(7 downto 0) => \NLW_DEVICE_7SERIES.NO_BMM_INFO.SP.SIMPLE_PRIM36.ram_ECCPARITY_UNCONNECTED\(7 downto 0),
+<<<<<<< HEAD
       ENARDEN => ena_array(0),
+=======
+      ENARDEN => \DEVICE_7SERIES.NO_BMM_INFO.SP.SIMPLE_PRIM36.ram_i_1_n_0\,
+>>>>>>> 30a523eedc958722de5b0d76b97ae6c8fcf98ab3
       ENBWREN => '0',
       INJECTDBITERR => '0',
       INJECTSBITERR => '0',
@@ -732,6 +925,15 @@ begin
       WEA(1) => wea(0),
       WEA(0) => wea(0),
       WEBWE(7 downto 0) => B"00000000"
+    );
+\DEVICE_7SERIES.NO_BMM_INFO.SP.SIMPLE_PRIM36.ram_i_1\: unisim.vcomponents.LUT2
+    generic map(
+      INIT => X"2"
+    )
+        port map (
+      I0 => addra(12),
+      I1 => addra(13),
+      O => \DEVICE_7SERIES.NO_BMM_INFO.SP.SIMPLE_PRIM36.ram_i_1_n_0\
     );
 end STRUCTURE;
 library IEEE;
@@ -742,8 +944,12 @@ entity \blk_mem_ram_byte_blk_mem_gen_prim_wrapper__parameterized1\ is
   port (
     douta_array : out STD_LOGIC_VECTOR ( 7 downto 0 );
     clka : in STD_LOGIC;
+<<<<<<< HEAD
     ena_array : in STD_LOGIC_VECTOR ( 0 to 0 );
     addra : in STD_LOGIC_VECTOR ( 11 downto 0 );
+=======
+    addra : in STD_LOGIC_VECTOR ( 13 downto 0 );
+>>>>>>> 30a523eedc958722de5b0d76b97ae6c8fcf98ab3
     dina : in STD_LOGIC_VECTOR ( 7 downto 0 );
     wea : in STD_LOGIC_VECTOR ( 0 to 0 )
   );
@@ -752,6 +958,10 @@ entity \blk_mem_ram_byte_blk_mem_gen_prim_wrapper__parameterized1\ is
 end \blk_mem_ram_byte_blk_mem_gen_prim_wrapper__parameterized1\;
 
 architecture STRUCTURE of \blk_mem_ram_byte_blk_mem_gen_prim_wrapper__parameterized1\ is
+<<<<<<< HEAD
+=======
+  signal \DEVICE_7SERIES.NO_BMM_INFO.SP.SIMPLE_PRIM36.ram_i_1__0_n_0\ : STD_LOGIC;
+>>>>>>> 30a523eedc958722de5b0d76b97ae6c8fcf98ab3
   signal \DEVICE_7SERIES.NO_BMM_INFO.SP.SIMPLE_PRIM36.ram_n_71\ : STD_LOGIC;
   signal \NLW_DEVICE_7SERIES.NO_BMM_INFO.SP.SIMPLE_PRIM36.ram_CASCADEOUTA_UNCONNECTED\ : STD_LOGIC;
   signal \NLW_DEVICE_7SERIES.NO_BMM_INFO.SP.SIMPLE_PRIM36.ram_CASCADEOUTB_UNCONNECTED\ : STD_LOGIC;
@@ -968,7 +1178,11 @@ begin
       DOPADOP(0) => \DEVICE_7SERIES.NO_BMM_INFO.SP.SIMPLE_PRIM36.ram_n_71\,
       DOPBDOP(3 downto 0) => \NLW_DEVICE_7SERIES.NO_BMM_INFO.SP.SIMPLE_PRIM36.ram_DOPBDOP_UNCONNECTED\(3 downto 0),
       ECCPARITY(7 downto 0) => \NLW_DEVICE_7SERIES.NO_BMM_INFO.SP.SIMPLE_PRIM36.ram_ECCPARITY_UNCONNECTED\(7 downto 0),
+<<<<<<< HEAD
       ENARDEN => ena_array(0),
+=======
+      ENARDEN => \DEVICE_7SERIES.NO_BMM_INFO.SP.SIMPLE_PRIM36.ram_i_1__0_n_0\,
+>>>>>>> 30a523eedc958722de5b0d76b97ae6c8fcf98ab3
       ENBWREN => '0',
       INJECTDBITERR => '0',
       INJECTSBITERR => '0',
@@ -986,6 +1200,18 @@ begin
       WEA(0) => wea(0),
       WEBWE(7 downto 0) => B"00000000"
     );
+<<<<<<< HEAD
+=======
+\DEVICE_7SERIES.NO_BMM_INFO.SP.SIMPLE_PRIM36.ram_i_1__0\: unisim.vcomponents.LUT2
+    generic map(
+      INIT => X"2"
+    )
+        port map (
+      I0 => addra(13),
+      I1 => addra(12),
+      O => \DEVICE_7SERIES.NO_BMM_INFO.SP.SIMPLE_PRIM36.ram_i_1__0_n_0\
+    );
+>>>>>>> 30a523eedc958722de5b0d76b97ae6c8fcf98ab3
 end STRUCTURE;
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
@@ -995,17 +1221,27 @@ entity \blk_mem_ram_byte_blk_mem_gen_prim_wrapper__parameterized2\ is
   port (
     douta_array : out STD_LOGIC_VECTOR ( 7 downto 0 );
     clka : in STD_LOGIC;
+<<<<<<< HEAD
     addra : in STD_LOGIC_VECTOR ( 13 downto 0 );
     dina : in STD_LOGIC_VECTOR ( 7 downto 0 );
     wea : in STD_LOGIC_VECTOR ( 0 to 0 );
     ena : in STD_LOGIC
+=======
+    ena_array : in STD_LOGIC_VECTOR ( 0 to 0 );
+    addra : in STD_LOGIC_VECTOR ( 11 downto 0 );
+    dina : in STD_LOGIC_VECTOR ( 7 downto 0 );
+    wea : in STD_LOGIC_VECTOR ( 0 to 0 )
+>>>>>>> 30a523eedc958722de5b0d76b97ae6c8fcf98ab3
   );
   attribute ORIG_REF_NAME : string;
   attribute ORIG_REF_NAME of \blk_mem_ram_byte_blk_mem_gen_prim_wrapper__parameterized2\ : entity is "blk_mem_gen_prim_wrapper";
 end \blk_mem_ram_byte_blk_mem_gen_prim_wrapper__parameterized2\;
 
 architecture STRUCTURE of \blk_mem_ram_byte_blk_mem_gen_prim_wrapper__parameterized2\ is
+<<<<<<< HEAD
   signal \DEVICE_7SERIES.NO_BMM_INFO.SP.SIMPLE_PRIM36.ram_i_1_n_0\ : STD_LOGIC;
+=======
+>>>>>>> 30a523eedc958722de5b0d76b97ae6c8fcf98ab3
   signal \DEVICE_7SERIES.NO_BMM_INFO.SP.SIMPLE_PRIM36.ram_n_71\ : STD_LOGIC;
   signal \NLW_DEVICE_7SERIES.NO_BMM_INFO.SP.SIMPLE_PRIM36.ram_CASCADEOUTA_UNCONNECTED\ : STD_LOGIC;
   signal \NLW_DEVICE_7SERIES.NO_BMM_INFO.SP.SIMPLE_PRIM36.ram_CASCADEOUTB_UNCONNECTED\ : STD_LOGIC;
@@ -1222,7 +1458,11 @@ begin
       DOPADOP(0) => \DEVICE_7SERIES.NO_BMM_INFO.SP.SIMPLE_PRIM36.ram_n_71\,
       DOPBDOP(3 downto 0) => \NLW_DEVICE_7SERIES.NO_BMM_INFO.SP.SIMPLE_PRIM36.ram_DOPBDOP_UNCONNECTED\(3 downto 0),
       ECCPARITY(7 downto 0) => \NLW_DEVICE_7SERIES.NO_BMM_INFO.SP.SIMPLE_PRIM36.ram_ECCPARITY_UNCONNECTED\(7 downto 0),
+<<<<<<< HEAD
       ENARDEN => \DEVICE_7SERIES.NO_BMM_INFO.SP.SIMPLE_PRIM36.ram_i_1_n_0\,
+=======
+      ENARDEN => ena_array(0),
+>>>>>>> 30a523eedc958722de5b0d76b97ae6c8fcf98ab3
       ENBWREN => '0',
       INJECTDBITERR => '0',
       INJECTSBITERR => '0',
@@ -1288,8 +1528,12 @@ entity \blk_mem_ram_byte_blk_mem_gen_prim_width__parameterized0\ is
   port (
     douta_array : out STD_LOGIC_VECTOR ( 7 downto 0 );
     clka : in STD_LOGIC;
+<<<<<<< HEAD
     ena_array : in STD_LOGIC_VECTOR ( 0 to 0 );
     addra : in STD_LOGIC_VECTOR ( 11 downto 0 );
+=======
+    addra : in STD_LOGIC_VECTOR ( 13 downto 0 );
+>>>>>>> 30a523eedc958722de5b0d76b97ae6c8fcf98ab3
     dina : in STD_LOGIC_VECTOR ( 7 downto 0 );
     wea : in STD_LOGIC_VECTOR ( 0 to 0 )
   );
@@ -1301,11 +1545,18 @@ architecture STRUCTURE of \blk_mem_ram_byte_blk_mem_gen_prim_width__parameterize
 begin
 \prim_noinit.ram\: entity work.\blk_mem_ram_byte_blk_mem_gen_prim_wrapper__parameterized0\
      port map (
+<<<<<<< HEAD
       addra(11 downto 0) => addra(11 downto 0),
       clka => clka,
       dina(7 downto 0) => dina(7 downto 0),
       douta_array(7 downto 0) => douta_array(7 downto 0),
       ena_array(0) => ena_array(0),
+=======
+      addra(13 downto 0) => addra(13 downto 0),
+      clka => clka,
+      dina(7 downto 0) => dina(7 downto 0),
+      douta_array(7 downto 0) => douta_array(7 downto 0),
+>>>>>>> 30a523eedc958722de5b0d76b97ae6c8fcf98ab3
       wea(0) => wea(0)
     );
 end STRUCTURE;
@@ -1317,8 +1568,12 @@ entity \blk_mem_ram_byte_blk_mem_gen_prim_width__parameterized1\ is
   port (
     douta_array : out STD_LOGIC_VECTOR ( 7 downto 0 );
     clka : in STD_LOGIC;
+<<<<<<< HEAD
     ena_array : in STD_LOGIC_VECTOR ( 0 to 0 );
     addra : in STD_LOGIC_VECTOR ( 11 downto 0 );
+=======
+    addra : in STD_LOGIC_VECTOR ( 13 downto 0 );
+>>>>>>> 30a523eedc958722de5b0d76b97ae6c8fcf98ab3
     dina : in STD_LOGIC_VECTOR ( 7 downto 0 );
     wea : in STD_LOGIC_VECTOR ( 0 to 0 )
   );
@@ -1330,11 +1585,18 @@ architecture STRUCTURE of \blk_mem_ram_byte_blk_mem_gen_prim_width__parameterize
 begin
 \prim_noinit.ram\: entity work.\blk_mem_ram_byte_blk_mem_gen_prim_wrapper__parameterized1\
      port map (
+<<<<<<< HEAD
       addra(11 downto 0) => addra(11 downto 0),
       clka => clka,
       dina(7 downto 0) => dina(7 downto 0),
       douta_array(7 downto 0) => douta_array(7 downto 0),
       ena_array(0) => ena_array(0),
+=======
+      addra(13 downto 0) => addra(13 downto 0),
+      clka => clka,
+      dina(7 downto 0) => dina(7 downto 0),
+      douta_array(7 downto 0) => douta_array(7 downto 0),
+>>>>>>> 30a523eedc958722de5b0d76b97ae6c8fcf98ab3
       wea(0) => wea(0)
     );
 end STRUCTURE;
@@ -1346,10 +1608,17 @@ entity \blk_mem_ram_byte_blk_mem_gen_prim_width__parameterized2\ is
   port (
     douta_array : out STD_LOGIC_VECTOR ( 7 downto 0 );
     clka : in STD_LOGIC;
+<<<<<<< HEAD
     addra : in STD_LOGIC_VECTOR ( 13 downto 0 );
     dina : in STD_LOGIC_VECTOR ( 7 downto 0 );
     wea : in STD_LOGIC_VECTOR ( 0 to 0 );
     ena : in STD_LOGIC
+=======
+    ena_array : in STD_LOGIC_VECTOR ( 0 to 0 );
+    addra : in STD_LOGIC_VECTOR ( 11 downto 0 );
+    dina : in STD_LOGIC_VECTOR ( 7 downto 0 );
+    wea : in STD_LOGIC_VECTOR ( 0 to 0 )
+>>>>>>> 30a523eedc958722de5b0d76b97ae6c8fcf98ab3
   );
   attribute ORIG_REF_NAME : string;
   attribute ORIG_REF_NAME of \blk_mem_ram_byte_blk_mem_gen_prim_width__parameterized2\ : entity is "blk_mem_gen_prim_width";
@@ -1359,11 +1628,19 @@ architecture STRUCTURE of \blk_mem_ram_byte_blk_mem_gen_prim_width__parameterize
 begin
 \prim_noinit.ram\: entity work.\blk_mem_ram_byte_blk_mem_gen_prim_wrapper__parameterized2\
      port map (
+<<<<<<< HEAD
       addra(13 downto 0) => addra(13 downto 0),
       clka => clka,
       dina(7 downto 0) => dina(7 downto 0),
       douta_array(7 downto 0) => douta_array(7 downto 0),
       ena => ena,
+=======
+      addra(11 downto 0) => addra(11 downto 0),
+      clka => clka,
+      dina(7 downto 0) => dina(7 downto 0),
+      douta_array(7 downto 0) => douta_array(7 downto 0),
+      ena_array(0) => ena_array(0),
+>>>>>>> 30a523eedc958722de5b0d76b97ae6c8fcf98ab3
       wea(0) => wea(0)
     );
 end STRUCTURE;
@@ -1375,7 +1652,10 @@ entity blk_mem_ram_byte_blk_mem_gen_generic_cstr is
   port (
     douta : out STD_LOGIC_VECTOR ( 7 downto 0 );
     addra : in STD_LOGIC_VECTOR ( 13 downto 0 );
+<<<<<<< HEAD
     ena : in STD_LOGIC;
+=======
+>>>>>>> 30a523eedc958722de5b0d76b97ae6c8fcf98ab3
     clka : in STD_LOGIC;
     dina : in STD_LOGIC_VECTOR ( 7 downto 0 );
     wea : in STD_LOGIC_VECTOR ( 0 to 0 )
@@ -1386,21 +1666,34 @@ end blk_mem_ram_byte_blk_mem_gen_generic_cstr;
 
 architecture STRUCTURE of blk_mem_ram_byte_blk_mem_gen_generic_cstr is
   signal douta_array : STD_LOGIC_VECTOR ( 31 downto 0 );
+<<<<<<< HEAD
   signal ena_array : STD_LOGIC_VECTOR ( 2 downto 0 );
+=======
+  signal ena_array : STD_LOGIC_VECTOR ( 3 downto 0 );
+>>>>>>> 30a523eedc958722de5b0d76b97ae6c8fcf98ab3
 begin
 \bindec_a.bindec_inst_a\: entity work.blk_mem_ram_byte_bindec
      port map (
       addra(1 downto 0) => addra(13 downto 12),
+<<<<<<< HEAD
       ena => ena,
       ena_array(2 downto 0) => ena_array(2 downto 0)
+=======
+      ena_array(1) => ena_array(3),
+      ena_array(0) => ena_array(0)
+>>>>>>> 30a523eedc958722de5b0d76b97ae6c8fcf98ab3
     );
 \has_mux_a.A\: entity work.blk_mem_ram_byte_blk_mem_gen_mux
      port map (
       addra(1 downto 0) => addra(13 downto 12),
       clka => clka,
       douta(7 downto 0) => douta(7 downto 0),
+<<<<<<< HEAD
       douta_array(31 downto 0) => douta_array(31 downto 0),
       ena => ena
+=======
+      douta_array(31 downto 0) => douta_array(31 downto 0)
+>>>>>>> 30a523eedc958722de5b0d76b97ae6c8fcf98ab3
     );
 \ramloop[0].ram.r\: entity work.blk_mem_ram_byte_blk_mem_gen_prim_width
      port map (
@@ -1413,29 +1706,51 @@ begin
     );
 \ramloop[1].ram.r\: entity work.\blk_mem_ram_byte_blk_mem_gen_prim_width__parameterized0\
      port map (
+<<<<<<< HEAD
       addra(11 downto 0) => addra(11 downto 0),
       clka => clka,
       dina(7 downto 0) => dina(7 downto 0),
       douta_array(7 downto 0) => douta_array(15 downto 8),
       ena_array(0) => ena_array(1),
+=======
+      addra(13 downto 0) => addra(13 downto 0),
+      clka => clka,
+      dina(7 downto 0) => dina(7 downto 0),
+      douta_array(7 downto 0) => douta_array(15 downto 8),
+>>>>>>> 30a523eedc958722de5b0d76b97ae6c8fcf98ab3
       wea(0) => wea(0)
     );
 \ramloop[2].ram.r\: entity work.\blk_mem_ram_byte_blk_mem_gen_prim_width__parameterized1\
      port map (
+<<<<<<< HEAD
       addra(11 downto 0) => addra(11 downto 0),
       clka => clka,
       dina(7 downto 0) => dina(7 downto 0),
       douta_array(7 downto 0) => douta_array(23 downto 16),
       ena_array(0) => ena_array(2),
+=======
+      addra(13 downto 0) => addra(13 downto 0),
+      clka => clka,
+      dina(7 downto 0) => dina(7 downto 0),
+      douta_array(7 downto 0) => douta_array(23 downto 16),
+>>>>>>> 30a523eedc958722de5b0d76b97ae6c8fcf98ab3
       wea(0) => wea(0)
     );
 \ramloop[3].ram.r\: entity work.\blk_mem_ram_byte_blk_mem_gen_prim_width__parameterized2\
      port map (
+<<<<<<< HEAD
       addra(13 downto 0) => addra(13 downto 0),
       clka => clka,
       dina(7 downto 0) => dina(7 downto 0),
       douta_array(7 downto 0) => douta_array(31 downto 24),
       ena => ena,
+=======
+      addra(11 downto 0) => addra(11 downto 0),
+      clka => clka,
+      dina(7 downto 0) => dina(7 downto 0),
+      douta_array(7 downto 0) => douta_array(31 downto 24),
+      ena_array(0) => ena_array(3),
+>>>>>>> 30a523eedc958722de5b0d76b97ae6c8fcf98ab3
       wea(0) => wea(0)
     );
 end STRUCTURE;
@@ -1447,7 +1762,10 @@ entity blk_mem_ram_byte_blk_mem_gen_top is
   port (
     douta : out STD_LOGIC_VECTOR ( 7 downto 0 );
     addra : in STD_LOGIC_VECTOR ( 13 downto 0 );
+<<<<<<< HEAD
     ena : in STD_LOGIC;
+=======
+>>>>>>> 30a523eedc958722de5b0d76b97ae6c8fcf98ab3
     clka : in STD_LOGIC;
     dina : in STD_LOGIC_VECTOR ( 7 downto 0 );
     wea : in STD_LOGIC_VECTOR ( 0 to 0 )
@@ -1464,7 +1782,6 @@ begin
       clka => clka,
       dina(7 downto 0) => dina(7 downto 0),
       douta(7 downto 0) => douta(7 downto 0),
-      ena => ena,
       wea(0) => wea(0)
     );
 end STRUCTURE;
@@ -1476,7 +1793,10 @@ entity blk_mem_ram_byte_blk_mem_gen_v8_4_2_synth is
   port (
     douta : out STD_LOGIC_VECTOR ( 7 downto 0 );
     addra : in STD_LOGIC_VECTOR ( 13 downto 0 );
+<<<<<<< HEAD
     ena : in STD_LOGIC;
+=======
+>>>>>>> 30a523eedc958722de5b0d76b97ae6c8fcf98ab3
     clka : in STD_LOGIC;
     dina : in STD_LOGIC_VECTOR ( 7 downto 0 );
     wea : in STD_LOGIC_VECTOR ( 0 to 0 )
@@ -1493,7 +1813,6 @@ begin
       clka => clka,
       dina(7 downto 0) => dina(7 downto 0),
       douta(7 downto 0) => douta(7 downto 0),
-      ena => ena,
       wea(0) => wea(0)
     );
 end STRUCTURE;
@@ -1620,7 +1939,7 @@ entity blk_mem_ram_byte_blk_mem_gen_v8_4_2 is
   attribute C_HAS_AXI_ID : integer;
   attribute C_HAS_AXI_ID of blk_mem_ram_byte_blk_mem_gen_v8_4_2 : entity is 0;
   attribute C_HAS_ENA : integer;
-  attribute C_HAS_ENA of blk_mem_ram_byte_blk_mem_gen_v8_4_2 : entity is 1;
+  attribute C_HAS_ENA of blk_mem_ram_byte_blk_mem_gen_v8_4_2 : entity is 0;
   attribute C_HAS_ENB : integer;
   attribute C_HAS_ENB of blk_mem_ram_byte_blk_mem_gen_v8_4_2 : entity is 0;
   attribute C_HAS_INJECTERR : integer;
@@ -1804,7 +2123,6 @@ inst_blk_mem_gen: entity work.blk_mem_ram_byte_blk_mem_gen_v8_4_2_synth
       clka => clka,
       dina(7 downto 0) => dina(7 downto 0),
       douta(7 downto 0) => douta(7 downto 0),
-      ena => ena,
       wea(0) => wea(0)
     );
 end STRUCTURE;
@@ -1815,7 +2133,6 @@ use UNISIM.VCOMPONENTS.ALL;
 entity blk_mem_ram_byte is
   port (
     clka : in STD_LOGIC;
-    ena : in STD_LOGIC;
     wea : in STD_LOGIC_VECTOR ( 0 to 0 );
     addra : in STD_LOGIC_VECTOR ( 13 downto 0 );
     dina : in STD_LOGIC_VECTOR ( 7 downto 0 );
@@ -1905,7 +2222,7 @@ architecture STRUCTURE of blk_mem_ram_byte is
   attribute C_HAS_AXI_ID : integer;
   attribute C_HAS_AXI_ID of U0 : label is 0;
   attribute C_HAS_ENA : integer;
-  attribute C_HAS_ENA of U0 : label is 1;
+  attribute C_HAS_ENA of U0 : label is 0;
   attribute C_HAS_ENB : integer;
   attribute C_HAS_ENB of U0 : label is 0;
   attribute C_HAS_INJECTERR : integer;
@@ -2007,7 +2324,6 @@ architecture STRUCTURE of blk_mem_ram_byte is
   attribute x_interface_info of clka : signal is "xilinx.com:interface:bram:1.0 BRAM_PORTA CLK";
   attribute x_interface_parameter : string;
   attribute x_interface_parameter of clka : signal is "XIL_INTERFACENAME BRAM_PORTA, MEM_SIZE 8192, MEM_WIDTH 32, MEM_ECC NONE, MASTER_TYPE OTHER, READ_LATENCY 1";
-  attribute x_interface_info of ena : signal is "xilinx.com:interface:bram:1.0 BRAM_PORTA EN";
   attribute x_interface_info of addra : signal is "xilinx.com:interface:bram:1.0 BRAM_PORTA ADDR";
   attribute x_interface_info of dina : signal is "xilinx.com:interface:bram:1.0 BRAM_PORTA DIN";
   attribute x_interface_info of douta : signal is "xilinx.com:interface:bram:1.0 BRAM_PORTA DOUT";
@@ -2026,7 +2342,7 @@ U0: entity work.blk_mem_ram_byte_blk_mem_gen_v8_4_2
       douta(7 downto 0) => douta(7 downto 0),
       doutb(7 downto 0) => NLW_U0_doutb_UNCONNECTED(7 downto 0),
       eccpipece => '0',
-      ena => ena,
+      ena => '0',
       enb => '0',
       injectdbiterr => '0',
       injectsbiterr => '0',

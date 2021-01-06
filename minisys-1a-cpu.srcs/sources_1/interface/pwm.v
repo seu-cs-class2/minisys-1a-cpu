@@ -6,34 +6,23 @@
 // PWM 脉冲宽度调制
 module pwm (
 
-  (* mark_debug="true" *)
   input wire rst, // 重置
-  (* mark_debug="true" *)
   input wire clk, // 时钟
 
-  (* mark_debug="true" *)
   input wire cs, // 片选，应结合端口基地址给出
-  (* mark_debug="true" *)
   input wire en, // 工作使能
   // 内部端口选择（地址线的最低三位）
   // 0-最大值寄存器，2-对比值寄存器，4-控制寄存器
-  (* mark_debug="true" *)
   input wire[2:0] port,
-  (* mark_debug="true" *)
   input wire[15:0] data, // 数据输入
 
-  (* mark_debug="true" *)
   output reg result // PWM调制结果
 
 );
 
-  (* mark_debug="true" *)
   reg[15:0] threshold; // 最大值寄存器
-  (* mark_debug="true" *)
   reg[15:0] compare; // 对比值寄存器
-  (* mark_debug="true" *)
   reg[15:0] ctrl; // 控制寄存器
-  (* mark_debug="true" *)
   reg[15:0] current; // 当前值
 
   always @(posedge clk) begin
