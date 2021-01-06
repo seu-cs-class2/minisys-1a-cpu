@@ -1,10 +1,10 @@
 -- Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2018.3 (win64) Build 2405991 Thu Dec  6 23:38:27 MST 2018
--- Date        : Wed Dec 30 14:07:43 2020
--- Host        : ZHUOXUPC running 64-bit major release  (build 9200)
+-- Date        : Wed Jan  6 14:34:38 2021
+-- Host        : DESKTOP-ED5SFTK running 64-bit major release  (build 9200)
 -- Command     : write_vhdl -force -mode synth_stub
---               F:/minisys-1a-cpu/minisys-1a-cpu.srcs/sources/ip/clocking/clocking_stub.vhdl
+--               D:/ProgramSave/minisys-1a-cpu/minisys-1a-cpu.srcs/sources_1/ip/clocking/clocking_stub.vhdl
 -- Design      : clocking
 -- Purpose     : Stub declaration of top-level module interface
 -- Device      : xc7a100tfgg484-1

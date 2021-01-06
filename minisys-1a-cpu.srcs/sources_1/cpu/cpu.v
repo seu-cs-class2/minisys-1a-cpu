@@ -9,17 +9,17 @@ module cpu (
   input rst, // 重置
   input clk, // 时钟
 
-  input [`WordRange] imem_data_in,  //指令存储器发给cpu的数据
+  input [`WordRange] imem_data_in,  //指令存储器发给cpu的数�?
   output wire[`WordRange] imem_addr_out,  //cpu发给指令存储器的地址
   output wire imem_e_out,  //cpu发给指令存储器的使能信号
 
-  output wire[`WordRange] bus_addr_out, //发给数据总线的地址
-  output wire[`WordRange] bus_write_data_out,  //发给写数据总线的数据
-  output wire bus_eable_out, //发给控制总线的总使能信号
+  output wire[`WordRange] bus_addr_out, //发给数据总线的地�?
+  output wire[`WordRange] bus_write_data_out,  //发给写数据�?�线的数�?
+  output wire bus_eable_out, //发给控制总线的�?�使能信�?
   output wire bus_we_out, //发给控制总线的写使能信号
-  output wire[3:0] bus_byte_sel_out, //发给控制总线的比特选择信号
+  output wire[3:0] bus_byte_sel_out, //发给控制总线的比特�?�择信号
   
-  input wire[`WordRange] bus_read_in//从读控制总线读入的数据
+  input wire[`WordRange] bus_read_in//从读控制总线读入的数�?
 );
 
   // ID输入
@@ -119,7 +119,7 @@ module cpu (
   wire[`RegRangeLog2] reg1_addr;
   wire[`RegRangeLog2] reg2_addr;
 
-  //流水线暂停相�??
+  //流水线暂停相�???
   wire pause_req_id;
   wire pause_req_ex;
   wire pause_res_pc;
@@ -161,9 +161,8 @@ module cpu (
   .clk                      (clk),
   .rst                      (rst),
   .pc                       (pc),
-  .imem_e_out               (imem_e_out),
   .pause                    (pause_res_pc),
-  .branch_e_in              (branch_e_out),
+  .branch_en_in              (branch_e_out),
   .branch_addr_in           (branch_addr_out)
   );
 
@@ -185,28 +184,28 @@ module cpu (
   .ins_in               		(id_ins_in),
   .reg1_data_in         		(reg1_data),
   .reg2_data_in         		(reg2_data),
-  .reg1_re_out          		(reg1_re),
-  .reg2_re_out          		(reg2_re),
+  .reg1_ren_out          		(reg1_re),
+  .reg2_ren_out          		(reg2_re),
   .reg1_addr_out        		(reg1_addr),
   .reg2_addr_out        		(reg2_addr),
-  .aluop_out            		(id_aluop_out),
+  .exop_out            		  (id_aluop_out),
   .data1_out            		(id_data1_out),
   .data2_out            		(id_data2_out),
-  .wreg_e_out           		(id_wreg_e_out),
+  .wreg_wen_out           	(id_wreg_e_out),
   .wreg_addr_out        		(id_wreg_addr_out),
-  .ex_wreg_e_in             (ex_wreg_e_out),
+  .ex_wreg_en_in            (ex_wreg_e_out),
   .ex_wreg_data_in          (ex_wreg_data_out),
   .ex_wreg_addr_in          (ex_wreg_addr_out),
-  .mem_wreg_e_in            (mem_wreg_e_out),
+  .mem_wreg_en_in           (mem_wreg_e_out),
   .mem_wreg_data_in         (mem_wreg_data_out),
   .mem_wreg_addr_in         (mem_wreg_addr_out),
   .pause_req                (pause_req_id),
-  .branch_e_out             (branch_e_out),
+  .branch_en_out            (branch_e_out),
   .branch_addr_out          (branch_addr_out),
   .link_addr_out            (link_addr_out),
-  .is_in_delayslot_in       (is_in_delayslot_in),
-  .is_in_delayslot_out      (is_in_delayslot_out),
-  .next_is_in_delayslot     (next_is_in_delayslot),
+  .in_delayslot_in          (is_in_delayslot_in),
+  .in_delayslot_out         (is_in_delayslot_out),
+  .next_in_delayslot_out    (next_is_in_delayslot),
   .ins_out                  (id_ins_out)
   );
 
@@ -227,10 +226,10 @@ module cpu (
   .ex_wreg_e                (ex_wreg_e_in),
   .ex_link_addr             (ex_link_addr_in),
   .pause                    (pause_res_ex),
-  .id_is_in_delayslot       (is_in_delayslot_out),
-  .next_is_in_delayslot     (next_is_in_delayslot),
-  .ex_is_in_delayslot       (ex_is_in_delayslot),
-  .is_in_delayslot          (is_in_delayslot_in),
+  .id_in_delayslot          (is_in_delayslot_out),
+  .id_next_in_delayslot     (next_is_in_delayslot),
+  .ex_in_delayslot          (ex_is_in_delayslot),
+  .ex_next_in_delayslot     (is_in_delayslot_in),
   .id_ins                   (id_ins_out),
   .ex_ins                   (ex_ins_in)
   );
@@ -347,7 +346,7 @@ module cpu (
   .mem_read_data_in       (bus_read_in),
   .mem_addr_out           (bus_addr_out),
   .mem_store_data_out     (bus_write_data_out),
-  .mem_we_out             (bus_write_eable),
+  .mem_we_out             (bus_we_out),
   .mem_e_out              (bus_eable_out),
   .mem_byte_sel_out       (bus_byte_sel_out)
   );

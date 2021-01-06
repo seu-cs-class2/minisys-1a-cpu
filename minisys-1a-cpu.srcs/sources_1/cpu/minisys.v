@@ -9,19 +9,19 @@ module minisys (
   input rst, // 板上重置
   input board_clk, // 板上时钟
 
-  // 拨码开关
+  // 拨码�?�?
   input wire[23:0] switches_in,
   // 按钮
   input wire[4:0] buttons_in,
   // 矩阵键盘
   input wire[3:0] keyboard_cols_in,
   output wire[3:0] keyboard_rows_out,
-  // 数码管
+  // 数码�?
   output wire[7:0] digits_sel_out,
   output wire[7:0] digits_data_out,
-  // 蜂鸣器
+  // 蜂鸣�?
   output wire beep_out,
-  // LED灯
+  // LED�?
   output wire[7:0] led_RLD_out,
   output wire[7:0] led_YLD_out,
   output wire[7:0] led_GLD_out
@@ -49,18 +49,40 @@ module minisys (
   assign imem_imem_addr_in = cpu_imem_addr_out;
   assign imem_imem_e_in = cpu_imem_e_out;
 
-  wire [`WordRange] cpu_dmem_data_in;
-  wire [`WordRange] cpu_dmem_addr_out;
-  wire [`WordRange] cpu_dmem_store_data_out;
-  wire cpu_dmem_e_out;
 
-  wire [`WordRange] dmem_dmem_data_out;
-  wire [`WordRange] dmem_dmem_addr_in;
-  wire dmem_dmem_e_in;
-  
-  assign cpu_dmem_data_in = dmem_dmem_data_out;
-  assign dmem_dmem_addr_in = cpu_dmem_addr_out;
-  assign dmem_dmem_e_in = cpu_dmem_e_out;
+  //相关总线(共六个，四种)
+  wire[`WordRange] bus_addr;  //地址总线（仅有一个主设备cpu
+  wire[`WordRange] bus_write_data; //写数据�?�线（仅有一个主设备cpu
+  wire[`WordRange] bus_read_data; //读数据�?�线（主设备很多，需要仲裁）
+  wire bus_eable; //控制总线之一
+  wire bus_we; //控制总线
+  wire[3:0] bus_byte_sel; //控制总线 主设备也仅有cpu，无�?仲裁
+
+  //相关输出（包含ram与io设备，目前共十个�?
+  wire[`WordRange] ram_data;
+  wire[`WordRange] seven_display_data;
+  wire[`WordRange] keyboard_data;
+  wire[`WordRange] counter_data;
+  wire[`WordRange] pwm_data;
+  wire[`WordRange] uart_data;
+  wire[`WordRange] watch_dog_data;
+  wire[`WordRange] led_light_data;
+  wire[`WordRange] switch_data;
+  wire[`WordRange] buzzer_data;
+
+  //测试相关
+  assign seven_display_data = {32'hffffffff};
+  assign keyboard_data = {32'hffffffff};
+  assign counter_data = {32'hffffffff};
+  assign pwm_data = {32'hffffffff};
+  assign uart_data = {32'hffffffff};
+  assign watch_dog_data = {32'hffffffff};
+  assign switch_data = {32'hffffffff};
+  assign led_light_data = {32'hffffffff};
+  assign buzzer_data = {32'hffffffff};
+  //测试相关
+
+
 
 
   wire beep_en_out; // 0xFFFF_FD10
@@ -76,7 +98,7 @@ module minisys (
   // CPU
   cpu u_cpu (
   .rst                      (rst),
-  .clk                      (clk),
+  .clk                      (cpu_clk),
   .imem_data_in             (cpu_imem_data_in),
   .imem_addr_out            (cpu_imem_addr_out),
   .imem_e_out               (cpu_imem_e_out),
@@ -97,25 +119,44 @@ module minisys (
 
   // DMEM
   ram u_ram(
-    .clk                    (~cpu_clk),
-    .we                     (mem_we_out),
-    .addr                   (mem_addr_out),
-    .byte_sel               (mem_byte_sel_out),
-    .data_in                (mem_store_data_out),
-    .data_out               (mem_read_data_in)
+  .clk                    (~cpu_clk),
+  .eable                  (bus_eable),
+  .we                     (bus_we),
+  .addr                   (bus_addr),
+  .byte_sel               (bus_byte_sel),
+  .data_in                (bus_write_data),
+  .data_out               (ram_data)
   );
+
+
+  arbitration u_abt(
+  .clk                      (~cpu_clk),
+  .ram_data                 (ram_data),
+  .seven_display_data       (seven_display_data),
+  .keyboard_data            (keyboard_data),
+  .counter_data             (counter_data),
+  .pwm_data                 (pwm_data),
+  .uart_data                (uart_data),
+  .watch_dog_data           (watch_dog_data),
+  .led_light_data           (led_light_data),
+  .switch_data              (switch_data),
+  .buzzer_data              (buzzer_data),
+  .addr                     (bus_addr),
+  .data_out                 (bus_read_data)
+  );
+
 
   // 接口部分
   
-  leds u_leds(
-    .rst(rst),
-    .clk(cpu_clk),
-    .cs(leds_en_out),
-    .port(cpu_dmem_addr_out[2:0]),
-    .data(cpu_dmem_store_data_out[15:0]),
-    .RLD(led_RLD_out),
-    .YLD(led_YLD_out),
-    .GLD(led_GLD_out)
-  );
+  // leds u_leds(
+  //   .rst(rst),
+  //   .clk(cpu_clk),
+  //   .cs(leds_en_out),
+  //   .port(cpu_dmem_addr_out[2:0]),
+  //   .data(cpu_dmem_store_data_out[15:0]),
+  //   .RLD(led_RLD_out),
+  //   .YLD(led_YLD_out),
+  //   .GLD(led_GLD_out)
+  // );
 
 endmodule

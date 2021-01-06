@@ -1,0 +1,18 @@
+#-----------------------------------------------------------
+# Vivado v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Tue Dec 29 12:57:53 2020
+# Process ID: 14904
+# Current directory: D:/ProgramSave/minisys-1a-cpu
+# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent16780 D:\ProgramSave\minisys-1a-cpu\minisys-1a-cpu.xpr
+# Log file: D:/ProgramSave/minisys-1a-cpu/vivado.log
+# Journal file: D:/ProgramSave/minisys-1a-cpu\vivado.jou
+#-----------------------------------------------------------
+start_gui
+open_project D:/ProgramSave/minisys-1a-cpu/minisys-1a-cpu.xpr
+export_ip_user_files -of_objects  [get_files D:/ProgramSave/minisys-1a-cpu/minisys-1a-cpu.srcs/sources_1/ip/div_gen_0/div_gen_0.xci] -no_script -reset -force -quiet
+remove_files  -fileset div_gen_0 D:/ProgramSave/minisys-1a-cpu/minisys-1a-cpu.srcs/sources_1/ip/div_gen_0/div_gen_0.xci
+export_ip_user_files -of_objects  [get_files D:/ProgramSave/minisys-1a-cpu/minisys-1a-cpu.srcs/sources_1/zx/reg_group.v] -no_script -reset -force -quiet
+remove_files  D:/ProgramSave/minisys-1a-cpu/minisys-1a-cpu.srcs/sources_1/zx/reg_group.v
+add_files -norecurse {D:/ProgramSave/minisys-1a-cpu/minisys-1a-cpu.srcs/sources_1/interface/leds.v D:/ProgramSave/minisys-1a-cpu/minisys-1a-cpu.srcs/sources_1/interface/public.v D:/ProgramSave/minisys-1a-cpu/minisys-1a-cpu.srcs/sources_1/interface/pwm.v D:/ProgramSave/minisys-1a-cpu/minisys-1a-cpu.srcs/sources_1/interface/keyboard.v D:/ProgramSave/minisys-1a-cpu/minisys-1a-cpu.srcs/sources_1/interface/switches.v D:/ProgramSave/minisys-1a-cpu/minisys-1a-cpu.srcs/sources_1/interface/watchdog.v D:/ProgramSave/minisys-1a-cpu/minisys-1a-cpu.srcs/sources_1/interface/beep.v}
