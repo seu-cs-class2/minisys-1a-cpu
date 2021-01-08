@@ -91,8 +91,6 @@ module minisys (
   wire[`WordRange] buzzer_data;
 
   //测试相关
-  assign seven_display_data = {32'hffffffff};
-  assign keyboard_data = {32'hffffffff};
   assign counter_data = {32'hffffffff};
   assign pwm_data = {32'hffffffff};
   assign uart_data = {32'hffffffff};
@@ -190,6 +188,32 @@ module minisys (
     .we                     (bus_we),
     .data_out               (switch_data),
     .switch_in              (switches_in)
+  );
+
+  keyboard u_keyboard(
+    .rst                    (rst),
+    .clk                    (~cpu_clk),
+    .addr                   (bus_addr),
+    .en                     (bus_eable),
+    .byte_sel               (bus_byte_sel),
+    .data_in                (bus_write_data),
+    .we                     (bus_we),
+    .data_out               (keyboard_data),
+    .cols                   (keyboard_cols_in),
+    .rows                   (keyboard_rows_out)
+  );
+
+  digits u_digits(
+    .rst                    (rst),
+    .clk                    (~cpu_clk),
+    .addr                   (bus_addr),
+    .en                     (bus_eable),
+    .byte_sel               (bus_byte_sel),
+    .data_in                (bus_write_data),
+    .we                     (bus_we),
+    .data_out               (seven_display_data),
+    .sel_out                (digits_sel_out),
+    .digital_out            (digits_data_out)
   );
 
 endmodule

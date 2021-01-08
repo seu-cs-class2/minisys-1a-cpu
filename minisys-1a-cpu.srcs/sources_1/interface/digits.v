@@ -35,7 +35,7 @@ module digits (
       digital_out <= 8'hff;
     end else if(addr == 32'hfffffc00 && en == `Enable && we == `Enable) begin //写的是显示数据寄存器 且使能有效
       case (data_in[7:0])
-        //                GEF_DCBA
+        //                GFE_DCBA
         4'h0: begin
           digital_out <= 8'b1100_0000; // ABCDEF
         end
@@ -49,10 +49,10 @@ module digits (
           digital_out <= 8'b1011_0000; // ABCDG
         end
         4'h4: begin
-          digital_out <= 8'b1010_1001; // BCFG
+          digital_out <= 8'b1001_1001; // BCFG
         end
         4'h5: begin
-          digital_out <= 8'b1010_0010; // ACDFG
+          digital_out <= 8'b1001_0010; // ACDFG
         end
         4'h6: begin
           digital_out <= 8'b1000_0010; // ACDEFG
@@ -64,7 +64,7 @@ module digits (
           digital_out <= 8'b1000_0000; // ABCDEFG
         end
         4'h9: begin
-          digital_out <= 8'b1010_1000; // ABCFG
+          digital_out <= 8'b1001_1000; // ABCFG
         end
         4'ha: begin
           digital_out <= 8'b1000_1000; // ABCEFG
