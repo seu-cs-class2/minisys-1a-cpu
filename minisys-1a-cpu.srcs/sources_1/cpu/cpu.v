@@ -19,7 +19,12 @@ module cpu (
   output wire bus_we_out, //发给控制总线的写使能信号（0代表读）
   output wire[3:0] bus_byte_sel_out, //发给控制总线的比特选择信号
   
-  input wire[`WordRange] bus_read_in//从读控制总线读入的外设/ram数据
+  input wire[`WordRange] bus_read_in,//从读控制总线读入的外设/ram数据
+
+  //debug
+  output wire[`WordRange] mem_addr_debug,
+  output wire[`WordRange] dataA,
+  output wire[`WordRange] dataB
 );
 
   // ID输入
@@ -133,6 +138,11 @@ module cpu (
   wire pause_res_ex;
   wire pause_res_mem;
   wire pause_res_wb;
+
+  //debug
+  assign mem_addr_debug = mem_addr_in;
+  assign dataA = ex_data1_in;
+  assign dataB = ex_data2_in;
 
 
   // HILO

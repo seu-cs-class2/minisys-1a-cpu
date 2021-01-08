@@ -20,14 +20,14 @@ module pc (
   // 如果rst，则复位到0x0，否则+4
   always @(posedge clk) begin
     if (rst == `Enable) begin
-      pc <= `ZeroWord;
+      pc = `ZeroWord;
     end else if (pause == `Enable) begin
       // 流水暂停时保持PC不变
-      pc <= pc;
+      pc = pc;
     end else if (branch_en_in == `Enable) begin  // 如果要转移，则PC直接赋值为转移地址
-      pc <= branch_addr_in;
+      pc = branch_addr_in;
     end else begin
-      pc <= pc + 32'd4;
+      pc = pc + 32'd4;
     end
   end
 

@@ -20,11 +20,11 @@ module hilo (
 
   always @(posedge clk) begin
     if (rst == `Enable) begin
-      hi_out <= `ZeroWord;
-      lo_out <= `ZeroWord;
+      hi_out = `ZeroWord;
+      lo_out = `ZeroWord;
     end else if (we_in == `Enable) begin
-      hi_out <= hi_in;
-      lo_out <= lo_in;
+      hi_out = hi_in;
+      lo_out = lo_in;
     end
   end
 

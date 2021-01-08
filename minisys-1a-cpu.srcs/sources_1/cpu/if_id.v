@@ -22,16 +22,16 @@ module if_id (
   always @(posedge clk) begin
     // 重置时向下级送0x0
     if (rst == `Enable) begin
-      id_pc <= `ZeroWord;
-      id_ins <= `ZeroWord;
+      id_pc = `ZeroWord;
+      id_ins = `ZeroWord;
     // 暂停时保持不变
     end else if (pause == `Enable) begin
-      id_pc <= id_pc;
-      id_ins <= id_ins;
+      id_pc = id_pc;
+      id_ins = id_ins;
     // 否则向下级直通传递
     end else begin
-      id_pc <= if_pc;
-      id_ins <= if_ins;
+      id_pc = if_pc;
+      id_ins = if_ins;
     end
   end
 

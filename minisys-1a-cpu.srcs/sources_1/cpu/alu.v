@@ -33,19 +33,19 @@ module alu (
   always @(*) begin
     case (op)
       `ALUOP_NOP: begin // 无操作
-        result <= `ZeroWord;
+        result = `ZeroWord;
       end
       `ALUOP_ADDU: begin // 无符号加
-        result <= data1 + data2;
+        result = data1 + data2;
       end
       `ALUOP_ADD: begin // 有符号加
-        result <= s_data1 + s_data2;
+        result = s_data1 + s_data2;
       end
       `ALUOP_SUBU: begin // 无符号减
-        result <= data1 - data2;
+        result = data1 - data2;
       end
       `ALUOP_SUB: begin // 有符号减
-        result <= s_data1 - s_data2;
+        result = s_data1 - s_data2;
       end
       `ALUOP_AND: begin // 按位与
         result = data1 & data2;

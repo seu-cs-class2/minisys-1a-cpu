@@ -29,26 +29,31 @@ module mem_wb (
   input wire pause
 );
 
-  wire clk_pause;
-  assign clk_pause = clk | pause;
   
-  always @(posedge clk_pause) begin
+  always @(posedge clk) begin
     // 重置时送disbale、0x0
     if (rst == `Enable) begin
-      wb_wreg_e <= `Disable;
-      wb_wreg_data <= `ZeroWord;
-      wb_hilo_we <= `Disable;
-      wb_wreg_addr <= 5'b00000;
-      wb_hi_data <= `ZeroWord;
-      wb_lo_data <= `ZeroWord;
-    end else begin
+      wb_wreg_e = `Disable;
+      wb_wreg_data = `ZeroWord;
+      wb_hilo_we = `Disable;
+      wb_wreg_addr = 5'b00000;
+      wb_hi_data = `ZeroWord;
+      wb_lo_data = `ZeroWord;
+    end else if(pause == `Enable) begin
     // 否则穿透
-      wb_wreg_e <= mem_wreg_e;
-      wb_wreg_addr <= mem_wreg_addr;
-      wb_wreg_data <= mem_wreg_data;
-      wb_hilo_we <= mem_hilo_we;
-      wb_hi_data <= mem_hi_data;
-      wb_lo_data <= mem_lo_data;
+      wb_wreg_e = wb_wreg_e;
+      wb_wreg_addr = wb_wreg_addr;
+      wb_wreg_data = wb_wreg_data;
+      wb_hilo_we = wb_hilo_we;
+      wb_hi_data = wb_hi_data;
+      wb_lo_data = wb_lo_data;
+    end else begin
+      wb_wreg_e = mem_wreg_e;
+      wb_wreg_addr = mem_wreg_addr;
+      wb_wreg_data = mem_wreg_data;
+      wb_hilo_we = mem_hilo_we;
+      wb_hi_data = mem_hi_data;
+      wb_lo_data = mem_lo_data;
     end
   end
 endmodule

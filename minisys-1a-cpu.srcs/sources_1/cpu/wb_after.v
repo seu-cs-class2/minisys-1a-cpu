@@ -12,18 +12,20 @@ module wb_after(
     output reg[`WordRange] reg_data_out
 );
 
-wire clk_pause;
-assign clk_pause = clk | pause;
 
-always @(posedge clk_pause) begin
+always @(posedge clk) begin
     if(rst == `Enable)begin
-        reg_we_out <= `Disable;
-        reg_addr_out <= 5'b00000;
-        reg_data_out <= `ZeroWord;
+        reg_we_out = `Disable;
+        reg_addr_out = 5'b00000;
+        reg_data_out = `ZeroWord;
+    end else if(pause == `Enable) begin
+        reg_we_out = reg_we_out;
+        reg_addr_out = reg_addr_out;
+        reg_data_out = reg_data_out;
     end else begin
-        reg_we_out <= reg_we_in;
-        reg_addr_out <= reg_addr_in;
-        reg_data_out <= reg_data_in;
+        reg_we_out = reg_we_in;
+        reg_addr_out = reg_addr_in;
+        reg_data_out = reg_data_in;
     end
 end
 

@@ -41,32 +41,40 @@ module ex_mem (
 
 );
 
-  wire clk_pause;
-  assign clk_pause = clk | pause;
 
-  always @(posedge clk_pause) begin
+  always @(posedge clk) begin
     if (rst == `Enable) begin
-      mem_wreg_e <= `Disable;
-      mem_wreg_data <= `ZeroWord;
-      mem_hilo_we <= `Disable;
-      mem_hi_data <= `ZeroWord;
-      mem_lo_data <= `ZeroWord;
-      t_mem_aluop <= 6'b000000;
-      t_mem_addr <= `ZeroWord;
-      t_mem_data <= `ZeroWord;
-      t_mem_ins <= `ZeroWord;
+      mem_wreg_e = `Disable;
+      mem_wreg_data = `ZeroWord;
+      mem_hilo_we = `Disable;
+      mem_hi_data = `ZeroWord;
+      mem_lo_data = `ZeroWord;
+      t_mem_aluop = 6'b000000;
+      t_mem_addr = `ZeroWord;
+      t_mem_data = `ZeroWord;
+      t_mem_ins = `ZeroWord;
+    end else if (pause == `Enable)begin
+      mem_wreg_e = mem_wreg_e;
+      mem_wreg_addr = mem_wreg_addr;
+      mem_wreg_data = mem_wreg_data;
+      mem_hilo_we = mem_hilo_we;
+      mem_hi_data = mem_hi_data;
+      mem_lo_data = mem_lo_data;
+      t_mem_addr = t_mem_addr;
+      t_mem_data = t_mem_data;
+      t_mem_aluop = t_mem_aluop;
+      t_mem_ins = t_mem_ins;
     end else begin
-      mem_wreg_e <= ex_wreg_e;
-      mem_wreg_addr <= ex_wreg_addr;
-      mem_wreg_data <= ex_wreg_data;
-      mem_hilo_we <= ex_hilo_we;
-      mem_hi_data <= ex_hi_data;
-      mem_lo_data <= ex_lo_data;
-      t_mem_addr <= f_ex_mem_addr;
-      t_mem_data <= f_ex_mem_data;
-      t_mem_aluop <= f_ex_aluop;
-      t_mem_ins <= f_ex_ins;
+      mem_wreg_e = ex_wreg_e;
+      mem_wreg_addr = ex_wreg_addr;
+      mem_wreg_data = ex_wreg_data;
+      mem_hilo_we = ex_hilo_we;
+      mem_hi_data = ex_hi_data;
+      mem_lo_data = ex_lo_data;
+      t_mem_addr = f_ex_mem_addr;
+      t_mem_data = f_ex_mem_data;
+      t_mem_aluop = f_ex_aluop;
+      t_mem_ins = f_ex_ins;
     end
   end
-
 endmodule

@@ -26,42 +26,42 @@ module arbitration(
 
 always @(posedge clk)begin
     if(addr[31:16] == 16'h0000)begin
-        data_out <= ram_data;
+        data_out = ram_data;
     end else if(addr[31:10] == {20'hfffff,2'b11})begin
         case (addr[9:4])
             `IO_SEVEN_DISPLAY: begin
-                data_out <= seven_display_data;
+                data_out = seven_display_data;
             end
             `IO_BUZZER: begin
-                data_out <= buzzer_data;
+                data_out = buzzer_data;
             end
             `IO_PWM: begin
-                data_out <= pwm_data;
+                data_out = pwm_data;
             end
             `IO_LED_LIGHT: begin
-                data_out <= led_light_data;
+                data_out = led_light_data;
             end
             `IO_SWITCH: begin
-                data_out <= switch_data;
+                data_out = switch_data;
             end
             `IO_UART: begin
-                data_out <= uart_data;
+                data_out = uart_data;
             end
             `IO_WATCH_DOG: begin
-                data_out <= watch_dog_data;
+                data_out = watch_dog_data;
             end
             `IO_COUNTER: begin
-                data_out <= counter_data;
+                data_out = counter_data;
             end
             `IO_KEYBORAD: begin
-                data_out <= keyboard_data;
+                data_out = keyboard_data;
             end
             default: begin
-                data_out <= `ZeroWord;
+                data_out = `ZeroWord;
             end
         endcase
     end else begin
-        data_out <= `ZeroWord;
+        data_out = `ZeroWord;
     end
 end
 endmodule

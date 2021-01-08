@@ -26,6 +26,16 @@ module minisys (
   output wire[7:0] led_YLD_out,
   output wire[7:0] led_GLD_out
 
+  //测试
+  // output wire[`WordRange] pc_out,
+  // output wire clk_debug,
+  // output wire[`WordRange] ins_out,
+  // output wire[`WordRange] bus_bug_addr,
+  // output wire[`WordRange] bus_bug_read_data,
+  // output wire[`WordRange] bus_bug_write_data,
+  // output wire[`WordRange] mem_addr_debug_out,
+  // output wire[`WordRange] dataA,
+  // output wire[`WordRange] dataB
 );
 
   wire cpu_clk;
@@ -33,9 +43,10 @@ module minisys (
   // 时钟分频
   clocking u_clocking(
     .clk_in1(board_clk), // 100MHz
-    .cpu_clk(cpu_clk), // 22MHz
+    .cpu_clk(cpu_clk), // 5MHz
     .uart_clk(uart_clk) // 10MHz
   );
+
 
   wire [`WordRange] cpu_imem_data_in;
   wire [`WordRange] cpu_imem_addr_out;
@@ -47,8 +58,17 @@ module minisys (
 
   assign cpu_imem_data_in = imem_imem_data_out;
   assign imem_imem_addr_in = cpu_imem_addr_out;
+
   assign imem_imem_e_in = cpu_imem_e_out;
 
+
+ //debug******
+  // assign clk_debug = cpu_clk;
+  // assign pc_out = cpu_imem_addr_out;
+  // assign ins_out = cpu_imem_data_in;
+  // assign bus_bug_addr = bus_addr;
+  // assign bus_bug_read_data =  bus_read_data;
+  // assign bus_bug_write_data = bus_write_data;
 
   //相关总线(共六个，四种)
   wire[`WordRange] bus_addr;  //地址总线（仅有一个主设备cpu

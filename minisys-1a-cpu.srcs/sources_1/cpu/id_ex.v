@@ -37,34 +37,34 @@ module id_ex(
 
   always @(posedge clk) begin
     if (rst == `Enable) begin
-      ex_aluop <= `ALUOP_NOP;
-      ex_data1 <= `ZeroWord;
-      ex_data2 <= `ZeroWord;
-      ex_wreg_e <= `Disable;
-      ex_link_addr <= `ZeroWord;
-      ex_in_delayslot <= `Disable;
-      ex_next_in_delayslot <= `Disable;
-      ex_ins <= `ZeroWord;
+      ex_aluop = `ALUOP_NOP;
+      ex_data1 = `ZeroWord;
+      ex_data2 = `ZeroWord;
+      ex_wreg_e = `Disable;
+      ex_link_addr = `ZeroWord;
+      ex_in_delayslot = `Disable;
+      ex_next_in_delayslot = `Disable;
+      ex_ins = `ZeroWord;
     end else if (pause == `Enable) begin
-      ex_aluop <= ex_aluop;
-      ex_data1 <= ex_data1;
-      ex_data2 <= ex_data2;
-      ex_wreg_e <= ex_wreg_e;
-      ex_wreg_addr <= ex_wreg_addr;
-      ex_link_addr <= ex_link_addr;
-      ex_in_delayslot <= ex_in_delayslot;
-      ex_next_in_delayslot <= ex_next_in_delayslot;
-      ex_ins <= ex_ins;
+      ex_aluop = ex_aluop;
+      ex_data1 = ex_data1;
+      ex_data2 = ex_data2;
+      ex_wreg_e = ex_wreg_e;
+      ex_wreg_addr = ex_wreg_addr;
+      ex_link_addr = ex_link_addr;
+      ex_in_delayslot = ex_in_delayslot;
+      ex_next_in_delayslot = ex_next_in_delayslot;
+      ex_ins = ex_ins;
     end else begin
-      ex_aluop <= id_aluop;
-      ex_data1 <= id_data1;
-      ex_data2 <= id_data2;
-      ex_wreg_e <= id_wreg_e;
-      ex_wreg_addr <= id_wreg_addr;
-      ex_link_addr <= id_link_addr;
-      ex_in_delayslot <= id_in_delayslot;
-      ex_next_in_delayslot <= id_next_in_delayslot;
-      ex_ins <= id_ins;
+      ex_aluop = id_aluop;
+      ex_data1 = id_data1;
+      ex_data2 = id_data2;
+      ex_wreg_e = id_wreg_e;
+      ex_wreg_addr = id_wreg_addr;
+      ex_link_addr = id_link_addr;
+      ex_in_delayslot = id_in_delayslot;
+      ex_next_in_delayslot = id_next_in_delayslot;
+      ex_ins = id_ins;
     end
   end
 
