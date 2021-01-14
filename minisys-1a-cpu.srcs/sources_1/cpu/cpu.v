@@ -64,6 +64,8 @@ module cpu (
   wire[`DivMulResultRange] div_result_unsigned;
   wire div_result_valid_signed;
   wire div_result_valid_unsigned;
+  wire[`DivMulResultRange] ex_mul_result;
+  wire ex_mul_result_valid;
   wire[`WordRange] ex_link_addr_in;
   wire ex_is_in_delayslot;
   wire[`WordRange] ex_ins_in;
@@ -91,6 +93,10 @@ module cpu (
   wire[`WordRange] div_data2_unsigned;
   wire div_data_valid_signed;
   wire div_data_valid_unsigned;
+  wire[`WordRange] ex_mul_data1;
+  wire[`WordRange] ex_mul_data2;
+  wire ex_mul_valid;
+  wire ex_mul_signed;
   wire[`WordRange] ex_mem_addr_out;
   wire[`WordRange] ex_mem_data_out;
   wire[`ALUOpRange] ex_aluop_out;
@@ -332,6 +338,12 @@ module cpu (
   .div_result_unsigned      (div_result_unsigned),
   .div_result_valid_signed  (div_result_valid_signed),
   .div_result_valid_unsigned(div_result_valid_unsigned),
+  .mul_data1                (ex_mul_data1),
+  .mul_data2                (ex_mul_data2),
+  .mul_type                 (ex_mul_signed),
+  .mul_valid                (ex_mul_valid),
+  .mul_result               (ex_mul_result),
+  .mul_result_valid         (ex_mul_result_valid),
   .is_in_delayslot          (ex_is_in_delayslot),  //******
   .ins_in                   (ex_ins_in),
   .aluop_out                (ex_aluop_out),
@@ -373,6 +385,16 @@ module cpu (
     .s_axis_dividend_tvalid (1'b1),
     .m_axis_dout_tdata      (div_result_unsigned),
     .m_axis_dout_tvalid     (div_result_valid_unsigned)
+  );
+
+  mul u_mul(
+    .clk                    (clk),
+    .dataA                  (ex_mul_data1),
+    .dataB                  (ex_mul_data2),
+    .start                  (ex_mul_valid),
+    .if_signed              (ex_mul_signed),
+    .result                 (ex_mul_result),
+    .valid                  (ex_mul_result_valid)
   );
 
 

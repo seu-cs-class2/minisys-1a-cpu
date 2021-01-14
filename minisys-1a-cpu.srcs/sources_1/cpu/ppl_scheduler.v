@@ -37,6 +37,7 @@ module ppl_scheduler (
       pause_res_ex = `Disable;
       pause_res_mem = `Disable;
       pause_res_wb = `Disable;
+      flush = `Disable;
     end else if(abnormal_type != `ZeroWord) begin 
       flush = `Enable;
       pause_res_pc = `Disable;
@@ -51,7 +52,7 @@ module ppl_scheduler (
         `ABN_OVERFLOW,
         `ABN_PRESERVE,
         5'b00000: begin
-          interrupt_pc_out = 32'h00000020;
+          interrupt_pc_out = 32'h0000F000;
         end 
         `ABN_ERET: begin
           interrupt_pc_out = cp0_epc_in;

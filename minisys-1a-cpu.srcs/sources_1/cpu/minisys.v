@@ -124,7 +124,7 @@ module minisys (
   assign interrupt3 = 1'b0;
   assign interrupt2 = 1'b0;
   assign interrupt1 = 1'b0;
-  assign interrupt0 = 1'b1;
+  assign interrupt0 = 1'b0;
 
   // CPU
   // CPU
@@ -231,6 +231,18 @@ module minisys (
     .data_out               (seven_display_data),
     .sel_out                (digits_sel_out),
     .digital_out            (digits_data_out)
+  );
+
+  beep u_beep(
+    .rst                    (rst),
+    .clk                    (~cpu_clk),
+    .addr                   (bus_addr),
+    .en                     (bus_eable),
+    .byte_sel               (bus_byte_sel),
+    .data_in                (bus_write_data),
+    .we                     (bus_we),
+    .data_out               (beep_en_out),
+    .signal_out             (beep_out)
   );
 
 endmodule

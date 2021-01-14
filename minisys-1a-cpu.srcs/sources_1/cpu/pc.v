@@ -25,7 +25,7 @@ module pc (
   always @(posedge clk) begin
     if (rst == `Enable) begin
       pc = `ZeroWord;
-    end if(flush == `Enable) begin
+    end else if(flush == `Enable) begin
       //若有异常则让pc取入口地址
       pc = interrupt_pc;
     end else if (pause == `Enable) begin

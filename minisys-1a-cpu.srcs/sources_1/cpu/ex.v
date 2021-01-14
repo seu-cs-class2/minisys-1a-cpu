@@ -45,6 +45,16 @@ module ex (
   input wire[`DivMulResultRange] div_result_unsigned, // 结果64位
   input wire div_result_valid_unsigned, // 无符号除法结果是否有效（有效说明除法结束，应该获取结果）
 
+  output reg[`WordRange] mul_data1,
+  output reg[`WordRange] mul_data2,
+  output reg mul_type,
+  output reg mul_valid,
+  input wire [`DivMulResultRange] mul_result,
+  input wire mul_result_valid,
+
+
+
+
   input is_in_delayslot, // 新增的延迟槽信号，代表处于执行阶段的指令是否是延迟槽指令
 
   input wire[`WordRange] ins_in, // 新增的指令信号，从id阶段一直传递过来
@@ -89,7 +99,6 @@ module ex (
   wire signed [`WordRange] mul_signed_data2;
   assign mul_signed_data1 = data1_in;
   assign mul_signed_data2 = data2_in;
-  reg[`DivMulResultRange] mul_result;
 
   alu u_alu (
   .data1      (data1_in),
@@ -126,6 +135,9 @@ module ex (
       div_data2_signed = `ZeroWord;
       div_data1_unsigned = `ZeroWord;
       div_data2_unsigned = `ZeroWord;
+      mul_data1 = `ZeroWord;
+      mul_data2 = `ZeroWord;
+      mul_valid = `Disable;
       mem_addr_out = data1_in + {{16{ins_in[15]}}, ins_in[15:0]};  // 在这里计算是为了让传递的信号少，并且时序逻辑清晰，增加在ex部分的工作
       aluop_out = aluop_in;
       mem_data_out = data2_in; // 无论是什么存储操作，都会去使用rt的数据
@@ -160,10 +172,32 @@ module ex (
           end
         end
         `ALUOP_MULT:begin
-          mul_result = mul_signed_data1 * mul_signed_data2;
+          if(mul_result_valid == `Disable)begin
+            mul_data1 = data1_in;
+            mul_data2 = data2_in;
+            mul_type = `Enable;
+            mul_valid = `Enable;
+            pause_req = `Enable;
+          end else begin
+            mul_data1 = data1_in;
+            mul_data2 = data2_in;
+            mul_valid = `Disable;
+            pause_req = `Disable;
+          end
         end
         `ALUOP_MULTU:begin
-          mul_result = data1_in * data2_in;
+          if(mul_result_valid == `Disable)begin
+            mul_data1 = data1_in;
+            mul_data2 = data2_in;
+            mul_type = `Disable;
+            mul_valid = `Enable;
+            pause_req = `Enable;
+          end else begin
+            mul_data1 = data1_in;
+            mul_data2 = data2_in;
+            mul_valid = `Disable;
+            pause_req = `Disable;
+          end
         end
         `EXOP_JR,
         `EXOP_JALR,

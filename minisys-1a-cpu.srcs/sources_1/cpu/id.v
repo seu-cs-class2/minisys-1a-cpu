@@ -308,8 +308,7 @@ module id (
             exop_out = `ALUOP_DIVU;
           end
           `FUNC_MULT: begin
-            wreg_wen_out = `Enable;
-            wreg_addr_out = rd;
+            wreg_wen_out = `Disable;
             reg1_ren_out = `Enable;
             reg1_addr_out = rs;
             reg2_ren_out = `Enable;
@@ -317,8 +316,7 @@ module id (
             exop_out = `ALUOP_MULT;
           end
           `FUNC_MULTU: begin
-            wreg_wen_out = `Enable;
-            wreg_addr_out = rd;
+            wreg_wen_out = `Disable;
             reg1_ren_out = `Enable;
             reg1_addr_out = rs;
             reg2_ren_out = `Enable;
