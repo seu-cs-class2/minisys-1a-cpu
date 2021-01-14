@@ -110,6 +110,22 @@ module minisys (
   wire timer_en_out; // 0xFFFF_FC20
   wire watchdog_en_out; // 0xFFFF_FC50
 
+
+  //中断线
+  wire interrupt0;
+  wire interrupt1;
+  wire interrupt2;
+  wire interrupt3;
+  wire interrupt4;
+  wire interrupt5;
+
+  assign interrupt5 = 1'b0;
+  assign interrupt4 = 1'b0;
+  assign interrupt3 = 1'b0;
+  assign interrupt2 = 1'b0;
+  assign interrupt1 = 1'b0;
+  assign interrupt0 = 1'b1;
+
   // CPU
   // CPU
   cpu u_cpu (
@@ -123,7 +139,8 @@ module minisys (
   .bus_eable_out            (bus_eable),
   .bus_we_out               (bus_we),
   .bus_byte_sel_out         (bus_byte_sel),
-  .bus_read_in              (bus_read_data)
+  .bus_read_in              (bus_read_data),
+  .interrupt_in             ({interrupt5, interrupt4, interrupt3, interrupt2, interrupt1, interrupt0})
   );
 
   // IMEM

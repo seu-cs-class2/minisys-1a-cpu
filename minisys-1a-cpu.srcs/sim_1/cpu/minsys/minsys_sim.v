@@ -36,16 +36,16 @@ minisys my_minisys(
     .keyboard_cols_in   (keyboard_cols_in),
     .led_RLD_out        (led_rld_out),
     .led_YLD_out        (led_yld_out),
-    .led_GLD_out        (led_gld_out),
-    .pc_out             (pc),
-    .clk_debug          (clk_out),
-    .ins_out            (ins),
-    .bus_bug_addr       (bus_addr),
-    .bus_bug_read_data  (bus_read_data),
-    .bus_bug_write_data (bus_write_data),
-    .mem_addr_debug_out (mem_addr_debug_out),
-    .dataA              (dataA),
-    .dataB              (dataB)
+    .led_GLD_out        (led_gld_out)
+    // .pc_out             (pc),
+    // .clk_debug          (clk_out),
+    // .ins_out            (ins),
+    // .bus_bug_addr       (bus_addr),
+    // .bus_bug_read_data  (bus_read_data),
+    // .bus_bug_write_data (bus_write_data),
+    // .mem_addr_debug_out (mem_addr_debug_out),
+    // .dataA              (dataA),
+    // .dataB              (dataB)
 );
 
 

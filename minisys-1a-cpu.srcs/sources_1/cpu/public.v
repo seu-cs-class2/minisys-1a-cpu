@@ -74,6 +74,8 @@
 `define EXOP_SW 6'd41
 `define EXOP_MFC0 6'd42
 `define EXOP_MTC0 6'd43
+`define EXOP_SYSTEMCALL 6'd44
+`define EXOP_ERET 6'd45
 
 // Minisys指令集
 // R型指令
@@ -164,6 +166,14 @@
 `define IO_LED_LIGHT 6'b000110  //led灯
 `define IO_SWITCH 6'b000111  //拨码开关
 `define IO_BUZZER 6'b010001  //蜂鸣器
+
+//cause寄存器的6-2位表示的异常类型
+`define ABN_INTERRUPT 5'b00000
+`define ABN_SYSTEMCALL 5'b01000
+`define ABN_BREAK 5'b01001
+`define ABN_PRESERVE 5'b01010 
+`define ABN_OVERFLOW 5'b01100
+`define ABN_ERET 5'b01111
 
 
 

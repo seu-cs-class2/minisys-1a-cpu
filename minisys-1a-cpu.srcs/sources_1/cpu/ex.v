@@ -52,25 +52,30 @@ module ex (
   output reg[`WordRange] mem_addr_out, // 要向访存部分传递计算出的内存地址（所有存储相关指令均会用到）
   output reg[`WordRange] mem_data_out, // 要向访存部分传递写入内存的数据（store指令才会用到）
 
-
-  input wire[`WordRange] cp0_data_in,//从cp0读取的数据
+  //cp0相关
+  input wire[`WordRange] cp0_data_in,//从cp0读取的数据  只是用来给通用寄存器的
+  output reg[4:0] cp0_raddr_out, //直接传给cp0的地址
 
   input wire f_mem_cp0_we_in, //当前处在访存阶段的指令是否要写cp0
   input wire[4:0] f_mem_cp0_w_addr, //要写的地址
-  //*******   fix me:为什么地址是五位
   input wire[`WordRange] f_mem_cp0_w_data, //要写入的数据
   input wire f_wb_cp0_we_in,   //同理  当前处在写回阶段的指令是否要写cp0
   input wire[4:0] f_wb_cp0_w_addr, //写入的地址
   input wire[`WordRange] f_wb_cp0_w_data,  //写入的数据
 
   output reg cp0_we_out,    //cp0是否要被写（当前指令 向下传入流水
-  output reg[4:0] cp0_addr,  //cp0读写地址  
-  output reg cp0_re_out,    //是否要读cp0（当前指令 不需要传入流水 即刻从cp0处读出
-  output reg[`WordRange] cp0_w_data,   //要写入cp0的数据
+  output reg[4:0] cp0_waddr_out,  //cp0写地址   向下传入流水
+  output reg[`WordRange] cp0_w_data_out,   //要写入cp0的数据 向下传入流水
 
 
   //新增加的要向下级流水传的数据
-  output reg[`WordRange] ins_out
+  output reg[`WordRange] ins_out,
+
+  //异常相关
+  input wire[`WordRange] current_ex_pc_addr_in,
+  input wire[`WordRange] abnormal_type_in,
+  output reg[`WordRange] abnormal_type_out,
+  output reg[`WordRange] current_ex_pc_addr_out
 );
 
   wire[`WordRange] alu_res;  // alu的结果
@@ -108,6 +113,8 @@ module ex (
       aluop_out = aluop_in;
       mem_data_out = `ZeroWord;
       wreg_data_out = `ZeroWord;
+      abnormal_type_out = `ZeroWord;
+      current_ex_pc_addr_out = `ZeroWord;
     end else begin
       ins_out = ins_in;
       wreg_e_out = wreg_e_in;
@@ -123,6 +130,8 @@ module ex (
       aluop_out = aluop_in;
       mem_data_out = data2_in; // 无论是什么存储操作，都会去使用rt的数据
       wreg_data_out = alu_res;
+      abnormal_type_out = abnormal_type_in;
+      current_ex_pc_addr_out = current_ex_pc_addr_in;
       case (aluop_in)
         `ALUOP_DIV: begin
           if (div_result_valid_signed == `Disable) begin  // 除法尚未结束
@@ -170,6 +179,11 @@ module ex (
         `EXOP_BLTZAL: begin
           wreg_data_out = link_addr_in;
         end
+        `EXOP_MFC0,
+        `EXOP_MFLO,
+        `EXOP_MFHI:begin
+          wreg_data_out = mov_res;
+        end
       endcase
     end
   end
@@ -202,6 +216,15 @@ module ex (
         end
         `EXOP_MFLO: begin
           mov_res = lo_temp;
+        end
+        `EXOP_MFC0: begin //要写入cp0寄存器，得看一下数据是不是最新的
+          cp0_raddr_out = ins_in[15:11];
+          mov_res = cp0_data_in;
+          if(f_mem_cp0_we_in == `Enable && f_mem_cp0_w_addr == ins_in[15:11])begin
+            mov_res = f_mem_cp0_w_data;
+          end else if(f_wb_cp0_we_in == `Enable && f_wb_cp0_w_addr == ins_in[15:11]) begin
+            mov_res = f_wb_cp0_w_data;
+          end
         end
       endcase
     end
@@ -245,6 +268,22 @@ module ex (
           lo_data_out = data1_in;
        end
       endcase
+    end
+  end
+
+  always @(*) begin
+    if(rst == `Enable)begin
+      cp0_we_out = `Disable;
+      cp0_waddr_out = 5'b00000;
+      cp0_w_data_out = `ZeroWord;
+    end else if(aluop_in == `EXOP_MTC0) begin
+      cp0_we_out = `Enable;
+      cp0_waddr_out = ins_in[15:11];
+      cp0_w_data_out = data1_in;
+    end else begin
+      cp0_we_out = `Disable;
+      cp0_waddr_out = 5'b00000;
+      cp0_w_data_out = `ZeroWord;
     end
   end
 

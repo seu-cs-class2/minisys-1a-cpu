@@ -16,3 +16,21 @@ sw $0,0($1)
 sw $0,0($3)
 sw $4,0($2)
 j 0
+
+
+
+
+start:
+lui $1,0
+addi $1,$1,25
+lui $2,0
+addi $2,$2,5
+mult $1,$2
+mflo $3
+nop
+div $1,$2
+mflo $4
+mtc0 $1,$9,0
+nop
+mfc0 $5,$9,0
+j 0

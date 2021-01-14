@@ -37,8 +37,22 @@ module ex_mem (
 
   //新增加的接口
   input wire[`WordRange] f_ex_ins,
-  output reg[`WordRange] t_mem_ins
+  output reg[`WordRange] t_mem_ins,
 
+  //cp0相关
+  input wire f_ex_cp0_we,
+  input wire[4:0] f_ex_cp0_waddr,
+  input wire[`WordRange] f_ex_cp0_wdata,
+  output reg t_mem_cp0_we,
+  output reg[4:0] t_mem_cp0_waddr,
+  output reg[`WordRange] t_mem_cp0_wdata,
+
+  //异常相关
+  input wire flush,
+  input wire[`WordRange] f_ex_pc_addr_in,
+  input wire[`WordRange] f_ex_abnormal_type,
+  output reg[`WordRange] t_mem_pc_addr_out,
+  output reg[`WordRange] t_mem_abnormal_type
 );
 
 
@@ -53,6 +67,26 @@ module ex_mem (
       t_mem_addr = `ZeroWord;
       t_mem_data = `ZeroWord;
       t_mem_ins = `ZeroWord;
+      t_mem_cp0_we = `Disable;
+      t_mem_cp0_waddr = 5'b00000;
+      t_mem_cp0_wdata = `ZeroWord;
+      t_mem_pc_addr_out = `ZeroWord;
+      t_mem_abnormal_type = `ZeroWord;
+    end else if (flush == `Enable) begin
+      mem_wreg_e = `Disable;
+      mem_wreg_data = `ZeroWord;
+      mem_hilo_we = `Disable;
+      mem_hi_data = `ZeroWord;
+      mem_lo_data = `ZeroWord;
+      t_mem_aluop = 6'b000000;
+      t_mem_addr = `ZeroWord;
+      t_mem_data = `ZeroWord;
+      t_mem_ins = `ZeroWord;
+      t_mem_cp0_we = `Disable;
+      t_mem_cp0_waddr = 5'b00000;
+      t_mem_cp0_wdata = `ZeroWord;
+      t_mem_pc_addr_out = `ZeroWord;
+      t_mem_abnormal_type = `ZeroWord;
     end else if (pause == `Enable)begin
       mem_wreg_e = mem_wreg_e;
       mem_wreg_addr = mem_wreg_addr;
@@ -64,6 +98,11 @@ module ex_mem (
       t_mem_data = t_mem_data;
       t_mem_aluop = t_mem_aluop;
       t_mem_ins = t_mem_ins;
+      t_mem_cp0_we = t_mem_cp0_we;
+      t_mem_cp0_waddr = t_mem_cp0_waddr;
+      t_mem_cp0_wdata = t_mem_cp0_wdata;
+      t_mem_pc_addr_out = t_mem_pc_addr_out;
+      t_mem_abnormal_type = t_mem_abnormal_type;
     end else begin
       mem_wreg_e = ex_wreg_e;
       mem_wreg_addr = ex_wreg_addr;
@@ -75,6 +114,11 @@ module ex_mem (
       t_mem_data = f_ex_mem_data;
       t_mem_aluop = f_ex_aluop;
       t_mem_ins = f_ex_ins;
+      t_mem_cp0_we = f_ex_cp0_we;
+      t_mem_cp0_waddr = f_ex_cp0_waddr;
+      t_mem_cp0_wdata = f_ex_cp0_wdata; 
+      t_mem_pc_addr_out = f_ex_pc_addr_in;
+      t_mem_abnormal_type = f_ex_abnormal_type;
     end
   end
 endmodule

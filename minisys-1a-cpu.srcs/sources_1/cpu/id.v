@@ -53,7 +53,17 @@ module id (
   output reg[`WordRange] branch_addr_out, // 分支跳转地址
   output reg[`WordRange] link_addr_out, // 转移指令需要保存的地址
   
-  output reg[`WordRange] ins_out   // 向流水线后续传递的指令 在添加存储指令时需要用到
+  output reg[`WordRange] ins_out,   // 向流水线后续传递的指令 在添加存储指令时需要用到
+
+  // 异常相关
+  // abnormal_type_out
+  // 31...12 预留
+  // 11 eret
+  // 10 systemcall
+  // 9...8 abnormal info
+  // 7...0 interrupt info
+  output reg[`WordRange] abnormal_type_out,//指令的异常信息
+  output reg[`WordRange] current_id_pc_addr_out //当前处在译码阶段指令的地址
 
 );
 
@@ -96,6 +106,10 @@ module id (
       link_addr_out = `ZeroWord;
       next_in_delayslot_out = `Disable;
       branch_en_out = `Disable;
+      // 没有异常信息
+      abnormal_type_out = `ZeroWord;
+      // 把指令地址往下传
+      current_id_pc_addr_out = pc_in;
       // 根据op翻译
       if (ins_in == 32'd0) begin
         // nop
@@ -334,6 +348,21 @@ module id (
             link_addr_out = pc_in + 32'd8;
             next_in_delayslot_out = `Enable;
             exop_out = `EXOP_JALR;
+          end
+          //异常相关
+          `FUNC_SYSCALL :begin
+            wreg_wen_out = `Disable;
+            reg1_ren_out = `Disable;
+            reg2_ren_out = `Disable;
+            exop_out = `EXOP_SYSTEMCALL;
+            abnormal_type_out[6:2] = `ABN_SYSTEMCALL;
+          end
+          `FUNC_BREAK :begin
+            wreg_wen_out = `Disable;
+            reg1_ren_out = `Disable;
+            reg2_ren_out = `Disable;
+            exop_out = `EXOP_SYSTEMCALL;
+            abnormal_type_out[6:2] = `ABN_BREAK;
           end
         endcase
       end else begin
@@ -616,6 +645,13 @@ module id (
               reg1_addr_out = rt;
               reg2_ren_out = `Disable;
             end
+            if(ins_in[25:0] == 26'b10000000000000000000011000) begin // 是eret指令
+              wreg_wen_out = `Disable;
+              exop_out = `EXOP_ERET;
+              reg1_ren_out = `Disable;
+              reg2_ren_out = `Disable;
+              abnormal_type_out[6:2] = `ABN_ERET;
+            end 
           end
           default: begin
           end

@@ -31,7 +31,14 @@ module id_ex(
   input wire pause,
 
   input wire[`WordRange] id_ins,
-  output reg[`WordRange] ex_ins
+  output reg[`WordRange] ex_ins,
+
+  // 中断异常相关
+  input wire flush,
+  input wire[`WordRange] f_id_current_pc_addr_in,
+  input wire[`WordRange] f_id_abnormal_type_in,
+  output reg[`WordRange] t_ex_current_pc_addr_out,
+  output reg[`WordRange] t_ex_abnormal_type_out
   
 );
 
@@ -45,6 +52,19 @@ module id_ex(
       ex_in_delayslot = `Disable;
       ex_next_in_delayslot = `Disable;
       ex_ins = `ZeroWord;
+      t_ex_current_pc_addr_out = `ZeroWord;
+      t_ex_abnormal_type_out = `ZeroWord;
+    end else if(flush == `Enable) begin
+      ex_aluop = `ALUOP_NOP;
+      ex_data1 = `ZeroWord;
+      ex_data2 = `ZeroWord;
+      ex_wreg_e = `Disable;
+      ex_link_addr = `ZeroWord;
+      ex_in_delayslot = `Disable;
+      ex_next_in_delayslot = `Disable;
+      ex_ins = `ZeroWord;
+      t_ex_current_pc_addr_out = `ZeroWord;
+      t_ex_abnormal_type_out = `ZeroWord;
     end else if (pause == `Enable) begin
       ex_aluop = ex_aluop;
       ex_data1 = ex_data1;
@@ -55,6 +75,8 @@ module id_ex(
       ex_in_delayslot = ex_in_delayslot;
       ex_next_in_delayslot = ex_next_in_delayslot;
       ex_ins = ex_ins;
+      t_ex_current_pc_addr_out = t_ex_current_pc_addr_out;
+      t_ex_abnormal_type_out = t_ex_abnormal_type_out;
     end else begin
       ex_aluop = id_aluop;
       ex_data1 = id_data1;
@@ -65,6 +87,8 @@ module id_ex(
       ex_in_delayslot = id_in_delayslot;
       ex_next_in_delayslot = id_next_in_delayslot;
       ex_ins = id_ins;
+      t_ex_current_pc_addr_out = f_id_current_pc_addr_in;
+      t_ex_abnormal_type_out = f_id_abnormal_type_in;
     end
   end
 

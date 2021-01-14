@@ -21,6 +21,8 @@ module cpu (
   
   input wire[`WordRange] bus_read_in,//从读控制总线读入的外设/ram数据
 
+  input wire[5:0] interrupt_in, //外部中断信号 共六根
+
   //debug
   output wire[`WordRange] mem_addr_debug,
   output wire[`WordRange] dataA,
@@ -46,6 +48,8 @@ module cpu (
   wire next_is_in_delayslot;
   wire is_in_delayslot_out;
   wire[`WordRange] id_ins_out;
+  wire[`WordRange] id_abnormal_type_out;
+  wire[`WordRange] id_current_pc_addr_out;
 
   // EX输入
   wire[`ALUOpRange] ex_aluop_in;
@@ -63,6 +67,15 @@ module cpu (
   wire[`WordRange] ex_link_addr_in;
   wire ex_is_in_delayslot;
   wire[`WordRange] ex_ins_in;
+  wire[`WordRange] ex_cp0_data_in;
+  wire ex_f_mem_cp0_we_in;
+  wire[4:0] ex_f_mem_cp0_w_addr;
+  wire[`WordRange] ex_f_mem_cp0_w_data;
+  wire ex_f_wb_cp0_we_in;
+  wire[4:0] ex_f_wb_cp0_w_addr;
+  wire[`WordRange] ex_f_wb_cp0_w_data;
+  wire[`WordRange] ex_current_pc_addr_in;
+  wire[`WordRange] ex_abnormal_type_in;
 
 
   // EX输出
@@ -82,6 +95,12 @@ module cpu (
   wire[`WordRange] ex_mem_data_out;
   wire[`ALUOpRange] ex_aluop_out;
   wire[`WordRange] ex_ins_out;
+  wire[4:0] ex_cp0_raddr_out;
+  wire ex_cp0_we_out;
+  wire[4:0] ex_cp0_waddr_out;
+  wire[`WordRange] ex_cp0_w_data_out;
+  wire[`WordRange] ex_current_pc_addr_out;
+  wire[`WordRange] ex_abnormal_type_out;
 
   // MEM输入
   wire mem_wreg_e_in;
@@ -95,9 +114,16 @@ module cpu (
   wire[`WordRange] mem_store_data_in;
   wire[`WordRange] mem_read_data_in;
   wire[`WordRange] mem_ins_in;
-  wire mem_f_ahead_reg_we;
-  wire[`RegRangeLog2] mem_f_ahead_reg_addr;
-  wire[`WordRange] mem_f_ahead_reg_data;
+  wire mem_cp0_we_in;
+  wire[4:0] mem_cp0_waddr_in;
+  wire[`WordRange] mem_cp0_wdata_in;
+  wire[`WordRange] mem_current_pc_addr_in;
+  wire[`WordRange] mem_abnormal_type_in;
+  wire[`WordRange] mem_cp0_status_in;
+  wire[`WordRange] mem_cp0_cause_in;
+  wire[`WordRange] mem_cp0_epc_in;
+  
+
 
   // MEM输出
   wire mem_wreg_e_out;
@@ -111,6 +137,11 @@ module cpu (
   wire[3:0] mem_byte_sel_out;
   wire mem_we_out;
   wire mem_e_out;
+  wire mem_cp0_we_out;
+  wire[4:0] mem_cp0_waddr_out;
+  wire[`WordRange] mem_cp0_wdata_out;
+  wire[`WordRange] mem_abnormal_type_out;
+  wire[`WordRange] mem_current_pc_addr_out;
 
   // WB输入
   wire wb_wreg_e_in;
@@ -120,6 +151,10 @@ module cpu (
   wire wb_hilo_we_in;
   wire[`WordRange] wb_hi_data_in;
   wire[`WordRange] wb_lo_data_in;
+  //cp0的输入
+  wire wb_cp0_we_in;
+  wire[4:0] wb_cp0_waddr_in;
+  wire[`WordRange] wb_cp0_wdata_in;
 
   // 寄存器组相关
   wire reg1_re;
@@ -138,6 +173,10 @@ module cpu (
   wire pause_res_ex;
   wire pause_res_mem;
   wire pause_res_wb;
+
+  // 流水处理器异常相关
+  wire flush;
+  wire[`WordRange] interrupt_pc_out;
 
   //debug
   assign mem_addr_debug = mem_addr_in;
@@ -178,7 +217,9 @@ module cpu (
   .pc                       (pc),
   .pause                    (pause_res_pc),
   .branch_en_in             (branch_e_out),
-  .branch_addr_in           (branch_addr_out)
+  .branch_addr_in           (branch_addr_out),
+  .flush                    (flush),
+  .interrupt_pc             (interrupt_pc_out)
   );
 
   // IF-ID
@@ -189,7 +230,8 @@ module cpu (
   .if_ins                   (imem_data_in),
   .id_pc                    (id_pc_in),
   .id_ins                   (id_ins_in),
-  .pause                    (pause_res_if)
+  .pause                    (pause_res_if),
+  .flush                    (flush)
   );
 
   // ID
@@ -221,7 +263,9 @@ module cpu (
   .in_delayslot_in          (is_in_delayslot_in),
   .in_delayslot_out         (is_in_delayslot_out),
   .next_in_delayslot_out    (next_is_in_delayslot),
-  .ins_out                  (id_ins_out)
+  .ins_out                  (id_ins_out),
+  .abnormal_type_out        (id_abnormal_type_out),
+  .current_id_pc_addr_out      (id_current_pc_addr_out)
   );
 
   // ID-EX
@@ -246,7 +290,12 @@ module cpu (
   .ex_in_delayslot          (ex_is_in_delayslot),
   .ex_next_in_delayslot     (is_in_delayslot_in),
   .id_ins                   (id_ins_out),
-  .ex_ins                   (ex_ins_in)
+  .ex_ins                   (ex_ins_in),
+  .flush                    (flush),
+  .f_id_current_pc_addr_in  (id_current_pc_addr_out),
+  .f_id_abnormal_type_in    (id_abnormal_type_out),
+  .t_ex_current_pc_addr_out (ex_current_pc_addr_in),
+  .t_ex_abnormal_type_out   (ex_abnormal_type_in)
   );
 
   // EX
@@ -288,7 +337,22 @@ module cpu (
   .aluop_out                (ex_aluop_out),
   .mem_addr_out             (ex_mem_addr_out),
   .mem_data_out             (ex_mem_data_out),
-  .ins_out                  (ex_ins_out)
+  .ins_out                  (ex_ins_out),
+  .cp0_data_in              (ex_cp0_data_in),
+  .cp0_raddr_out            (ex_cp0_raddr_out),
+  .f_mem_cp0_we_in          (ex_f_mem_cp0_we_in),
+  .f_mem_cp0_w_addr         (ex_f_mem_cp0_w_addr),
+  .f_mem_cp0_w_data         (ex_f_mem_cp0_w_data),
+  .f_wb_cp0_we_in           (ex_f_wb_cp0_we_in),
+  .f_wb_cp0_w_addr          (ex_f_wb_cp0_w_addr),
+  .f_wb_cp0_w_data          (ex_f_wb_cp0_w_data),
+  .cp0_we_out               (ex_cp0_we_out),
+  .cp0_waddr_out            (ex_cp0_waddr_out),
+  .cp0_w_data_out           (ex_cp0_w_data_out),
+  .current_ex_pc_addr_in    (ex_current_pc_addr_in),
+  .abnormal_type_in         (ex_abnormal_type_in),
+  .abnormal_type_out        (ex_abnormal_type_out),
+  .current_ex_pc_addr_out   (ex_current_pc_addr_out)      
   );
 
   div_signed u_div_signed(
@@ -340,7 +404,18 @@ module cpu (
   .t_mem_aluop              (mem_aluop_in),
   .t_mem_data               (mem_store_data_in),
   .f_ex_ins                 (ex_ins_out),
-  .t_mem_ins                (mem_ins_in)
+  .t_mem_ins                (mem_ins_in),
+  .f_ex_cp0_we              (ex_cp0_we_out),
+  .f_ex_cp0_waddr           (ex_cp0_waddr_out),
+  .f_ex_cp0_wdata           (ex_cp0_w_data_out),
+  .t_mem_cp0_we             (mem_cp0_we_in),
+  .t_mem_cp0_waddr          (mem_cp0_waddr_in),
+  .t_mem_cp0_wdata          (mem_cp0_wdata_in),
+  .flush                    (flush),
+  .f_ex_pc_addr_in          (ex_current_pc_addr_out),
+  .f_ex_abnormal_type       (ex_abnormal_type_out),
+  .t_mem_pc_addr_out        (mem_current_pc_addr_in),
+  .t_mem_abnormal_type      (mem_abnormal_type_in)
   );
 
   // MEM
@@ -367,13 +442,19 @@ module cpu (
   .mem_we_out             (bus_we_out),
   .mem_e_out              (bus_eable_out),
   .mem_byte_sel_out       (bus_byte_sel_out),
-  .ins_in                 (mem_ins_in),
-  .f_wb_reg_we            (wb_wreg_e_in),
-  .f_wb_reg_addr          (wb_wreg_addr_in),
-  .f_wb_reg_data          (wb_wreg_data_in),
-  .f_ahead_reg_we         (mem_f_ahead_reg_we),
-  .f_ahead_reg_addr       (mem_f_ahead_reg_addr),
-  .f_ahead_reg_data       (mem_f_ahead_reg_data)
+  .cp0_we_in              (mem_cp0_we_in),
+  .cp0_waddr_in           (mem_cp0_waddr_in),
+  .cp0_wdata_in           (mem_cp0_wdata_in),
+  .cp0_we_out             (mem_cp0_we_out),
+  .cp0_waddr_out          (mem_cp0_waddr_out),
+  .cp0_wdata_out          (mem_cp0_wdata_out),
+  .current_mem_pc_addr_in (mem_current_pc_addr_in),
+  .abnormal_type_in       (mem_abnormal_type_in),
+  .cp0_status_in          (mem_cp0_status_in),
+  .cp0_cause_in           (mem_cp0_cause_in),
+  .cp0_epc_in             (mem_cp0_epc_in),
+  .abnormal_type_out      (mem_abnormal_type_out),
+  .current_mem_pc_addr_out(mem_current_pc_addr_out)
   );
 
 
@@ -393,20 +474,16 @@ module cpu (
   .wb_hilo_we               (wb_hilo_we_in),
   .wb_hi_data               (wb_hi_data_in),
   .wb_lo_data               (wb_lo_data_in),
-  .pause                    (pause_res_wb)
+  .pause                    (pause_res_wb),
+  .f_mem_cp0_we             (mem_cp0_we_out),
+  .f_mem_cp0_waddr          (mem_cp0_waddr_out),
+  .f_mem_cp0_wdata          (mem_cp0_wdata_out),
+  .t_wb_cp0_we              (wb_cp0_we_in),
+  .t_wb_cp0_waddr           (wb_cp0_waddr_in),
+  .t_wb_cp0_wdata           (wb_cp0_wdata_in),
+  .flush                    (flush)
   );
 
-  wb_after u_wb_after(
-    .rst                    (rst),
-    .clk                    (clk),
-    .pause                  (pause_res_wb),
-    .reg_we_in              (wb_wreg_e_in),
-    .reg_addr_in            (wb_wreg_addr_in),
-    .reg_data_in            (wb_wreg_data_in),
-    .reg_we_out             (mem_f_ahead_reg_we),
-    .reg_addr_out           (mem_f_ahead_reg_addr),
-    .reg_data_out           (mem_f_ahead_reg_data)
-  );
 
 
   ppl_scheduler u_ppl_sch(
@@ -418,7 +495,31 @@ module cpu (
   .pause_res_id             (pause_res_id),
   .pause_res_ex             (pause_res_ex),
   .pause_res_mem            (pause_res_mem),
-  .pause_res_wb             (pause_res_wb)
+  .pause_res_wb             (pause_res_wb),
+  .abnormal_type            (mem_abnormal_type_out),
+  .cp0_epc_in               (mem_cp0_epc_in),
+  .interrupt_pc_out         (interrupt_pc_out),
+  .flush                    (flush)
+  );
+
+  cp0 u_cp0(
+    .clk                    (clk),
+    .rst                    (rst),
+    .we_in                  (wb_cp0_we_in),
+    .waddr_in               (wb_cp0_waddr_in),
+    .data_in                (wb_cp0_wdata_in),
+    .raddr_in               (ex_cp0_raddr_out),
+    .int_in                 (interrupt_in),
+    .data_out               (ex_cp0_data_in),
+    .count_out              (),
+    .compare_out            (),
+    .status_out             (mem_cp0_status_in),
+    .cause_out              (mem_cp0_cause_in),
+    .epc_out                (mem_cp0_epc_in),
+    .config_out             (),
+    .timer_int_o            (),
+    .abnormal_type          (mem_abnormal_type_out),
+    .current_pc_addr_in     (mem_current_pc_addr_out)
   );
 
 endmodule

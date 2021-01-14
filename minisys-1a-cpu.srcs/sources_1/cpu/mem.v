@@ -35,17 +35,50 @@ module mem (
   output wire[`WordRange] mem_store_data_out,   //发给写数据总线的数据
   output reg mem_e_out,  //发给控制总线的总使能 （好像没什么用？？先留着了
 
-  //解决数据相关的输入端口
-  input wire[`WordRange] ins_in,
-  input wire f_wb_reg_we,
-  input wire[`RegRangeLog2] f_wb_reg_addr,
-  input wire[`WordRange] f_wb_reg_data,
-  input wire f_ahead_reg_we,
-  input wire[`RegRangeLog2] f_ahead_reg_addr,
-  input wire[`WordRange] f_ahead_reg_data
+  //cp0相关
+  input wire cp0_we_in,
+  input wire[4:0] cp0_waddr_in,
+  input wire[`WordRange] cp0_wdata_in,
+  output reg cp0_we_out,
+  output reg[4:0] cp0_waddr_out,
+  output reg[`WordRange] cp0_wdata_out,
+
+  //异常处理相关
+  input wire[`WordRange] current_mem_pc_addr_in,
+  input wire[`WordRange] abnormal_type_in,
+  input wire[`WordRange] cp0_status_in,
+  input wire[`WordRange] cp0_cause_in,
+  input wire[`WordRange] cp0_epc_in,
+  //此处要不要解决写cp0寄存器造成的数据相关？ 感觉不需要 因为cp0几乎不会去写 而且读到的三个寄存器也不应该去写
+  output reg[`WordRange] abnormal_type_out,
+  output reg[`WordRange] current_mem_pc_addr_out
+
 );
 
   assign mem_store_data_out = mem_store_data_in;
+  //先判断异常
+  always @(*) begin
+    if(rst == `Enable) begin
+      abnormal_type_out = `ZeroWord;
+    end else begin
+      if(current_mem_pc_addr_in != `ZeroWord) begin //如果是0指令就根本不变异常的输出
+        if(cp0_status_in[0] == `Enable)begin  //如果屏蔽了中断和异常则输出没有异常
+          //否则直接把上级传下来的异常类型输出
+          abnormal_type_out = {16'h0000, cp0_cause_in[13:8], 1'b0, abnormal_type_in[6:2], 2'b00};  
+          current_mem_pc_addr_out = current_mem_pc_addr_in;
+        end else begin
+          if(abnormal_type_in[6:2] == `ABN_ERET)begin //在屏蔽中断时候如果遇到了ERET还是要发送异常给cp0和ppl
+            abnormal_type_out = {16'h0000, cp0_cause_in[13:8], 1'b0, abnormal_type_in[6:2], 2'b00};
+          end else begin
+            abnormal_type_out = `ZeroWord;
+          end      
+        end 
+      end else begin
+        abnormal_type_out = `ZeroWord;
+      end
+    end
+  end
+
   always @(*) begin
     if (rst == `Enable) begin
       wreg_e_out = `Disable;
@@ -57,6 +90,9 @@ module mem (
       mem_we_out = `Disable;
       mem_byte_sel_out = 4'b0000;
       mem_e_out = `Disable;
+      cp0_we_out = `Disable;
+      cp0_waddr_out = 5'b00000;
+      cp0_wdata_out = `ZeroWord;
     end else begin
       wreg_e_out = wreg_e_in;
       wreg_data_out = wreg_data_in;
@@ -68,7 +104,9 @@ module mem (
       mem_we_out = `Disable;
       mem_byte_sel_out = 4'b1111;
       mem_e_out = `Disable;
-
+      cp0_we_out = cp0_we_in;
+      cp0_waddr_out = cp0_waddr_in;
+      cp0_wdata_out = cp0_wdata_in;
       case (aluop_in)
         `EXOP_LB: begin
           mem_addr_out = mem_addr_in;

@@ -15,7 +15,10 @@ module if_id (
   output reg[`WordRange] id_pc, // ID级PC
   output reg[`WordRange] id_ins, // ID级指令
 
-  input wire pause // 流水线暂停信号
+  input wire pause, // 流水线暂停信号
+
+  //异常相关
+  input wire flush
   
 );
 
@@ -25,6 +28,9 @@ module if_id (
       id_pc = `ZeroWord;
       id_ins = `ZeroWord;
     // 暂停时保持不变
+    end else if (flush == `Enable) begin
+      id_pc = `ZeroWord;
+      id_ins = `ZeroWord;
     end else if (pause == `Enable) begin
       id_pc = id_pc;
       id_ins = id_ins;

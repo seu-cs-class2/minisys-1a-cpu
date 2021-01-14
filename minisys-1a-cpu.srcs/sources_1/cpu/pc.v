@@ -13,7 +13,11 @@ module pc (
   input wire pause, // 流水暂停信号
 
   input wire branch_en_in, // 是否转移
-  input wire[`WordRange] branch_addr_in // 转移的地址
+  input wire[`WordRange] branch_addr_in, // 转移的地址
+
+  //异常相关
+  input wire flush,
+  input wire[`WordRange] interrupt_pc
 
 );
 
@@ -21,6 +25,9 @@ module pc (
   always @(posedge clk) begin
     if (rst == `Enable) begin
       pc = `ZeroWord;
+    end if(flush == `Enable) begin
+      //若有异常则让pc取入口地址
+      pc = interrupt_pc;
     end else if (pause == `Enable) begin
       // 流水暂停时保持PC不变
       pc = pc;
