@@ -6,7 +6,7 @@
 // 顶层
 module minisys (
 
-  input rst, // 板上重置
+  input board_rst, // 板上重置
   input board_clk, // 板上时钟
 
   // 拨码开关
@@ -24,7 +24,11 @@ module minisys (
   // LED灯
   output wire[7:0] led_RLD_out,
   output wire[7:0] led_YLD_out,
-  output wire[7:0] led_GLD_out
+  output wire[7:0] led_GLD_out,
+
+
+  input wire rx, //UART接收
+  output wire tx // UART发送
 
   //测试
   // output wire[`WordRange] pc_out,
@@ -41,11 +45,31 @@ module minisys (
   wire cpu_clk;
   wire uart_clk;
   // 时钟分频
+
+  wire spg_bufg;
+  BUFG U1(.I(buttons_in[3]), .O(spg_bufg)); 
+  //去抖
+  reg upg_rst;
+  always @(posedge board_clk)begin
+    if(spg_bufg)begin
+      upg_rst = 0;
+    end
+    if(board_rst)begin
+      upg_rst = 1;
+    end
+  end
+  assign rst = board_rst | !upg_rst;
+
   clocking u_clocking(
     .clk_in1(board_clk), // 100MHz
     .cpu_clk(cpu_clk), // 5MHz
     .uart_clk(uart_clk) // 10MHz
   );
+
+  //uart相关
+  wire upg_clk_o, upg_wen_o, upg_done_o;
+  wire[14:0] upg_adr_o;
+  wire[31:0] upg_dat_o;
 
 
   wire [`WordRange] cpu_imem_data_in;
@@ -126,6 +150,23 @@ module minisys (
   assign interrupt1 = 1'b0;
   assign interrupt0 = 1'b0;
 
+  //uart串口
+  uart_bmpg_0 u_uartpg(
+		.upg_clk_i		(uart_clk),		// 10MHz   
+		.upg_rst_i		(upg_rst),		// 高电平有效
+		// blkram signals
+		.upg_clk_o		(upg_clk_o),
+		.upg_wen_o		(upg_wen_o),
+		.upg_adr_o		(upg_adr_o),
+		.upg_dat_o		(upg_dat_o),
+		.upg_done_o		(upg_done_o),
+		// uart signals
+		.upg_rx_i		(rx),
+		.upg_tx_o		(tx)
+  );
+
+
+
   // CPU
   // CPU
   cpu u_cpu (
@@ -144,10 +185,16 @@ module minisys (
   );
 
   // IMEM
-  blk_mem_gen_0 u_blk_mem_gen_0 (
-    .addra                    (imem_imem_addr_in[15:2]),
-    .clka                     (~cpu_clk),
-    .douta                    (imem_imem_data_out)
+  rom u_rom(
+    .clk                  (~cpu_clk),
+    .addr                 (imem_imem_addr_in),
+    .data_out             (imem_imem_data_out),
+    .upg_rst              (upg_rst),
+    .upg_clk              (upg_clk_o),
+    .upg_wen              (upg_wen_o & !upg_adr_o[14]),
+    .upg_adr              (upg_adr_o[13:0]),
+    .upg_dat              (upg_dat_o),
+    .upg_done             (upg_done_o)
   );
 
   // DMEM
@@ -158,7 +205,13 @@ module minisys (
   .addr                   (bus_addr),
   .byte_sel               (bus_byte_sel),
   .data_in                (bus_write_data),
-  .data_out               (ram_data)
+  .data_out               (ram_data),
+  .upg_rst                (upg_rst),
+  .upg_clk                (upg_clk_o),
+  .upg_wen                (upg_wen_o & upg_adr_o),
+  .upg_adr                (upg_adr_o[13:0]),
+  .upg_dat                (upg_dat_o),
+  .upg_done               (upg_done_o)
   );
 
 

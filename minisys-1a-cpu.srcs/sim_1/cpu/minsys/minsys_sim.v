@@ -27,16 +27,20 @@ wire[31:0] bus_write_data;
 wire[31:0] mem_addr_debug_out;
 wire[31:0] dataA;
 wire[31:0] dataB;
+reg start_S3;
+reg rx;
+reg tx;
 
 minisys my_minisys(
-    .rst                (rst),
+    .board_rst                (rst),
     .board_clk          (board_clk),
     .switches_in        (switches_in),
     .buttons_in         (buttons_in),
     .keyboard_cols_in   (keyboard_cols_in),
     .led_RLD_out        (led_rld_out),
     .led_YLD_out        (led_yld_out),
-    .led_GLD_out        (led_gld_out)
+    .led_GLD_out        (led_gld_out),
+    .rx                 (rx)
     // .pc_out             (pc),
     // .clk_debug          (clk_out),
     // .ins_out            (ins),
@@ -53,6 +57,9 @@ initial begin
     assign switches_in = {24'h123456};
     assign buttons_in = {5'b00000};
     assign keyboard_cols_in = {4'h0};
+    assign start_S3 = 0;
+    assign rx = 0;
+    assign tx = 0;
     rst <= 1'b1;
     board_clk <= 1'b0;
     #10000

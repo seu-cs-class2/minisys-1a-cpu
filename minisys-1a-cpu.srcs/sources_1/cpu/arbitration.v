@@ -24,7 +24,7 @@ module arbitration(
 );
 
 
-always @(posedge clk)begin
+always @(*)begin
     if(addr[31:16] == 16'h0000)begin
         data_out = ram_data;
     end else if(addr[31:10] == {20'hfffff,2'b11})begin

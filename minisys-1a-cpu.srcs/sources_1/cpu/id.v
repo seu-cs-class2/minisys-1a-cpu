@@ -106,6 +106,7 @@ module id (
       link_addr_out = `ZeroWord;
       next_in_delayslot_out = `Disable;
       branch_en_out = `Disable;
+      branch_addr_out = `ZeroWord;
       // 没有异常信息
       abnormal_type_out = `ZeroWord;
       // 把指令地址往下传
@@ -467,6 +468,7 @@ module id (
             reg1_addr_out = rs;
             reg2_ren_out = `Enable;
             reg2_addr_out = rt;
+            branch_en_out = `Disable;
             if (data1_out == data2_out) begin
               branch_en_out = `Enable;
               branch_addr_out = pc_in + 32'd4 + {{14{offset[15]}}, offset[15:0], 2'b00};
@@ -479,6 +481,7 @@ module id (
             reg1_ren_out = `Enable;
             reg1_addr_out = rs;
             reg2_ren_out = `Disable;
+            branch_en_out = `Disable;
             // 判断比0大
             if (data1_out[31] == 1'b0 && data1_out != `ZeroWord) begin
               branch_en_out = `Enable;
@@ -492,6 +495,7 @@ module id (
             reg1_ren_out = `Enable;
             reg1_addr_out = rs;
             reg2_ren_out = `Disable;
+            branch_en_out = `Disable;
             // 判断比零小或相等
             if (data1_out[31] == 1'b1 || data1_out == `ZeroWord) begin
               branch_en_out = `Enable;
@@ -506,6 +510,7 @@ module id (
             reg1_addr_out = rs;
             reg2_ren_out = `Enable;
             reg2_addr_out = rt;
+            branch_en_out = `Disable;
             if (data1_out != data2_out) begin
               branch_en_out = `Enable;
               branch_addr_out = pc_in + 32'd4 + {{14{offset[15]}}, offset[15:0], 2'b00};
@@ -519,6 +524,7 @@ module id (
               reg1_ren_out = `Enable;
               reg1_addr_out = rs;
               reg2_ren_out = `Disable;
+              branch_en_out = `Disable;
               if (data1_out[31] == 1'b0) begin
                 branch_en_out = `Enable;
                 branch_addr_out = pc_in + 32'd4 + {{14{offset[15]}}, offset[15:0], 2'b00};
@@ -530,6 +536,7 @@ module id (
               reg1_ren_out = `Enable;
               reg1_addr_out = rs;
               reg2_ren_out = `Disable;
+              branch_en_out = `Disable;
               if (data1_out[31] == 1'b1) begin
                 branch_en_out = `Enable;
                 branch_addr_out = pc_in + 32'd4 + {{14{offset[15]}}, offset[15:0], 2'b00};
@@ -543,6 +550,7 @@ module id (
               reg2_ren_out = `Disable;
               link_addr_out = pc_in + 32'd8;
               exop_out = `EXOP_BGEZAL;
+              branch_en_out = `Disable;
               if (data1_out[31] == 1'b0) begin
                 branch_en_out = `Enable;
                 branch_addr_out = pc_in + 32'd4 + {{14{offset[15]}}, offset[15:0], 2'b00};
@@ -556,6 +564,7 @@ module id (
               reg2_ren_out = `Disable;
               link_addr_out = pc_in + 32'd8;
               exop_out = `EXOP_BLTZAL;
+              branch_en_out = `Disable;
               if (data1_out[31] == 1'b1) begin
                 branch_en_out = `Enable;
                 branch_addr_out = pc_in + 32'd4 + {{14{offset[15]}}, offset[15:0], 2'b00};
