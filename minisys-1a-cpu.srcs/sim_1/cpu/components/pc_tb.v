@@ -13,20 +13,18 @@ module pc_tb();
   // ======= 输入 =======
   reg rst; // 同步复位信号
   reg pause; // 流水暂停信号
-  reg branch_e_in; // 是否转移
+  reg branch_en_in; // 是否转移
   reg[`WordRange] branch_addr_in;  // 转移的地址
   // ======= 输出 =======
   wire[`WordRange] pc; // 当前PC
-  wire imem_e_out; // 指令存储器使能
 
   // 例化被测模块
   pc u_pc(
     .clk(CLOCK_50MHZ),
     .rst(rst),
     .pc(pc),
-    .imem_e_out(imem_e_out),
     .pause(pause),
-    .branch_e_in(branch_e_in),
+    .branch_en_in(branch_en_in),
     .branch_addr_in(branch_addr_in)
   );
 
@@ -35,7 +33,7 @@ module pc_tb();
     // 重置
     rst <= `Enable;
     pause <= `Disable;
-    branch_e_in <= `Disable;
+    branch_en_in <= `Disable;
     branch_addr_in <= `ZeroWord;
     #100 begin
       rst <= `Disable;
@@ -52,10 +50,10 @@ module pc_tb();
     #100 begin
       pause <= `Disable;
       branch_addr_in <= 32'd12345;
-      branch_e_in <= `Enable;
+      branch_en_in <= `Enable;
     end
     #100 begin
-      branch_e_in <= `Disable;
+      branch_en_in <= `Disable;
     end
     // 结束
     #100 $stop;

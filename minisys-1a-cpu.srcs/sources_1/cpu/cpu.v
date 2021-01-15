@@ -25,8 +25,12 @@ module cpu (
 
   //debug
   output wire[`WordRange] mem_addr_debug,
-  output wire[`WordRange] dataA,
-  output wire[`WordRange] dataB
+  output wire[`WordRange] ex_dataA_in,
+  output wire[`WordRange] ex_dataB_in,
+
+  // cpu_tb
+  output wire[`WordRange] ex_data_out, // EX级结果：写寄存器数据
+  output wire[`WordRange] ex_addr_out // EX级结果：写寄存器地址
 );
 
   // ID输入
@@ -186,9 +190,12 @@ module cpu (
 
   //debug
   assign mem_addr_debug = mem_addr_in;
-  assign dataA = ex_data1_in;
-  assign dataB = ex_data2_in;
-
+  assign ex_dataA_in = ex_data1_in;
+  assign ex_dataB_in = ex_data2_in;
+  
+  // cpu_tb
+  assign ex_data_out = ex_wreg_data_out; // EX级执行结果：写寄存器数据
+  assign ex_addr_out = ex_wreg_addr_out;
 
   // HILO
   hilo  u_hilo (  
