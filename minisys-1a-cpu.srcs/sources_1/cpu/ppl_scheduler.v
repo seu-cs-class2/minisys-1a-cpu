@@ -51,6 +51,7 @@ module ppl_scheduler (
         `ABN_BREAK,
         `ABN_OVERFLOW,
         `ABN_PRESERVE,
+        `ABN_SYSTEMCALL,
         5'b00000: begin
           interrupt_pc_out = 32'h0000F000;
         end 

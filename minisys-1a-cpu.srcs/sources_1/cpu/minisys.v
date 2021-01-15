@@ -294,7 +294,7 @@ module minisys (
     .byte_sel               (bus_byte_sel),
     .data_in                (bus_write_data),
     .we                     (bus_we),
-    .data_out               (beep_en_out),
+    .data_out               (buzzer_data),
     .signal_out             (beep_out)
   );
 

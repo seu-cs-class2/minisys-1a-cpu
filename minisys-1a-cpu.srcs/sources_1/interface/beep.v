@@ -24,18 +24,38 @@ module beep (
   output reg[`WordRange] data_out,
 
   //发送给外设的信号
-  output signal_out // 声信号输出
+  output reg signal_out // 声信号输出
 
 );
 
-reg signal_out; //唯一的寄存器
+reg[15:0] count;
 
 always @(posedge clk) begin  //写是上升沿
   if(rst == `Enable) begin
-    signal_out <= 0'b0;
-  end else if(en == `Enable && addr == 32'hfffffd10 && we == `Enable) begin //使能有效  地址正确  并且是写操作
-    signal_out <= data_in[0];  //数据最低位给蜂鸣器
+    signal_out <= 1'b0;
+    count <= 16'd0;
+  end else begin
+    if(en == `Enable && addr == 32'hfffffd10 && we == `Enable) begin //使能有效  地址正确  并且是写操作
+      if(data_in != 32'd0)begin
+        signal_out <= 1'b1;
+      end else begin
+        signal_out <= 1'b0;
+      end
+    end
+    // count <= count + 16'd1;
+    // if(count < 16'd10000)begin
+    //   signal_out <= 1'b0;
+    // end
+    // if(count >= 16'd10000)begin
+    //   signal_out <= 1'b1;
+    // end
+    // if(count >= 16'd20000)begin
+    //   count <= 16'd0;
+    //   signal_out <= 1'b0; 
+    // end
   end
+  
+  
 end
 
 always @(*) begin //读是随时读

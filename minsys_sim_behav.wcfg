@@ -11,15 +11,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="11346340000fs"></ZoomStartTime>
-      <ZoomEndTime time="12467556984fs"></ZoomEndTime>
-      <Cursor1Time time="11995100000fs"></Cursor1Time>
+      <ZoomStartTime time="10621984060fs"></ZoomStartTime>
+      <ZoomEndTime time="11883984061fs"></ZoomEndTime>
+      <Cursor1Time time="120000000000fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="194"></NameColumnWidth>
-      <ValueColumnWidth column_width="167"></ValueColumnWidth>
+      <ValueColumnWidth column_width="159"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="74" />
+   <WVObjectSize size="96" />
    <wvobject fp_name="/minsys_sim/my_minisys/u_cpu/rst" type="logic">
       <obj_property name="ElementShortName">rst</obj_property>
       <obj_property name="ObjectShortName">rst</obj_property>
@@ -207,6 +207,7 @@
    <wvobject fp_name="/minsys_sim/my_minisys/u_cpu/u_gpr/regs" type="array">
       <obj_property name="ElementShortName">regs[31:0][31:0]</obj_property>
       <obj_property name="ObjectShortName">regs[31:0][31:0]</obj_property>
+      <obj_property name="isExpanded"></obj_property>
    </wvobject>
    <wvobject fp_name="/minsys_sim/my_minisys/u_cpu/u_ex/ins_out" type="array">
       <obj_property name="ElementShortName">ins_out[31:0]</obj_property>
@@ -283,7 +284,6 @@
    <wvobject fp_name="/minsys_sim/my_minisys/u_cpu/u_gpr/regs" type="array">
       <obj_property name="ElementShortName">regs[31:0][31:0]</obj_property>
       <obj_property name="ObjectShortName">regs[31:0][31:0]</obj_property>
-      <obj_property name="isExpanded"></obj_property>
    </wvobject>
    <wvobject fp_name="/minsys_sim/my_minisys/bus_addr" type="array">
       <obj_property name="ElementShortName">bus_addr[31:0]</obj_property>
@@ -316,5 +316,93 @@
    <wvobject fp_name="/minsys_sim/my_minisys/u_abt/data_out" type="array">
       <obj_property name="ElementShortName">data_out[31:0]</obj_property>
       <obj_property name="ObjectShortName">data_out[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/minsys_sim/my_minisys/u_cpu/u_cp0/epc_out" type="array">
+      <obj_property name="ElementShortName">epc_out[31:0]</obj_property>
+      <obj_property name="ObjectShortName">epc_out[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/minsys_sim/my_minisys/u_cpu/u_cp0/cause_out" type="array">
+      <obj_property name="ElementShortName">cause_out[31:0]</obj_property>
+      <obj_property name="ObjectShortName">cause_out[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/minsys_sim/my_minisys/u_beep/rst" type="logic">
+      <obj_property name="ElementShortName">rst</obj_property>
+      <obj_property name="ObjectShortName">rst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/minsys_sim/my_minisys/u_beep/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/minsys_sim/my_minisys/u_beep/addr" type="array">
+      <obj_property name="ElementShortName">addr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">addr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/minsys_sim/my_minisys/u_beep/en" type="logic">
+      <obj_property name="ElementShortName">en</obj_property>
+      <obj_property name="ObjectShortName">en</obj_property>
+   </wvobject>
+   <wvobject fp_name="/minsys_sim/my_minisys/u_beep/byte_sel" type="array">
+      <obj_property name="ElementShortName">byte_sel[3:0]</obj_property>
+      <obj_property name="ObjectShortName">byte_sel[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/minsys_sim/my_minisys/u_beep/data_in" type="array">
+      <obj_property name="ElementShortName">data_in[31:0]</obj_property>
+      <obj_property name="ObjectShortName">data_in[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/minsys_sim/my_minisys/u_beep/we" type="logic">
+      <obj_property name="ElementShortName">we</obj_property>
+      <obj_property name="ObjectShortName">we</obj_property>
+   </wvobject>
+   <wvobject fp_name="/minsys_sim/my_minisys/u_beep/data_out" type="array">
+      <obj_property name="ElementShortName">data_out[31:0]</obj_property>
+      <obj_property name="ObjectShortName">data_out[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/minsys_sim/my_minisys/u_beep/signal_out" type="logic">
+      <obj_property name="ElementShortName">signal_out</obj_property>
+      <obj_property name="ObjectShortName">signal_out</obj_property>
+   </wvobject>
+   <wvobject fp_name="/minsys_sim/my_minisys/u_beep/count" type="array">
+      <obj_property name="ElementShortName">count[15:0]</obj_property>
+      <obj_property name="ObjectShortName">count[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/minsys_sim/my_minisys/u_beep/rst" type="logic">
+      <obj_property name="ElementShortName">rst</obj_property>
+      <obj_property name="ObjectShortName">rst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/minsys_sim/my_minisys/u_beep/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/minsys_sim/my_minisys/u_beep/addr" type="array">
+      <obj_property name="ElementShortName">addr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">addr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/minsys_sim/my_minisys/u_beep/en" type="logic">
+      <obj_property name="ElementShortName">en</obj_property>
+      <obj_property name="ObjectShortName">en</obj_property>
+   </wvobject>
+   <wvobject fp_name="/minsys_sim/my_minisys/u_beep/byte_sel" type="array">
+      <obj_property name="ElementShortName">byte_sel[3:0]</obj_property>
+      <obj_property name="ObjectShortName">byte_sel[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/minsys_sim/my_minisys/u_beep/data_in" type="array">
+      <obj_property name="ElementShortName">data_in[31:0]</obj_property>
+      <obj_property name="ObjectShortName">data_in[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/minsys_sim/my_minisys/u_beep/we" type="logic">
+      <obj_property name="ElementShortName">we</obj_property>
+      <obj_property name="ObjectShortName">we</obj_property>
+   </wvobject>
+   <wvobject fp_name="/minsys_sim/my_minisys/u_beep/data_out" type="array">
+      <obj_property name="ElementShortName">data_out[31:0]</obj_property>
+      <obj_property name="ObjectShortName">data_out[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/minsys_sim/my_minisys/u_beep/signal_out" type="logic">
+      <obj_property name="ElementShortName">signal_out</obj_property>
+      <obj_property name="ObjectShortName">signal_out</obj_property>
+   </wvobject>
+   <wvobject fp_name="/minsys_sim/my_minisys/u_beep/count" type="array">
+      <obj_property name="ElementShortName">count[15:0]</obj_property>
+      <obj_property name="ObjectShortName">count[15:0]</obj_property>
    </wvobject>
 </wave_config>

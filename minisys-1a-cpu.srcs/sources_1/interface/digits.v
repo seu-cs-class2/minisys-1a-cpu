@@ -36,53 +36,59 @@ module digits (
     end else if(addr == 32'hfffffc00 && en == `Enable && we == `Enable) begin //写的是显示数据寄存器 且使能有效
       case (data_in[7:0])
         //                GFE_DCBA
-        4'h0: begin
+        8'd0: begin
           digital_out <= 8'b1100_0000; // ABCDEF
         end
-        4'h1: begin
+        8'd1: begin
           digital_out <= 8'b1111_1001; // BC
         end
-        4'h2: begin
+        8'd2: begin
           digital_out <= 8'b1010_0100; // ABDEG
         end
-        4'h3: begin
+        8'd3: begin
           digital_out <= 8'b1011_0000; // ABCDG
         end
-        4'h4: begin
+        8'd4: begin
           digital_out <= 8'b1001_1001; // BCFG
         end
-        4'h5: begin
+        8'd5: begin
           digital_out <= 8'b1001_0010; // ACDFG
         end
-        4'h6: begin
+        8'd6: begin
           digital_out <= 8'b1000_0010; // ACDEFG
         end
-        4'h7: begin
+        8'd7: begin
           digital_out <= 8'b1111_1000; // ABC
         end
-        4'h8: begin
+        8'd8: begin
           digital_out <= 8'b1000_0000; // ABCDEFG
         end
-        4'h9: begin
+        8'd9: begin
           digital_out <= 8'b1001_1000; // ABCFG
         end
-        4'ha: begin
+        8'd10: begin
           digital_out <= 8'b1000_1000; // ABCEFG
         end
-        4'hb: begin
+        8'd11: begin
           digital_out <= 8'b1000_0011; // CDEFG
         end
-        4'hc: begin
+        8'd12: begin
           digital_out <= 8'b1010_0111; // DEG
         end
-        4'hd: begin
+        8'd13: begin
           digital_out <= 8'b1010_0001; // BCDEG
         end
-        4'he: begin
+        8'd14: begin
           digital_out <= 8'b1000_0110; // ADEFG
         end
-        4'hf: begin
+        8'd15: begin
           digital_out <= 8'b1000_1110; // AEFG
+        end
+        8'd16: begin
+          digital_out <= 8'b1100_0001; // BCDEF --(U)
+        end
+        8'd17: begin
+          digital_out <= 8'b1001_0001; // BCDFG --(y)
         end
       endcase
     end else if(addr == 32'hfffffc04 && en == `Enable && we == `Enable)begin //写的是位数使能寄存器
